@@ -1,0 +1,50 @@
+\begin{tikzpicture}[scale=2.2]
+% Parameters
+\def\radius{1.5};
+\def\arrowScale{0.95};
+\def\plotOffset{2}
+
+\def\micSpacing{1};
+\def\micL{-0.5*\micSpacing};
+\def\micR{0.5*\micSpacing};
+
+\def\sourceRadius{2};
+\def\sourceAzimuth{35}
+\pgfmathsetmacro\sourceY{cos(-\sourceAzimuth)*\sourceRadius}
+\pgfmathsetmacro\sourceX{sin(-\sourceAzimuth)*\sourceRadius}
+
+\pgfmathsetmacro\sourceLAzimuth{-atan((\sourceX-\micL)/\sourceY)}
+\pgfmathsetmacro\sourceRAzimuth{-atan((\sourceX-\micR)/\sourceY)}
+
+% Coordinate system
+\draw[ultra thick,->] (0-\plotOffset,0) -- (0-\plotOffset,\radius) node[above]{$x$};
+\draw[ultra thick,->] (0-\plotOffset,0) -- (-\radius-\plotOffset,0) node[left]{$y$};
+
+% Source
+\node at (\sourceX-\plotOffset,\sourceY){\huge $\bullet$}; % source
+\draw[->] (\micL-\plotOffset,0) -- (\arrowScale*\sourceX-\plotOffset,\arrowScale*\sourceY) node[left, pos=0.65]{$\vec{s}_1$}; % left mic
+\draw[->] (\micR-\plotOffset,0) -- (\arrowScale*\sourceX-\plotOffset,\arrowScale*\sourceY) node[right, pos=0.65]{$\vec{s}_2$}; % right mic
+
+% Mic positions
+\node at (\micL-\plotOffset,0){\huge $\circ$};
+\node at (\micR-\plotOffset,0){\huge $\circ$};
+\draw[thick,|-|] (\micL-\plotOffset,-0.2) -- (\micR-\plotOffset,-0.2) node[below, pos=0.5]{$\Delta$};
+
+% Transformation
+\draw[thick,-] (0-\radius/2,\radius/2) arc(90:110:1cm); \draw[thick,->] (0-\radius/2,\radius/2) node[above]{sum} arc(90:70:1cm);
+
+% Effective coordinate system
+\draw[ultra thick,->] (0+\plotOffset,0) -- (0+\plotOffset,\radius) node[above]{$x$};
+\draw[ultra thick,->] (0+\plotOffset,0) -- (-\radius+\plotOffset,0) node[left]{$y$};
+
+% Effective sources
+\node at (\sourceX+\plotOffset+\micL,\sourceY){\huge $\color{lightgray}{\bullet}$}; % left source
+\node at (\sourceX+\plotOffset+\micR,\sourceY){\huge $\color{lightgray}{\bullet}$}; % right source
+\draw[->] (0+\plotOffset,0) -- (\arrowScale*\sourceX+\plotOffset-\micL,\arrowScale*\sourceY) node[right, pos=0.65]{$\vec{s}_1$}; % left mic
+\draw[->] (0+\plotOffset,0) -- (\arrowScale*\sourceX+\plotOffset-\micR,\arrowScale*\sourceY) node[left, pos=0.65]{$\vec{s}_2$}; % right mic
+
+% Effective mic position
+\node at (0+\plotOffset,0){\huge $\color{lightgray}{\circ}$};
+\draw[thick,|-|] (\micL+\plotOffset+\sourceX,\sourceY+0.2) -- (\micR+\plotOffset+\sourceX,\sourceY+0.2) node[above, pos=0.5]{$\Delta$};
+
+\end{tikzpicture}

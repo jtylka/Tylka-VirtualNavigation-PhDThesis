@@ -1,0 +1,127 @@
+% !BIB TS-program = biber
+% !BIB program = biber
+\documentclass[12pt,lof,lot,twoside]{puthesis}
+
+\raggedbottom
+\usepackage[letterpaper,height=9in,width=6in,inner=1.5in,outer=1in,top=1in,bottom=1in,footskip=.25in]{geometry}
+
+%\includeonly{09_thiergart_comparison,11_conclusions}
+
+% User-defined macros
+\newcommand{\figref}[1]{Fig.~\ref{#1}}
+\newcommand{\Figref}[1]{Figure~\ref{#1}}
+\newcommand{\figreftwo}[2]{Figs.~\ref{#1} and~\ref{#2}}
+\newcommand{\figrefthree}[3]{Figs.~\ref{#1},~\ref{#2}, and~\ref{#3}}
+\newcommand{\figrefthru}[2]{Figs.~\ref{#1}--\ref{#2}}
+\newcommand{\eqnref}[1]{Eq.~(\ref{#1})}
+\newcommand{\eqnreftwo}[2]{Eqs.~(\ref{#1}) and~(\ref{#2})}
+\newcommand{\chapref}[1]{Chapter~\ref{#1}}
+\newcommand{\chapreftwo}[2]{Chapters~\ref{#1} and~\ref{#2}}
+\newcommand{\chaprefthru}[2]{Chapters~\ref{#1} through~\ref{#2}}
+\newcommand{\apxref}[1]{Appendix~\ref{#1}}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\Secref}[1]{Section~\ref{#1}}
+\newcommand{\secreftwo}[2]{Sections~\ref{#1} and~\ref{#2}}
+\newcommand{\secrefthru}[2]{Sections~\ref{#1} through~\ref{#2}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
+\newcommand{\Tabref}[1]{Table~\ref{#1}}
+\newcommand{\tabreftwo}[2]{Tables~\ref{#1} and~\ref{#2}}
+\newcommand{\nomenclature}[2]{#1 & #2 \\}
+
+% Linking packages
+\usepackage[hyphens]{url} % allow line-breaks after hyphens in URLs
+\usepackage{hyperref}
+\urlstyle{same} % keep current font
+
+% Bibliography packages
+%\usepackage[numbers,square,sort]{natbib}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage[backend=biber,
+  style=numeric,
+  natbib=true,
+  sorting=none,
+  sortcites=true,
+  maxbibnames=99,
+  maxcitenames=2,
+  giveninits=true]{biblatex}
+\addbibresource{refs.bib}
+\addbibresource{links.bib}
+\input{bibstyle}
+
+% Graphics packages
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Tikz packages
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{decorations.pathmorphing}
+
+% Math packages
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{blkarray}
+\usepackage{cancel}
+
+% Additional packages
+\usepackage{enumerate}
+\usepackage{longtable}
+\usepackage{rotating}
+
+%\setcounter{secnumdepth}{3} % set to 3 to enable subsubsection numbering
+\setcounter{secnumdepth}{4} % set to 4 to enable paragraph numbering
+\renewcommand{\theparagraph}{\Roman{paragraph}.}
+
+%\title{Performance Characterization of Methods for Virtual Navigation of Sound Fields Represented by Spherical Harmonics}
+%\title{A Parametric Interpolation Method for Virtual Navigation of Sound Fields Represented by Spherical Harmonics}
+\title{Virtual Navigation of Ambisonics-Encoded Sound Fields Containing Near-Field Sources}
+\submitted{June 2019} % degree conferral date (January, April, June, September, or November)
+\copyrightyear{2019}
+\author{Joseph George Tylka}
+\adviser{Edgar Yazid Choueiri}
+\department{Mechanical and Aerospace Engineering}
+
+\input{00_abstract}
+\input{00_acknowledgements}
+\dedication{\textit{In loving memory of Grandpa Jack, T.O.M.}}
+
+\begin{document}
+
+\renewcommand\listfigurename{List of figures}
+\renewcommand\listtablename{List of tables}
+
+\makefrontmatter
+
+\include{01_introduction}
+\include{02_acoustical_theory}
+\include{03_navigational_techniques}
+\include{04_auditory_models}
+\include{05_proposed_models}
+\include{06_simulation_framework}
+\include{07_characterization_extrapolation}
+\include{08_proposed_method}
+\include{09_thiergart_comparison}
+\include{10_experimental_validation}
+\include{11_conclusions}
+
+\appendix % all chapters following will be labeled as appendices
+\include{a1_navigation_filters} % First referenced in Sec. 1.1, then Sec. 2.6
+\include{a2_SABRE_toolkit} % First referenced in Sec. 2.0, then Sec. 2.7, then Sec. 5.4
+\include{a3_smoothing_weights} % First referenced in Sec. 4.2.2
+\include{a4_HRTF_measurements} % First referenced in Sec. 5.4
+\include{a5_impulse_response} % First referenced in Sec. 5.4
+%\include{ax_practical_implementation}
+%\include{ax_microphone_validity}
+
+\singlespacing
+%\phantomsection
+%\addcontentsline{toc}{chapter}{Bibliography}
+%\bibliographystyle{unsrtnat}
+%\bibliography{refs,links}
+\sloppy
+\printbibliography[heading=bibintoc]
+
+\end{document}

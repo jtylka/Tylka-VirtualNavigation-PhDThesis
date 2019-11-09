@@ -1,0 +1,36 @@
+In this work, we developed models for perceived source localization and spectral coloration.
+We empirically determined values for the parameters of these models through comparison with results of subjective listening experiments that we conducted.
+The primary advantage of these models, compared to existing binaural ones, is that they do not require rendering ambisonics to binaural.
+This allows the models to be used to directly evaluate navigational methods for ambisonics-encoded sound fields, without introducing extraneous factors such as the choice of ambisonics-to-binaural rendering approach or of HRTF.%
+\footnote{While it is our expectation that such extraneous factors will necessarily conflate their corresponding errors with those introduced by the navigational method under test, it is worth noting that the relative magnitudes of such errors have not been established.
+This remains a topic for further study.}
+
+The localization model (described in \secref{sec:05_Proposed_Models:Localization_Model}) extends a recently-developed precedence-effect-based energy vector model \citep{Stitt2016} in order to predict perceived source localization directly from the ambisonics impulse responses.
+To determine parameters of the model, we conducted a virtual localization test (described in \secref{sec:05_Proposed_Models:Localization_Test}) with individualized binaural rendering over head-tracked and equalized headphones.
+The predictions of the localization model (see \secref{sec:05_Proposed_Models:Localization_Results}) are in good agreement with the results of this localization test, achieving a mean absolute prediction error of $3.67^\circ$.
+Furthermore, the proposed model performs comparably to, if not better than, the binaural localization model of \citet{Dietz2011} (described in \secref{sec:04_Auditory_Models:Binaural_Localization_Model}), in terms of its agreement with the data.
+
+Two important caveats to this result are 1) that the model requires experimental data in order to determine values for its free parameters and 2) that these values are not necessarily valid over any conditions other than those tested.
+Indeed, it is worth emphasizing that this model has only been validated for frontal ($\pm20^\circ$ azimuth) sources and a speech signal.
+However, given the accuracy of the predictions yielded by the model and the relatively small number of degrees of freedom compared to the number of data points, we conclude that the \textit{structure} of the model is generally valid.
+Therefore, we take the parameter values determined here to define a default specification of the model, which we can expect to provide \textit{plausible} predictions of source localization, even though the accuracy of those predictions will almost certainly degrade for any conditions other than those tested here.
+The magnitudes of such degradations under other conditions (e.g., source positions, navigational methods, stimuli, etc.) remain to be determined.
+
+Future refinements to this model might pursue reducing its number of free parameters by developing (possibly empirical) models for those parameters based on some input data.
+For example, one might seek a model for the stimulus-dependent stationary signal weight ($\alpha$), which is currently determined empirically by fitting model predictions to experimental data (see \citet{Stitt2016,Stitt2017}), such that it can be determined \textit{a priori} for a given stimulus.%
+\footnote{\citet{Stitt2016} suggest a simple model for $\alpha$ based on interaural time differences of leading and lagging signals, but no direct relationship between the stimulus and $\alpha$ is given.}
+
+The coloration model uses only the omnidirectional ambisonics impulse responses (i.e., the free-field transfer functions) and predicts a perceived ``coloration score'' from a linear combination of two metrics (defined in \secref{sec:04_Auditory_Models:Coloration_Metrics}): the range of the auditory band spectral error ($\rho_\eta$) and the notch errors ($E_\text{n}$).
+To construct this model, we conducted a MUSHRA \citep{ITU-R-BS.1534-3} test (described in \secref{sec:05_Proposed_Models:Coloration_Test}) and performed a linear regression of the metrics with the collected subjective ratings of coloration.
+We compared the proposed model to several alternative models and found it to achieve the highest correlation to the measured data (see \secref{sec:05_Proposed_Models:Coloration_Results}).
+
+As with the localization model, the validity of the proposed coloration model has only been established for a limited set of conditions.
+Additionally, predicting these ``coloration scores'' is a somewhat artificial task, as the scale (0--100) is arbitrary, and there is no reason to think that the perceived coloration should be strictly linearly related to any of the metrics used.
+Nevertheless, a more general result of this analysis is that the metrics used in the proposed model ($\rho_\eta$ and $E_\text{n}$) are dominant factors in the perception of coloration.
+Thus, each of these metrics may serve as a useful measure of perceptible spectral coloration, as a large value for either metric would almost certainly entail perceptible coloration.
+
+Ultimately, in order to more rigorously establish their psychoacoustic relevance, the auditory models proposed here should be further validated through additional listening experiments with more subjects and spanning a wider range of conditions.
+%The coloration model in particular should be validated for a larger set of navigational methods, since the spectral colorations considered in this work may or may not be comparable to those induced by alternative methods.
+Despite this eventual need for further validation, we expect that these models will nonetheless yield valuable insights when evaluating navigational methods.
+Consequently, comprehensive comparisons of existing navigational methods should be conducted using these models in order to quantify the penalties incurred by each method, and ultimately determine limits of usability for each method (e.g., maximum translation distance with $\leq 5^\circ$ source localization error).
+Indeed, throughout the rest of the present thesis, we employ both the proposed localization model to predict localization and the spectral error metric, $\rho_\eta$, as a measure of perceived coloration.

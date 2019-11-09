@@ -1,0 +1,89 @@
+According to ambisonics theory (reviewed in \secref{sec:02_Acoustical_Theory:Helmholtz_Equation}), an ambisonics recording of a sound field contains information about the spatial and temporal distribution of sound over the entire spherical free-field region surrounding the microphone (i.e., the so-called \textit{region of validity}) \citep{Williams1999,GumerovDuraiswami2005,Zotter2009PhD}.
+However, recall that a finite-order expansion of a sound field yields only an approximation to that sound field, the accuracy of which decreases with increasing frequency and distance from the expansion center \citep{Poletti2005,WardAbhayapala2001} (see \eqnref{eq:01_Introduction:kr_Inequality}), so the prospect of navigating such a sound field is inherently limited.
+Fortunately, this limitation is primarily a technical one, since synthetic sound fields can be generated to arbitrarily high orders and microphone array technology%
+\footnote{See, for example: the Zylia ZM-1 \citep{ZyliaZM1URL}, the mh acoustics Eigenmike \citep{EigenmikeURL}, and the VisiSonics Audio Camera \citep{VisiSonicsAudioCameraURL}.}
+is rapidly advancing such that it may soon be practical to capture very high-order expansions of real sound fields.
+
+The more fundamental limitation of the spherical-harmonic description of sound fields is that the region over which the expansion is valid is limited by the nearest sound source (or scattering body) to the expansion center (as discussed in \secref{sec:02_Acoustical_Theory:Helmholtz_Equation}).
+Consequently, near-field sources pose a particularly limiting problem to navigation.
+The precise consequences of violating this region of validity restriction have not been clearly determined, and are a primary focus of this chapter.
+
+Several previous studies have developed extrapolation-based navigational methods from a single ambisonics microphone.
+In the following section, we provide a critical review of these existing methods and identify the main challenges they face.
+All of the methods discussed below are listed in \tabref{tab:01_Introduction:Methods}.
+
+%% PREVIOUS WORK %%
+\subsection{Previous work}\label{sec:07_Characterization_Extrapolation:Previous_Work}
+Perhaps the most intuitive navigational method is the \textit{virtual ambisonics} method, as described in \secref{sec:03_Navigation_Techniques:VA_Technique}.
+In this method, the ambisonics signals are first decoded for a given loudspeaker array, which is then simulated in a virtual space with the listener at any desired position within the array.
+The combined signals arriving at the virtual listener from the virtual loudspeaker array are then computed numerically and played back to the real listener.
+Some advantages of this method are that we are free of the practical limitations (such as space, floors/walls, cost, etc.) common to physical loudspeaker arrays and that we can leverage the wealth of experience with real ambisonics systems that has been accumulated by researchers in this field.
+
+For example, \citet{Frank2008} showed that so-called ``max-$r_{\textrm{E}}$'' decoding schemes yield more accurate localization at off-center positions and \citet{Satongar2013b} showed that off-center localization improves with increasing ambisonics expansion order.
+Also, to account for the finite distances of loudspeakers from the listening position, \citet{Daniel2003b} developed a near-field-compensated decoding scheme which treats the loudspeakers as point-sources and consequently reconstructs the sound field more accurately at off-center locations.
+
+As it has been defined, this method has no knowledge of any source (or obstacle) positions; consequently, depending on the positions of any sources in the sound field, the listener may inadvertently navigate too far such that the region of validity restriction is violated.
+This method also inherently introduces a limit on the navigable region of the listener due to the finite size of the virtual array.
+Although it remains unclear in what way the performance may degrade if the listener navigates outside the virtual array, the issue would be avoided entirely if plane-wave sources were used, as done in the plane-wave translation method (described in \secref{sec:03_Navigation_Techniques:PW_Technique}).
+
+The \textit{plane-wave translation} method entails computing a plane-wave expansion of the sound field and translating along each plane-wave term.
+\citet{MenziesAlAkaidi2007b} first derived the mathematical operations required for this method, although they did so while developing a technique to more accurately render synthetic near-field sources binaurally by way of a plane-wave expansion and translation.
+\citet{SchultzSpors2013} later formulated the plane-wave translation method for the purpose of sound field navigation and examined the time- and frequency-domain consequences of the translation operation.
+Similar to the virtual ambisonics method described above, this method is also prone to violating the region of validity restriction in the presence of near-field sources.
+
+\citet{HahnSpors2015b} evaluated spectral coloration induced by the method by visually examining impulse and frequency responses and found that the induced coloration is often mitigated by matching $Q$, the number of plane-wave terms, to $N$, the number of ambisonics signals (i.e., the so-called ``critically-sampled'' condition, when $Q = N$) \citep[section 5]{HahnSpors2015b}. % ``friendly aliasing''
+In the same study, the authors found that when $Q > N$ (in the so-called ``oversampled'' condition), navigating parallel to the direction of a source introduced less coloration than navigating perpendicularly. % only true in oversampling conditions
+The localization properties of this method were explored by \citet{Winter2014}, who showed that the range over which accurate localization is achieved increases with ambisonics expansion order and that increasing the number of plane-wave-expansion terms beyond critically-sampled does not improve localization.
+More recently, \citet{TylkaChoueiri2015} evaluated the localization errors using the velocity and energy localization vectors developed by \citet{Gerzon1992}, although the perceptual relevance of the findings of this study are limited since the analysis does not take into account the precedence effect.
+
+Another navigational method, referred to here as \textit{ambisonics translation} and described in \secref{sec:03_Navigation_Techniques:SR_Technique}, is to translate the ambisonics expansion center by re-expanding the sound field about the desired point.%
+\footnote{Relatedly, \citet{AhrensSpors2009} proposed a method which uses very similar mathematical operations (Bessel function translations) in order to analytically move in two dimensions the ``sweet-spot'' within a circular loudspeaker array.}
+\citet{GumerovDuraiswami2005} derived recurrence relations which enable fast computation of such re-expansions and \citet{Zotter2009PhD} extended those derivations to real-valued spherical harmonics.
+A subset of these derivations are replicated in \apxref{chap:A1_Navigation_Filters}.
+\citet{MenziesAlAkaidi2007a} in particular described how this method can be used to allow a listener to virtually navigate ambisonics-encoded sound fields, although a detailed analysis was not performed.
+More recently, \citet{BaumgartnerZotter2012} discussed time-domain implementation issues of the re-expansion filters and proposed a discrete-time realization with improved stability.
+Again, this method is prone to violating the region of validity restriction if a listener navigates beyond the the nearest source to the microphone.
+
+In order to overcome the region of validity restriction, \citet{Wakayama2017} proposed an extrapolation method that is based on spherical-harmonic translation filters but which requires \textit{a priori} knowledge of the source position.
+The authors showed that not only does the method enable navigation beyond a near-field source, but also the method is able to estimate the directivity of the source using a multipole expansion.
+It is not clear, however, whether or how this method can be extended to accommodate multiple sources.
+
+More recently, \citet{Plinge2018} developed a parametric method which relies on a time-frequency (i.e., short-time Fourier transform) analysis of the sound field from a single first-order ambisonics microphone as well as a previously measured ``distance map'' of the environment.
+This distance map is essentially a source-distance lookup table, consisting of the measured (e.g., optically) distance to the nearest obstacle in each direction (azimuth and elevation) from the microphone.
+The recorded sound field is first decomposed via directional audio coding (DirAC) \citep{Pulkki2007} in the time-frequency domain into diffuse and directional sound components.
+Each directional component is then treated as a virtual point-source, with the direction of the source determined via an acoustic intensity vector calculation (cf.~\citet[Eq.~(11)]{MerimaaPulkki2005} and \secref{sec:04_Auditory_Models:Intensity_Vector} in this thesis) and its distance determined via the distance map for that direction.
+The signals from these virtual sources are then ``re-recorded'' by a virtual microphone at an arbitrary position and with arbitrary directivity.%
+\footnote{This method is essentially a one-microphone special case of the method proposed by \citet{Thiergart2013}, where the distance map obviates the need for a second microphone for source triangulation.}
+By construction, this method is free of the region of validity restriction, as the listener is navigating within a well-defined model of the sound field.
+However, it is unclear if this method can accurately capture and reproduce the directivities of the real sources, as the method exclusively uses omnidirectional point sources to model the sound field.
+
+%In a recent study, \citet{FernandezGrande2016} proposed an equivalent source method for representing and reconstructing a measured sound field.
+%In this method, the sound field is captured with one (or more) ambisonics microphone(s) and subsequently fitted, in a least-squares sense, to that created by a predefined grid of virtual monopole sources.
+%This yields a virtual sound field consisting of a finite set of known monopole sources, which can then be rendered at an arbitrary position elsewhere in the space.
+%However, without \textit{a priori} knowledge of the real sound source positions, the performance of the method may degrade.
+
+%% OBJECTIVES AND APPROACH %%
+\subsection{Objectives and approach}
+In light of the above discussion we identify the following main issues that existing extrapolation-based navigational methods can face:
+\begin{enumerate}
+%\item the user is restricted to a finite navigable region,
+\item the region of validity restriction is violated,
+\item localization information is degraded,
+\item spectral coloration or other audible processing artifacts are introduced,
+\item geometric information about the sound field (e.g., source locations) must be known or inferred,
+%\item arbitrary signals cannot be accommodated,
+\item arbitrary (e.g., dense or reverberant) sound fields cannot be reproduced, and/or
+\item source directivity cannot be captured or reproduced.
+\end{enumerate}
+In this chapter, we consider only the plane-wave and ambisonics translation methods as they are the only methods (with the exception of the virtual ambisonics method, which is not significantly different from the plane-wave translation method) that are broadly applicable to arbitrary sound fields with an arbitrary placement of sources (i.e., these methods do not suffer from issues 4 or 5).
+However, since these methods are not directly aware of source positions, they are prone to violating the region of validity restriction (issue 1).
+We aim to investigate the penalties (in terms of localization errors and spectral colorations, issues 2 and 3, as well as other perceptually-relevant performance metrics) incurred when this restriction is violated.
+Both methods may also preserve source directivity information (issue 6), but we do not explore this here.
+
+The objectives of the present work are to determine the penalties incurred by violating the region of validity restriction and to characterize and compare the performance of the plane-wave and ambisonics translation methods.
+
+To these ends, we perform numerical simulations, as described in \chapref{chap:06_Simulation_Framework}, of both methods and use objective metrics to evaluate the errors introduced by each method in terms of sound level, spectral coloration, source localization, and diffuseness.
+First, in \secref{sec:07_Characterization_Extrapolation:Plane-wave_Dependence}, we conduct simulations of a typical far-field scenario in order to objectively determine (in terms of these metrics) suitable parameters for the plane-wave decomposition calculation required for the plane-wave translation method.
+Next, in \secref{sec:07_Characterization_Extrapolation:Azimuth_Dependence}, we explore basic properties of each method by computing the effective frequency responses induced by translation for various source azimuths.
+We then present and discuss in \secref{sec:07_Characterization_Extrapolation:Results} the results of simulations characterizing and comparing the performance of both methods.
+Finally, conclusions indicated by these results are summarized in \secref{sec:07_Characterization_Extrapolation:Conclusions}.

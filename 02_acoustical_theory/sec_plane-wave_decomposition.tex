@@ -1,0 +1,22 @@
+Given spherical Fourier-Bessel expansion coefficients, $A_n$, the so-called \textit{signature function}, $\mu$, in the direction $\hat{v}_q$ is given by~\citep[section~2.3.3]{GumerovDuraiswami2005}
+\begin{equation}\label{eq:02_Acoustical_Theory:A2mu}
+\mu(k,\hat{v}_q) = \sum_{n=0}^{N-1} A_n(k) \frac{Y_n(\hat{v}_q)}{\left\|Y_n\right\|^2}.
+\end{equation}
+This computation of the signature function is often referred to as \textit{modal beamforming},%
+\footnote{This is as opposed to \textit{delay-and-sum beamforming}, in which the appropriately-delayed signals from each individual microphone capsule in an array are summed to isolate the signals from a desired incident direction (which will be added in-phase) while cancelling signals arriving from other directions.}
+as the process amounts to an isolation of the sound coming from the direction $\hat{v}_q$ (the so-called ``look direction'') via a linear combination of the different spherical ``modes'' of the sound field (cf.~\citet{HahnSpors2015b,Spors2012}).
+
+The signature function represents the coefficients of a plane-wave decomposition of the sound field, such that the potential field can be approximately reconstructed using a finite number of plane-waves.%
+\footnote{Alternatively, the signature function can be computed using a pseudoinverse of a matrix of spherical harmonics, as described in \eqnref{eq:02_Acoustical_Theory:A2mu_Pinv}.}
+Assuming that the spherical Fourier-Bessel expansion was taken about the origin, this reconstructed potential field is given by
+\begin{equation}\label{eq:02_Acoustical_Theory:PW_Quadrature_Rendered_Field}
+\psi(k,\vec{r}) \approx \sum_{q=1}^Q w_q \mu(k,\hat{v}_q) e^{-i k \hat{v}_q \cdot \vec{r}},
+\end{equation}
+where $Q$ is the number of plane-wave terms, $\hat{v}_q$ is the source direction of the $q^\text{th}$ term, and $w_q$ is its quadrature weight, which is dependent on the chosen grid of directions.
+By convention, we assume $\sum_{q=1}^Q w_q \approx 4 \pi$, and typically require that $w_q \neq 0,~\forall q \in [1, Q]$.
+
+The signature function can be converted back into ambisonics signals, given by
+\begin{equation}\label{eq:02_Acoustical_Theory:mu2A_Quadrature}
+A_n(k) = \sum_{q=1}^{Q} w_q \mu(k,\hat{v}_q) Y_{n}(\hat{v}_q),
+\end{equation}
+where we have essentially encoded the sum of $Q$ plane-wave signals via \eqnref{eq:02_Acoustical_Theory:PlaneSource_An}.

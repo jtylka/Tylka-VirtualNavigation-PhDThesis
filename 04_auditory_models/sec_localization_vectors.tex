@@ -1,0 +1,14 @@
+To predict the localization of sound in multichannel playback systems, \citet{Gerzon1992} defines two localization metrics: the velocity and energy vectors.
+Note that these definitions assume that the loudspeakers are equidistant from the listening position, such that the signals all arrive coincidentally.
+
+The velocity vector is used to predict localization due to interaural time differences at low frequencies ($<700$~Hz) and is given by \citep{Gerzon1992}
+\begin{equation}\label{eq:04_Auditory_Models:Velocity_Vector}
+\vec{\nu}_{\text{V}}(f) = \textrm{Re} \left\{ \frac{ \sum_q G_q(f) \hat{v}_q}{ \sum_q G_q(f)} \right\},
+\end{equation}
+where $\text{Re} \left\{ \cdot \right\}$ denotes taking the real part of the argument, $G_q$ is the complex-valued, frequency-dependent ``gain'' of the $q^{\text{th}}$ source, and $\vec{v}_q$ is the position of that source.
+The energy vector is used to predict localization due to interaural level differences at higher frequencies (500~Hz -- 5~kHz) and is given by \citep{Gerzon1992}
+\begin{equation}\label{eq:04_Auditory_Models:Energy_Vector}
+\vec{\nu}_{\text{E}}(f) = \frac{ \sum_q |G_q(f)|^2 \hat{v}_q}{ \sum_q |G_q(f)|^2}.
+\end{equation}
+The directions of these vectors indicate the expected localization direction and their magnitudes indicate the quality of the localization.
+Ideally, the vectors should have a magnitude equal to unity and point in the direction of the virtual source.

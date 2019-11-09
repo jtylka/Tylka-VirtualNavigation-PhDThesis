@@ -1,0 +1,40 @@
+Given an input signal $x(t)$ and an IR $h(t)$, the system's output is given by
+\begin{equation}
+w(t) = (x \ast h) (t),
+\end{equation}
+where $\ast$ denotes convolution.
+The recorded signal $y(t)$, however, includes noise $n(t)$ (as well as any non-linear distortion terms), and is given by
+\begin{equation}
+y(t) = w(t) + n(t).
+\end{equation}
+A block digram of the system under test as well as these various signals is given in \figref{fig:A5_Impulse_Response:Procedure:Block_Diagram}.
+
+\begin{figure}[t]
+\centering
+\input{a5_impulse_response/figures/block_diagram}
+\caption{Block diagram of a system under test.}
+\label{fig:A5_Impulse_Response:Procedure:Block_Diagram}
+\end{figure}
+
+The IR of an acoustical system is obtained by deconvolving the recorded output signal $y$ by the known input signal $x$.
+In practice, deconvolution is typically performed by dividing the corresponding spectra in the frequency domain via the fast Fourier transform (FFT).
+This is equivalent to convolving the recorded signal with the input signal's exact inverse, whose frequency spectrum is equal to the reciprocal of the input spectrum.
+We shall refer to this procedure as \textit{exact deconvolution} of the recorded signal.
+Ideally, if $n(t) = 0$, the system's impulse response would be computed exactly by
+\begin{equation}
+h(t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F} \left[ w(t) \right]}{\mathcal{F} \left[ x(t) \right]} \right].
+\end{equation}
+However, since we can only measure $y(t)$, we instead obtain an estimate of $h(t)$, given by
+\begin{equation}
+h(t) \approx \mathcal{F}^{-1} \left[ \frac{\mathcal{F} \left[ y(t) \right]}{\mathcal{F} \left[ x(t) \right]} \right].
+\end{equation}
+
+%The SNR spectrum as a function of frequency is defined as
+%\begin{equation}
+%\text{SNR}(\omega) \equiv 10 \log_{10} \frac{\left| W(\omega) \right|^2}{\left| N(\omega) \right|^2},
+%\end{equation}
+%where $W(\omega)$ is the Fourier transform of $w(t)$, and similarly for $N(\omega)$ and $n(t)$.
+%Also, the total SNR is defined as
+%\begin{equation}
+%\text{SNR} \equiv 10 \log_{10} \frac{\displaystyle \int_{-\infty}^{\infty} \left| W(\omega) \right|^2 d\omega}{\displaystyle \int_{-\infty}^{\infty} \left| N(\omega) \right|^2 d\omega}.
+%\end{equation}

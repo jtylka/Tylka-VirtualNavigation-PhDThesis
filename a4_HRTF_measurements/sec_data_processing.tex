@@ -1,0 +1,14 @@
+The head-related impulse responses (HRIRs) are obtained by equalizing, for each subject and for each loudspeaker-microphone pair, the measured binaural impulse responses (BIRs) by the corresponding reference impulse responses (RIRs).
+We first apply a 42 ms rectangular window to all of the raw BIRs and RIRs.
+We then generate inverse filters for the RIRs using frequency-dependent regularization,
+such that the transfer function of the inverse filter is given by \eqnref{eq:A2_SABRE_Toolkit:EQ_Filter}, where now $H$ is the transfer function of a measured RIR.
+The regularization function is defined by a set of parameters, which are defined graphically in \figref{fig:A2_SABRE_Toolkit:Farina_Regularization}, and whose default values are given by
+\begin{equation*}
+\begin{array}{l l l}
+\beta_0 = 0, &f_{L0} = 100~\text{Hz}, &f_{H0} = 30~\text{kHz}, \\
+\beta_1 = 10^{-3}, &f_{L1} = 50~\text{Hz}, &f_{H1} = 32~\text{kHz}.
+\end{array}
+\end{equation*}
+These values were found to sufficiently limit any pre-responses in the equalized HRIRs (see \secref{sec:A4_HRTF_Measurements:Data_Visualization}), while retaining a wide usable bandwidth. 
+Finally, we convolve the BIRs with these inverse filters and apply a Tukey window to generate HRIRs that have an approximate duration of 10 ms.
+The BIRs, RIRs, and HRIRs are all included in the database as separate SOFA (spatially-oriented format for acoustics) files \citep{AES69-2015}.

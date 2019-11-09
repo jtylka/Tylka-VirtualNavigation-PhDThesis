@@ -1,0 +1,138 @@
+Generally, binaural decoding of ambisonics aims to generate the appropriate binaural signals for a listener at a point (with any orientation) in a recorded (or synthesized) sound field,
+such that the resulting perception of the sound field is identical to that which would have occurred in the real sound field.
+At the origin, this task may be accomplished by:
+\begin{enumerate}
+\item decoding the ambisonics signals to a fixed set of virtual loudspeakers and filtering each loudspeaker's signal by the appropriate HRTF \citep{McKeagMcGrath1996,Noisternig2003a},
+\item transforming the ambisonics signals into a plane-wave expansion of the sound field and filtering each plane-wave term by the appropriate HRTF \citep{Duraiswami2005a,MenziesAlAkaidi2007b}, 
+\item using a spherical-harmonic decomposition of the listener's HRTFs to filter each ambisonics signal directly \citep{RafaelyAvni2010,Bernschutz2014}, or
+\item decomposing the (typically first-order only) ambisonics signals into directional (and diffuse) components using non-linear, parametric techniques (e.g., HARPEX, DirAC) and filtering each component by the appropriate HRTF \citep{Laitinen2008,BergeBarrett2010b}.
+\end{enumerate}
+In this section, we review the first three approaches listed above.
+A corresponding MATLAB toolkit developed by the present author which implements these first three approaches is presented in \apxref{chap:A2_SABRE_Toolkit}.
+
+\subsection{Virtual ambisonics}\label{sec:02_Acoustical_Theory:VA_Binaural}
+Generally, the ambisonics decoding matrix, $\mathbf{D}$, which is typically time- and frequency-independent,%
+\footnote{Although two- or multi-band decoders are commonly used, the decoder matrix for each sub-band is typically time-independent \citep{Heller2012}.}
+determines the loudspeaker signals, $g_q$, given by
+\begin{equation}\label{eq:02_Acoustical_Theory:Ambisonics_Decoding}
+\mathbf{g}(t) = 
+\begin{bmatrix}
+g_{1}(t) \\ g_{2}(t) \\ \vdots \\ g_{Q}(t)
+\end{bmatrix}
+ = \mathbf{D} \cdot 
+\begin{bmatrix}
+a_{0}(t) \\ a_{1}(t) \\ \vdots \\ a_{N-1}(t)
+\end{bmatrix}
+ = \mathbf{D} \cdot \mathbf{a}(t),
+\end{equation}
+where $Q$ is the number of loudspeakers and $a_n$ is the $n^\text{th}$ ambisonics signal.
+Methods of calculating the decoding matrix have been extensively researched and it is outside of the scope of this thesis to discuss them in detail.
+Briefly, the decoding matrix attempts to use all available loudspeakers to create a perceptually-accurate reproduction the recorded sound field \citep{Heller2012}.
+
+Following traditional ambisonic theory,
+we consider the ambisonics signals produced at the center of the loudspeaker array
+in response to the loudspeaker signals, given by
+\begin{equation}
+a_n(t) = \sum_{q=1}^{Q} Y_{n}(\hat{v}_q) g_q(t).
+\end{equation}
+(Note that this effectively treats the loudspeakers as plane-wave sources via \eqnref{eq:02_Acoustical_Theory:PlaneSource_An}.)
+Equivalently, in matrix form, we have $\mathbf{a}(t) = \mathbf{Y} \cdot \mathbf{g}(t)$, where
+\begin{equation}\label{eq:YMatrix}
+\mathbf{Y} = 
+\begin{bmatrix}
+Y_{0}(\hat{v}_1) & Y_{0}(\hat{v}_2) & \cdots & Y_{0}(\hat{v}_Q) \\
+Y_{1}(\hat{v}_1) & Y_{1}(\hat{v}_2) & \cdots & Y_{1}(\hat{v}_Q) \\
+\vdots & \vdots & \ddots & \vdots \\
+Y_{N-1}(\hat{v}_1) & Y_{N-1}(\hat{v}_2) & \cdots & Y_{N-1}(\hat{v}_Q)
+\end{bmatrix}.
+\end{equation}
+From this formulation, we obtain the basic (pseudoinverse) decoder, given by \citep[Appendix~A.1]{Heller2008}
+\begin{equation}\label{eq:02_Acoustical_Theory:PinvDecoder}
+\mathbf{D} = \mathbf{Y}^{+},
+\end{equation}
+where $(\cdot)^{+}$ denotes pseudoinversion.
+For a thorough review of ambisonic decoding theory and practice,
+the reader is referred to the works of \citeauthor{Heller2008}~\citep{Heller2008,Heller2012}.
+
+Assuming a free field and ideal loudspeakers that are equidistant from the listener,
+the resulting binaural pressure signals are given by
+\begin{equation}\label{eq:02_Acoustical_Theory:VA_Binaural}
+p^{\text{L,R}}(t) = \left( \mathbf{h}^{\text{L,R}} \ast \mathbf{g} \right)(t)
+ = \sum_{q=1}^Q \left( h_{q}^{\text{L,R}} \ast g_{q} \right) (t),
+\end{equation}
+where `$\ast$' denotes convolution (which, for matrices and vectors operates like matrix multiplication except each pair of elements is convolved rather than multiplied) and
+\begin{equation}
+\mathbf{h}^{\text{L,R}}(t) = 
+\begin{bmatrix}
+h_{1}^{\text{L,R}}(t) & h_{2}^{\text{L,R}}(t) & \cdots & h_{Q}^{\text{L,R}}(t)
+\end{bmatrix}
+\end{equation}
+is a vector containing the head-related impulse responses (HRIRs) for a given listener
+and for the directions of each loudspeaker.
+The superscript ``$\text{L,R}$'' denotes the response at the left or right ear, respectively.
+Combining \eqnreftwo{eq:02_Acoustical_Theory:Ambisonics_Decoding}{eq:02_Acoustical_Theory:VA_Binaural},
+we obtain a simple matrix expression for rendering ambisonics to binaural, given by
+\begin{equation}\label{eq:02_Acoustical_Theory:VA_Binaural_Matrix}
+p^{\text{L,R}}(t) = \left( \mathbf{h}^{\text{L,R}} \ast \left( \mathbf{D} \cdot \mathbf{a} \right) \right)(t).
+\end{equation}
+
+\subsection{Plane-wave rendering}\label{sec:02_Acoustical_Theory:PW_Quadrature_Binaural}
+For this rendering approach, we first compute the signature function, $\mu$, of the sound field,
+as given by \eqnref{eq:02_Acoustical_Theory:A2mu}.
+Equivalently, written as a matrix equation, we have
+\begin{equation}\label{eq:02_Acoustical_Theory:A2mu_Matrix}
+\mathbf{m}(t) = 
+\begin{bmatrix}
+\mu(t,\hat{v}_1) \\ \mu(t,\hat{v}_2) \\ \vdots \\ \mu(t,\hat{v}_Q)
+\end{bmatrix} 
+= \mathbf{Y}^{\textrm{T}} \cdot \mathbf{F}^{-1} \cdot \mathbf{a}(t),
+\end{equation}
+where $Q$ is now the number of plane-wave terms and $\mathbf{F}$ is a diagonal matrix given by
+\begin{equation}
+\mathbf{F} = \text{diag} \left\{ \begin{bmatrix} \left\|Y_0\right\|^{2} & \left\|Y_1\right\|^{2} & \cdots & \left\|Y_{N-1}\right\|^{2} \end{bmatrix} \right\}.
+\end{equation}
+
+Given the signature function, the binaural pressure signals can be approximately reconstructed using a finite number of plane-waves, given by \citep{Duraiswami2005a}
+\begin{equation}\label{eq:02_Acoustical_Theory:PW_Quadrature_Binaural}
+p^{\text{L,R}}(t) \approx \sum_{q=1}^Q \left( h_{q}^{\text{L,R}} \ast \left(w_q \mu(\hat{v}_q) \right) \right) (t)
+ = \left(\mathbf{h}^{\text{L,R}} \ast \left( \mathbf{W} \cdot \mathbf{m} \right) \right)(t),
+\end{equation}
+where $w_q$ is the quadrature weight of the $q^\textrm{th}$ plane-wave term and we have let
+\begin{equation}\label{eq:02_Acoustical_Theory:PW_Quadrature_Weights}
+\mathbf{W} = \text{diag} \left\{ \begin{bmatrix} w_1 & w_2 & \cdots & w_Q \end{bmatrix} \right\}.
+\end{equation}
+Combining \eqnreftwo{eq:02_Acoustical_Theory:A2mu_Matrix}{eq:02_Acoustical_Theory:PW_Quadrature_Binaural}, we obtain
+\begin{equation}\label{eq:02_Acoustical_Theory:PW_Quadrature_Binaural_Matrix}
+p^{\text{L,R}}(t) = \left( \mathbf{h}^{\text{L,R}} \ast \left( \mathbf{W} \cdot \mathbf{Y}^{\textrm{T}} \cdot \mathbf{F}^{-1} \cdot \mathbf{a} \right) \right) (t).
+\end{equation}
+
+It is worth noting that, instead of using \eqnref{eq:02_Acoustical_Theory:A2mu_Matrix}, we can compute $\mu$ following the pseudoinverse approach of \eqnref{eq:02_Acoustical_Theory:PinvDecoder}, such that
+\begin{equation}\label{eq:02_Acoustical_Theory:A2mu_Pinv}
+\mathbf{m}(t) = \mathbf{W}^{-1} \cdot \mathbf{Y}^{+} \cdot \mathbf{a}(t).
+\end{equation}
+Combining \eqnreftwo{eq:02_Acoustical_Theory:PW_Quadrature_Binaural}{eq:02_Acoustical_Theory:A2mu_Pinv}, we obtain
+\begin{equation}\label{eq:02_Acoustical_Theory:PW_Pinv_Binaural_Matrix}
+p^{\text{L,R}}(t) = \left( \mathbf{h}^{\text{L,R}} \ast \left( \mathbf{Y}^{+} \cdot \mathbf{a} \right) \right) (t).
+\end{equation}
+However, this results in identical binaural signals (assuming the same grid of $Q$ directions) between \eqnreftwo{eq:02_Acoustical_Theory:VA_Binaural_Matrix}{eq:02_Acoustical_Theory:PW_Pinv_Binaural_Matrix}, since we have effectively set $w_q \mu(t,\hat{v}_q) = g_q(t)$.
+
+\subsection{Spherical-harmonic HRTFs}\label{sec:02_Acoustical_Theory:SH_Binaural}
+A more computationally efficient approach to rendering ambisonics to binaural is to filter each ambisonics signal by the corresponding term in a spherical-harmonic decomposition of an HRTF.
+The spherical-harmonic HRTFs can be computed via pseudoinverse, as given by \citet[section IV]{RafaelyAvni2010}, such that
+\begin{equation}\label{eq:02_Acoustical_Theory:SH_HRTFs}
+\mathbf{\tilde{h}}^{\text{L,R}}(t) = 
+\begin{bmatrix}
+\tilde{h}_{0}^{\text{L,R}}(t) & \tilde{h}_{1}^{\text{L,R}}(t) & \cdots & \tilde{h}_{N-1}^{\text{L,R}}(t)
+\end{bmatrix}
+ = \mathbf{h}^{\text{L,R}}(t) \cdot \mathbf{Y}^{+}.
+\end{equation}
+The resulting binaural pressure signals are then given by
+\begin{equation}\label{eq:02_Acoustical_Theory:SH_Binaural}
+p^{\text{L,R}}(t) \approx \sum_{n=0}^{N-1} \left( \tilde{h}_n^{\text{L,R}} \ast a_n \right) (t)
+ = \left( \mathbf{\tilde{h}}^{\text{L,R}} \ast \mathbf{a} \right) (t).
+\end{equation}
+Combining~\eqnreftwo{eq:02_Acoustical_Theory:SH_HRTFs}{eq:02_Acoustical_Theory:SH_Binaural}, we obtain
+\begin{equation}\label{eq:02_Acoustical_Theory:SH_Binaural_Matrix}
+p^{\text{L,R}}(t) = \left( \left( \mathbf{h}^{\text{L,R}} \cdot \mathbf{Y}^{+} \right) \ast \mathbf{a} \right) (t),
+\end{equation}
+which is identical (again, assuming the same grid of $Q$ directions) to both \eqnreftwo{eq:02_Acoustical_Theory:VA_Binaural_Matrix}{eq:02_Acoustical_Theory:PW_Pinv_Binaural_Matrix}.

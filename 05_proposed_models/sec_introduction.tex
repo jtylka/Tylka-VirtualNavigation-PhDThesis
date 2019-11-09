@@ -1,0 +1,33 @@
+Of the several navigational methods reviewed in \chapref{chap:03_Navigation_Techniques}, we expect that they all may degrade localization information and induce spectral coloration, leading to errors in the perceived directions of sound sources and audible changes in the spectral content of the signals, respectively.
+The severity of such penalties needs to be investigated and quantified in order to both compare existing navigational methods and develop novel ones.
+Although subjective testing is the most direct method of evaluating and comparing navigational methods, such tests are often lengthy and costly, which motivates the use of objective metrics that enable quick assessments of navigational methods.
+
+% Review of previous work focusing on the remaining problems (questions or deficiencies) the present paper claims to contribute to solving
+\subsection{Previous work and remaining problems}
+Several recent studies have investigated the localization accuracy of various navigational methods.
+\citet{Winter2014} evaluated the localization accuracy of the plane-wave-based translation method of \citet{SchultzSpors2013} (reviewed in \secref{sec:03_Navigation_Techniques:PW_Technique}) using the binaural localization model of \citet{Dietz2011} (reviewed in \secref{sec:04_Auditory_Models:Binaural_Localization_Model}) to predict perceived localization.
+\citet{TylkaChoueiri2015} compared the localization errors incurred by three extrapolation-based translation methods (reviewed in \secref{sec:03_Navigation_Techniques:Extrapolation_Methods}) using the velocity and energy localization vectors developed by \citet{Gerzon1992} (reviewed in \secref{sec:04_Auditory_Models:Localization_Vectors}).
+However, this analysis neglected the precedence effect, which is expected to play an important role in the context of sound field navigation, as an accurate virtual translation of the listener necessarily involves direction-dependent time shifting of incident signals.
+Consequently, more recently, \citet{TylkaChoueiri2016} evaluated the localization accuracy of their proposed interpolation-based navigational method (introduced here in \chapref{chap:08_Proposed_Method}) using an extension of a precedence-effect-based localization vector developed by \citet{Stitt2016} (reviewed in \secref{sec:04_Auditory_Models:PE_Energy_Vector}), which was itself an extension of Gerzon's original energy vector.
+Although the model of \citeauthor{Stitt2016} has been validated through listening tests and shows improvements compared to binaural localization models (specifically, those by \citet{Dietz2011} and \citet{Lindemann1986a}) the more recent extension by \citet{TylkaChoueiri2016} had not, at the time of publication, been validated through listening tests.
+
+Additionally, recent studies have investigated spectral colorations induced by various navigational methods.
+\citet{HahnSpors2015b} evaluated spectral coloration induced by the plane-wave translation method \citep{SchultzSpors2013} by visually examining impulse and frequency responses.
+In a similar manner, \citet{TylkaChoueiri2016} evaluated and compared the spectral coloration induced by both their proposed interpolation method and the linear interpolation method of \citet{Southern2009} (reviewed in \secref{sec:03_Navigation_Techniques:XF_Technique}).
+While it is clear from these studies that most (if not all) existing navigational methods tend to induce at least some spectral coloration, both analyses were largely qualitative.
+Consequently, it remains difficult to compare these colorations between methods without numerical measures of perceptible coloration.
+
+% A statement of the paper's main question(s) and goal(s), followed by a succinct description of the general method and approach to be described in the paper
+\subsection{Objectives and approach}
+In this chapter, we present models for perceived source localization and spectral coloration which we have developed for the purpose of evaluating and comparing methods for virtual navigation of ambisonics-encoded sound fields.
+In order to isolate any errors introduced by the navigational method under test (which operates in the ambisonics domain) from those introduced through rendering to binaural, we developed models that are independent of any choice of ambisonics-to-binaural rendering approach (several of which are reviewed in \secref{sec:02_Acoustical_Theory:Binaural_Rendering}) since they operate directly on ambisonics impulse responses.
+In contrast, although not explicitly investigated here, we expect the predictions of binaural models to be sensitive to the choice of binaural rendering approach and/or to the choice of head-related transfer function (HRTF).
+
+For these models to be of any practical use, they must also be perceptually relevant, in that the predictions of the models should agree with subjective listening test responses.
+Consequently, we conducted two listening experiments (one each for localization and coloration), the results of which were used to determine parameters of the proposed models.
+We then validated the proposed models through comparisons against alternative models in terms of their agreement with the experimental data.
+
+% A brief section by section description of the structure of the paper
+In \secreftwo{sec:05_Proposed_Models:Localization_Model}{sec:05_Proposed_Models:Coloration_Models}, we describe the proposed localization and coloration models, respectively.
+Then, in \secref{sec:05_Proposed_Models:Listening_Tests}, we describe the listening experiments conducted to validate the proposed models.
+In \secref{sec:05_Proposed_Models:Results}, we compare the results of the listening experiments with predictions of the models, and finally, in \secref{sec:05_Proposed_Models:Conclusions}, we draw conclusions based on these results.

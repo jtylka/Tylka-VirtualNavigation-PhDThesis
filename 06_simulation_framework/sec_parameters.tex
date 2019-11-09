@@ -1,0 +1,18 @@
+For extrapolation methods, we simulate recording of the sound field depicted in \figref{fig:06_Simulation_Framework:Point_Geometry} for a range of microphone positions, $u \in [0.1, 10]$~m, and all source positions $s_0 = \gamma u$ for $\gamma \in [0.1, 10]$.
+In each simulation, we vary the source azimuth from $\varphi_0 = 0^\circ$ to $180^\circ$ in increments of $5^\circ$ and generate an artificial ambisonics impulse response at the microphone.
+We then estimate, using each extrapolation method, the ambisonics impulse responses at translated listener positions from $x_0 = 0$ to $u$, taken in 20 equal increments.
+
+For interpolation methods, we simulate recording of the sound field depicted in \figref{fig:06_Simulation_Framework:Linear_Geometry} for a range of microphone spacings, $\Delta \in [0.1, 10]$~m, and all source positions $s_0 = \gamma \Delta / 2$ for $\gamma \in [0.1, 10]$.
+For those methods that require interpolation weights, we choose linear interpolation weights for each intermediate position between the microphones.
+In each simulation, we vary the source azimuth from $\varphi_0 = 0^\circ$ to $90^\circ$ in increments of $5^\circ$ and generate an artificial ambisonics impulse response at each microphone.
+We then estimate, using each interpolation method, the ambisonics impulse responses at intermediate listener positions from $y_0 = -\Delta/2$ to $\Delta/2$, taken in 20 equal increments.
+
+In all simulations, unless stated otherwise, we choose $L_\textrm{in} = 4$ and $L_\textrm{out} = 1$.%
+\footnote{Note that, for the metrics listed in \secref{sec:06_Simulation_Framework:Metrics}, only the localization model (described in \secref{sec:05_Proposed_Models:Localization_Model}) depends on $L_\textrm{out}$; all of the other metrics, by construction, use only the zeroth and first order signals.}
+The sampling rate is 48~kHz and all impulse responses are calculated with 16,384~samples ($\approx 341$~ms).
+Additionally, unless stated otherwise, we filter all point-source ambisonics impulse responses with the near-field compensation high-pass filters given in \eqnref{eq:02_Acoustical_Theory:NearField_HPF}, with order-dependent corner frequencies equal to $f_l = (200 \times l)$~Hz.
+
+\subsection{Source azimuth dependence}\label{sec:06_Simulation_Framework:Azimuth_Dependence}
+In order to explore the basic properties of a given navigational method, we consider a representative far-field scenario and compute the effective frequency response induced by translation.
+For these simulations, we pick $s_0 = 2.5$~m and $\gamma = 10$ (so $u = 0.25$~m for extrapolation methods and $\Delta = 0.5$~m for interpolation methods) and translate to $\vec{r}_0 = (0, 0, 0)$.
+Then, for each source azimuth, we compute the induced frequency response, which is given by the ratio of the zeroth-order translated ambisonics signal, $A_0(k)$, to the zeroth-order reference ambisonics signal, $B_0(k)$, that would have been measured at $\vec{r}_0$.

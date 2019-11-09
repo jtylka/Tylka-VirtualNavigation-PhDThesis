@@ -1,0 +1,63 @@
+\begin{tikzpicture}[scale=6]
+% Parameters
+\def\radius{1.4};
+\def\arrowStart{0.02};
+\def\arrowScale{0.97};
+\def\arcRadius{0.5};
+\def\micSpacing{0.1};
+\def\spkrSpacing{0.05};
+\def\spkrDistance{1.27};
+\def\offset{0.02};
+\pgfmathsetmacro\colLefty{cos(-30)*\radius}
+\pgfmathsetmacro\colLeftx{sin(-30)*\radius}
+\pgfmathsetmacro\colCentery{cos(0)*\radius}
+\pgfmathsetmacro\colCenterx{sin(0)*\radius}
+\pgfmathsetmacro\colRighty{cos(45)*\radius}
+\pgfmathsetmacro\colRightx{sin(45)*\radius}
+\pgfmathsetmacro\arcLefty{cos(-15)*1.1*\arcRadius}
+\pgfmathsetmacro\arcLeftx{sin(-15)*1.1*\arcRadius}
+\pgfmathsetmacro\arcRighty{cos(22.5)*0.9*\arcRadius}
+\pgfmathsetmacro\arcRightx{sin(22.5)*0.9*\arcRadius}
+
+% Arrows
+\draw[ultra thick,->] ({\arrowStart*\colLeftx},{\arrowStart*\colLefty}) -- (\arrowScale*\colLeftx,\arrowScale*\colLefty);
+\draw[ultra thick,->] ({\arrowStart*\colCenterx},{\arrowStart*\colCentery}) -- (\arrowScale*\colCenterx,\arrowScale*\colCentery);
+\draw[ultra thick,->] ({\arrowStart*\colRightx},{\arrowStart*\colRighty}) -- (\arrowScale*\colRightx,\arrowScale*\colRighty);
+\node[below right] at (0.5*\colRightx,0.5*\colRighty){$1.4~\text{m}$};
+\node at (\colLeftx,\colLefty){$\times$};
+\node at (\colCenterx,\colCentery){$\times$};
+\node at (\colRightx,\colRighty){$\times$};
+
+% Distances
+\draw[thick,|-|] (-2.5*\micSpacing,-0.1) -- (2.5*\micSpacing,-0.1) node[below, pos=0.5]{$0.5~\text{m}$};
+\draw[thick,|-|] (-0.9,0) -- (-0.9,\spkrDistance) node[left, pos=0.5]{$1.27~\text{m}$};
+\draw[thick, dashed] (-0.9+\offset,\spkrDistance) -- (-9.5*\spkrSpacing-\offset,\spkrDistance);
+\draw[thick, dashed] (-0.9+\offset,0) -- (-2.5*\micSpacing-\offset,0);
+
+% Arcs
+\draw[ultra thick,domain=45:90] plot ({0.9*\arcRadius*cos(\x)}, {0.9*\arcRadius*sin(\x)});
+\draw[ultra thick,domain=90:120] plot ({1.1*\arcRadius*cos(\x)}, {1.1*\arcRadius*sin(\x)});
+\node at (1.15*\arcLeftx,1.15*\arcLefty){$+30^\circ$};
+\node at (1.15*\arcRightx,1.15*\arcRighty){$-45^\circ$};
+
+% Mic positions
+\node at (-2.5*\micSpacing,0){\Large $\circ$};
+\node at (-1.5*\micSpacing,0){\Large $\circ$};
+\node at (-0.5*\micSpacing,0){\Large $\circ$};
+\node at (0*\micSpacing,0){\Large $\circ$};
+\node at (0.5*\micSpacing,0){\Large $\circ$};
+\node at (1.5*\micSpacing,0){\Large $\circ$};
+\node at (2.5*\micSpacing,0){\Large $\circ$};
+
+% Speaker positions
+\node at (-9.5*\spkrSpacing,\spkrDistance){\Large $\bullet$};
+\node at (-7.5*\spkrSpacing,\spkrDistance){\Large $\bullet$};
+\node at (-5.5*\spkrSpacing,\spkrDistance){\Large $\bullet$};
+\node at (-3.5*\spkrSpacing,\spkrDistance){\Large $\bullet$};
+\node at (-1.5*\spkrSpacing,\spkrDistance){\Large $\bullet$};
+\node at (0.5*\spkrSpacing,\spkrDistance){\Large $\bullet$};
+\node at (2.5*\spkrSpacing,\spkrDistance){\Large $\bullet$};
+\node at (4.5*\spkrSpacing,\spkrDistance){\Large $\bullet$};
+\node at (6.5*\spkrSpacing,\spkrDistance){\Large $\bullet$};
+\node at (8.5*\spkrSpacing,\spkrDistance){\Large $\bullet$};
+\end{tikzpicture}

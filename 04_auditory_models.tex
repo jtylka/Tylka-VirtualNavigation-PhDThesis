@@ -1,0 +1,53 @@
+%%%% METRICS AND MODELS %%%%
+\chapter{Review of existing auditory metrics and models}\label{chap:04_Auditory_Models}
+In this chapter, we review some existing auditory metrics and models.
+As will be discussed in \chapref{chap:05_Proposed_Models}, some of these metrics and models may be more or less suitable for evaluating and comparing navigational techniques.
+Nevertheless, the metrics and models presented here comprise a core set of tools on which subsequent models and analyses will be based.
+
+While in some cases the metrics described below provide an absolute measure of the desired quality (e.g., sound level or localization direction), we are often more interested in obtaining a relative measure of that quality.
+For example, coloration is rarely measured in an absolute sense, but instead as a perceptible difference induced via some process.
+Consequently, some metrics are computed using both a \textit{test signal} (i.e., the estimated ambisonics impulse response for the listening position after processing by some navigational method) and a \textit{reference signal} (i.e., the ambisonics impulse response captured directly at the listening position).
+
+\section{Level metrics}\label{sec:04_Auditory_Models:Level_Metrics}
+\input{04_auditory_models/sec_level_metrics}
+
+\section{Coloration metrics}\label{sec:04_Auditory_Models:Coloration_Metrics}
+\input{04_auditory_models/sec_coloration_metrics}
+
+\section{Localization models}\label{sec:04_Auditory_Models:Localization_Models}
+\input{04_auditory_models/sec_localization_models}
+
+\section{Physical metrics}\label{sec:04_Auditory_Models:Physical_Metrics}
+\input{04_auditory_models/sec_physical_metrics}
+
+\section{Summary of metrics and models}
+In this thesis, we consider only one metric for sound level (see \eqnref{eq:04_Auditory_Models:Mean_Audible_Energy}) and one metric for diffuseness (\eqnref{eq:04_Auditory_Models:Diffuseness}).
+For coloration and localization, however, we have a variety of metrics and models to choose from.
+In this section, we summarize the main equations for, and important differences between, the coloration metrics and localization models reviewed in this chapter.
+
+\subsection{Coloration metrics}
+As defined in \secref{sec:04_Auditory_Models:Coloration_Metrics}, the auditory band spectral error (ABSE), the peak and notch errors, and the central spectrum all take monaural input signals, for which we use the omnidirectional term of the ambisonics input signals.
+The composite loudness level and the internal spectrum, however, take binaural input signals, which therefore require first rendering the ambisonics input signals to binaural using one of the methods described in \secref{sec:02_Acoustical_Theory:Binaural_Rendering}.
+
+\input{04_auditory_models/coloration_equations}
+
+Additionally, only the ABSE and the peak and notch errors were originally defined as relative measures of coloration, since a comparison between the test and reference samples is ``built-in'' to the equations for each metric.
+The other metrics were instead originally defined as absolute measures of the perceived spectrum, so, for each of these metrics, we have had to define an additional relative measure, in the form of a difference between test and reference spectra.
+
+The main equations describing these metrics are reproduced in \tabref{tab:04_Auditory_Models:Coloration_Equations}.
+Recall that for all of the metrics except the peak and notch errors, we eliminate the frequency-dependence by subsequently computing the spectral range and deviation (see \eqnreftwo{eq:Spectral_Range}{eq:Spectral_Deviation}) of each error spectrum.
+The perceptual relevance of these various coloration metrics will be evaluated via subjective testing in \chapref{chap:05_Proposed_Models}
+
+\subsection{Localization models}
+As defined in \secref{sec:04_Auditory_Models:Localization_Models}, the velocity, energy, and precedence-effect-based localization vectors all take as inputs discrete source gains and positions.
+Consequently, none of those vectors can be used to predict localization directly from ambisonics signals; only the binaural localization model uses actual input signals in order to predict perceived localization.
+The main equations describing these models are reproduced in \tabref{tab:04_Auditory_Models:Localization_Equations}.
+
+\input{04_auditory_models/localization_equations}
+
+It is worth noting that the acoustic intensity vector, as defined in \secref{sec:04_Auditory_Models:Physical_Metrics}, does take ambisonics signals as inputs.
+However, as this is a purely physical metric, it does not necessarily correspond to the localization of a source as perceived by a human listener.
+Similarly, although the velocity and energy vectors can be indicative of perceived localization, they neglect many relevant psychoacoustic phenomena (e.g., the precedence effect) and processes of the human auditory system (as a result, they are often described as localization ``primitives,'' rather than localization models), so they should not be expected to give accurate predictions of perceived localization.
+
+In \chapref{chap:05_Proposed_Models}, we present an extension to the precedence-effect-based energy vector in order to use ambisonics signals as inputs to the model.
+In that chapter, we also compare our proposed extension to the binaural localization model in terms of their agreement with subjective test data.

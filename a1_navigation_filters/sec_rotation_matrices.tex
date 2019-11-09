@@ -1,0 +1,183 @@
+In this section, we derive a collection of rotation matrices, denoted by $\mathbf{Q}$, which, when applied to a set of ambisonics signals, rotate the sound field around the listener.
+That is, given a column-vector of ambisonics signals $\mathbf{b}$, the rotated ambisonics signals are given by
+\begin{equation}
+\mathbf{b}_\text{r}(k) = \mathbf{Q} \cdot \mathbf{b}(k).
+\end{equation}
+Equivalently, in order to rotate the listener within the sound field, we apply the corresponding inverse rotation matrix.
+That is, given ambisonics signals $\mathbf{b}$, the desired ambisonics signals for a rotated listener are given by
+\begin{equation}
+\mathbf{b}_\text{r}(k) = \mathbf{Q}^{-1} \cdot \mathbf{b}(k).
+\end{equation}
+Note that, unlike translation (as we will see in \secref{sec:A1_Navigation_Filters:Coaxial_Filters}), the rotation operation is time- and frequency-independent, so it can be performed either in the frequency domain, where $\mathbf{Q}$ is applied per frequency, or in the time domain, where $k$ then indicates the time sample.
+
+It is convenient to note that all of the rotation matrices presented here are necessarily orthogonal, such that $\mathbf{Q}^{-1} = \mathbf{Q}^\text{T}$ \citep{Choi1999}.
+Consequently, we can also achieve a rotation of the listener by
+\begin{equation}\label{eq:A1_Navigation_Filters:Listener_Rotation}
+\mathbf{b}_\text{r}(k) = \mathbf{Q}^\text{T} \cdot \mathbf{b}(k) \quad \iff \quad \mathbf{b}_\text{r}^\text{T}(k) = \mathbf{b}^\text{T}(k) \cdot \mathbf{Q},
+\end{equation}
+where $(\cdot)^\text{T}$ denotes the transpose of the argument.
+
+We denote the elements of $\mathbf{Q}$ by $Q_{l',l}^{m',m}$ and arrange them as follows:
+\begin{equation}\label{eq:A1_Navigation_Filters:Rotation_Matrix}
+    \begin{blockarray}{lc|ccc|cc}
+    l = & 0 & & 1 & & 2 & \cdots \\
+    \begin{block}{c[c|ccc|cc]}
+    l' = 0 & Q_{0,0}^{0,0} & Q_{0,1}^{0,-1} & Q_{0,1}^{0,0} & Q_{0,1}^{0,1} & Q_{0,2}^{0,-2} & \cdots \\ \cline{2-7}
+     & Q_{1,0}^{-1,0} & Q_{1,1}^{-1,-1} & Q_{1,1}^{-1,0} & Q_{1,1}^{-1,1} & Q_{1,2}^{-1,-2} & \cdots \\
+    l' = 1 & Q_{1,0}^{0,0} & Q_{1,1}^{0,-1} & Q_{1,1}^{0,0} & Q_{1,1}^{0,1} & Q_{1,2}^{0,-2} & \cdots \\
+     & Q_{1,0}^{1,0} & Q_{1,1}^{1,-1} & Q_{1,1}^{1,0} & Q_{1,1}^{1,1} & Q_{1,2}^{1,-2} & \cdots \\ \cline{2-7}
+    l' = 2 & Q_{2,0}^{-2,0} & Q_{2,1}^{-2,-1} & Q_{2,1}^{-2,0} & Q_{2,1}^{-2,1} & Q_{2,2}^{-2,-2} & \cdots \\
+    \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \ddots \\
+    \end{block}
+    m = & 0 & -1 & 0 & 1 & -2 & \cdots \\
+    \end{blockarray},
+\end{equation}
+such that the indices $l,m$ correspond to the columns of the matrix while $l',m'$ correspond to the rows.
+Accordingly, the indices $l,m$ refer to the input ambisonics signals $\mathbf{b}$, while the indices $l',m'$ correspond to the output ambisonics signals $\mathbf{b}_\text{r}$.
+
+%% Variable yaw
+\subsection{Variable yaw rotation}
+The first rotation matrix we derive is for an arbitrary azimuthal (yaw) rotation around the $z$-axis.
+Given a desired rotation angle $\alpha$, we denote the corresponding rotation matrix by $\mathbf{Q}_\text{Y}(\alpha)$ (where the subscript ``$\text{Y}$'' denotes ``yaw''), with elements given by \citep[Eq.~(3.12)]{Kronlachner2014b}
+\begin{equation}\label{eq:A1_Navigation_Filters:Variable_Yaw}
+Q_{l',l}^{m',m}(\alpha) = 
+\begin{cases}
+\cos m \alpha & \text{if}~ l=l' ~\text{and}~ m=m',\\
+\sin m \alpha & \text{if}~ l=l' ~\text{and}~ m=-m',\\
+0 & \text{otherwise}.
+\end{cases}
+\end{equation} % matches code and Kronlachner
+The locations of possible nonzero elements of this matrix are illustrated in \figref{fig:A1_Navigation_Filters:Variable_Yaw}.
+
+\begin{figure}[h]
+\[
+    \begin{blockarray}{lc|ccc|ccccc|ccccccc}
+    l= & 0 & & 1 & & & & 2 & & & & & & 3 & & & \\
+    \begin{block}{l(c|ccc|ccccc|ccccccc)}
+     l' = 0 & \blacksquare &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \cline{2-17}
+     &  & \blacksquare &  & \blacksquare &  &  &  &  &  &  &  &  &  &  &  &  \\
+     l' = 1 &  &  & \blacksquare &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+     &  & \blacksquare &  & \blacksquare &  &  &  &  &  &  &  &  &  &  &  &  \\ \cline{2-17}
+     &  &  &  &  & \blacksquare &  &  &  & \blacksquare &  &  &  &  &  &  &  \\
+     &  &  &  &  &  & \blacksquare &  & \blacksquare &  &  &  &  &  &  &  &  \\
+     l' = 2 &  &  &  &  &  &  & \blacksquare &  &  &  &  &  &  &  &  &  \\
+     &  &  &  &  &  & \blacksquare &  & \blacksquare &  &  &  &  &  &  &  &  \\
+     &  &  &  &  & \blacksquare &  &  &  & \blacksquare &  &  &  &  &  &  &  \\ \cline{2-17}
+     &  &  &  &  &  &  &  &  &  & \blacksquare &  &  &  &  &  & \blacksquare \\
+     &  &  &  &  &  &  &  &  &  &  & \blacksquare &  &  &  & \blacksquare &  \\
+     &  &  &  &  &  &  &  &  &  &  &  & \blacksquare &  & \blacksquare &  &  \\
+     l' = 3 &  &  &  &  &  &  &  &  &  &  &  &  & \blacksquare &  &  &  \\
+     &  &  &  &  &  &  &  &  &  &  &  & \blacksquare &  & \blacksquare &  &  \\
+     &  &  &  &  &  &  &  &  &  &  & \blacksquare &  &  &  & \blacksquare &  \\
+     &  &  &  &  &  &  &  &  &  & \blacksquare &  &  &  &  &  & \blacksquare \\
+    \end{block}
+    m= & 0 & -1 & 0 & 1 & -2 & -1 & 0 & 1 & 2 & -3 & -2 & -1 & 0 & 1 & 2 & 3 \\
+    \end{blockarray}
+\]
+\caption[Graphical illustration of the rotation matrix for an arbitrary yaw rotation.]{
+Graphical illustration of the locations of possible nonzero elements (indicated by the $\blacksquare$ symbols) of the rotation matrix for an arbitrary yaw rotation (see \eqnref{eq:A1_Navigation_Filters:Variable_Yaw}).}
+\label{fig:A1_Navigation_Filters:Variable_Yaw}
+\end{figure}
+
+%% Fixed pitch
+\subsection{Fixed pitch rotation of \texorpdfstring{$\pi/2$}{pi/2}}
+The second rotation matrix we derive is for a fixed upwards pitch rotation by $\pi/2$ around the $y$-axis.
+We denote this matrix $\mathbf{Q}_\text{P}(\pi/2)$ (where the subscript ``$\text{P}$'' denotes ``pitch'').
+As will become clear below, for some of the recurrence formulae used in this derivation, we must compute terms of the matrix beyond the maximum ambisonics order that we intend to use.
+In particular, to compute $\mathbf{Q}_\text{P}(\pi/2)$ up to order $L$, we must first compute terms in the matrix up to order $2L$, as indicated below.
+
+The procedure for computing the rotation matrix is enumerated below and illustrated symbolically in \figref{fig:A1_Navigation_Filters:Fixed_Pitch}.
+
+\begin{figure}[h]
+\[
+    \begin{blockarray}{lc|ccc|ccccc|ccccccc}
+    l= & 0 & & 1 & & & & 2 & & & & & & 3 & & & \\
+    \begin{block}{l(c|ccc|ccccc|ccccccc)}
+     l' = 0 & \blacksquare &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \cline{2-17}
+     &  & \boxdot &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+     l' = 1 &  &  & \blacksquare & \blacksquare &  &  &  &  &  &  &  &  &  &  &  &  \\
+     &  &  & \boxminus & \boxplus &  &  &  &  &  &  &  &  &  &  &  &  \\ \cline{2-17}
+     &  &  &  &  & \boxdot & \boxdot &  &  &  &  &  &  &  &  &  &  \\
+     &  &  &  &  & \boxdot & \boxdot &  &  &  &  &  &  &  &  &  &  \\
+     l' = 2 &  &  &  &  &  &  & \blacksquare & \blacksquare & \blacksquare &  &  &  &  &  &  &  \\
+     &  &  &  &  &  &  & \boxminus & \boxplus & \boxplus &  &  &  &  &  &  &  \\
+     &  &  &  &  &  &  & \boxminus & \boxminus & \boxplus &  &  &  &  &  &  &  \\ \cline{2-17}
+     &  &  &  &  &  &  &  &  &  & \boxdot & \boxdot & \boxdot &  &  &  &  \\
+     &  &  &  &  &  &  &  &  &  & \boxdot & \boxdot & \boxdot &  &  &  &  \\
+     &  &  &  &  &  &  &  &  &  & \boxdot & \boxdot & \boxdot &  &  &  &  \\
+     l' = 3 &  &  &  &  &  &  &  &  &  &  &  &  & \blacksquare & \blacksquare & \blacksquare & \blacksquare \\
+     &  &  &  &  &  &  &  &  &  &  &  &  & \boxminus & \boxplus & \boxplus & \boxplus \\
+     &  &  &  &  &  &  &  &  &  &  &  &  & \boxminus & \boxminus & \boxplus & \boxplus \\
+     &  &  &  &  &  &  &  &  &  &  &  &  & \boxminus & \boxminus & \boxminus & \boxplus \\
+    \end{block}
+    m= & 0 & -1 & 0 & 1 & -2 & -1 & 0 & 1 & 2 & -3 & -2 & -1 & 0 & 1 & 2 & 3 \\
+    \end{blockarray}
+\]
+\caption{Graphical illustration of the rotation matrix for a pitch rotation of $\pi/2$.}
+\label{fig:A1_Navigation_Filters:Fixed_Pitch}
+\end{figure}
+
+\begin{enumerate}
+
+\item First, we find all terms denoted $\blacksquare$, where $m' = 0$, by using \citep[Eq.~(189)]{Zotter2009PhD}
+\begin{equation}
+Q_{l,l}^{0,m} = (-1)^{|m|} \sqrt{2 - \delta_{|m|}} \sqrt{ \frac{(l - |m|)!}{(l + |m|)!} } P_l^{|m|}(0)
+\end{equation} % matches code and Zotter
+and looping over $l \in [0,2L]$ and $m \in [0,l]$.
+
+\item Next, we find all terms denoted $\boxplus$ by using \citep[Eq.~(190)]{Zotter2009PhD}
+\begin{multline}
+Q_{l,l}^{m',m} = \frac{\sqrt{2 - \delta_{m'}}}{2 b_{l+1}^{m'-1} \sqrt{2 - \delta_{m'-1}}} \left[ \sqrt{2 - \delta_m} \left( \frac{b_{l+1}^{m-1} Q_{l+1,l+1}^{m'-1,m-1}}{\sqrt{2 - \delta_{m-1}}} \right. \right. \\
+\left. \left. - \frac{b_{l+1}^{-m-1} Q_{l+1,l+1}^{m'-1,m+1}}{\sqrt{2 - \delta_{m+1}}} \right) + 2 a_l^m Q_{l+1,l+1}^{m'-1,m} \right]
+\end{multline} % matches code and Zotter
+and looping over $m' \in [1,L]$, $l \in [m',2L - m']$, and $m \in [m',l]$.
+
+\item Third, we find all terms denoted $\boxminus$ by using the symmetry relationship \citep[Eq.~(191)]{Zotter2009PhD}
+\begin{equation}
+Q_{l,l}^{m',m} = (-1)^{m'+m} Q_{l,l}^{m,m'}
+\end{equation} % matches code and Zotter
+and looping over $l \in [1,L]$, $m' \in [1,l]$, and $m \in [0,m' - 1]$.
+
+\item Additionally, we find all terms denoted $\boxdot$ by using the symmetry relationship%
+\footnote{This symmetry relationship in \eqnref{eq:A1_Navigation_Filters:Pitch_Symmetry_176} can be derived by a repeated application of Eqs.~(176) and (191) from \citet{Zotter2009PhD}.}
+\begin{equation}\label{eq:A1_Navigation_Filters:Pitch_Symmetry_176}
+Q_{l,l}^{-m',-m} = Q_{l,l}^{m',m}
+\end{equation}  % matches code and Zotter
+and looping over $l \in [1,L]$, $m' \in [1,l]$, and $m \in [1,l]$.
+
+\item Finally, we apply a ``mask'' to the matrix such that \citep[Eq.~(187)]{Zotter2009PhD}
+\begin{equation}
+Q_{l,l}^{m',m} = 
+\begin{cases}
+Q_{l,l}^{m',m} & \text{if}~m',m \geq 0~\text{and}~(l+m'+m)~\text{is even},\\
+Q_{l,l}^{m',m} & \text{if}~m',m < 0~\text{and}~(l+m'+m)~\text{is odd},\\
+0 & \text{otherwise}.
+\end{cases}
+\end{equation} % matches code and Zotter
+
+\end{enumerate}
+
+%% Fixed roll
+\subsection{Variable roll rotation}
+Now we can conveniently compute a matrix for an arbitrary roll rotation of $\gamma$ around the $x$-axis.
+This matrix, which we denote $\mathbf{Q}_\text{R}(\gamma)$ (where the subscript ``$\text{R}$'' denotes ``roll''), is given by %%NOTE%% cite?
+\begin{equation}
+\mathbf{Q}_\text{R}(\gamma) = \mathbf{Q}_\text{P}(\pi/2) \cdot \mathbf{Q}_\text{Y}(\gamma) \cdot \left( \mathbf{Q}_\text{P}(\pi/2) \right)^\text{T}.
+\end{equation} % matches code
+Recall that the transpose of $\mathbf{Q}_\text{P}(\pi/2)$ (which is exactly equal to the inverse of that matrix) corresponds to a pitch rotation downwards by $\pi/2$.
+
+%% Variable pitch
+\subsection{Variable pitch rotation}
+Next, we can conveniently compute a matrix for an arbitrary pitch rotation of $\beta$ around the $y$-axis.
+This matrix, which we denote $\mathbf{Q}_\text{P}(\beta)$, is given by %%NOTE%% cite?
+\begin{equation}
+\mathbf{Q}_\text{P}(\beta) = \left( \mathbf{Q}_\text{R}(\pi/2) \right)^\text{T} \cdot \mathbf{Q}_\text{Y}(\beta) \cdot \mathbf{Q}_\text{R}(\pi/2).
+\end{equation} % matches code
+
+%% z-axis alignment
+\subsection{Alignment of the \texorpdfstring{$z$}{z}-axis}
+Finally, we can compute the rotation matrix needed to orient the $z$-axis in a specific direction, defined by an azimuth $\phi$ and elevation $\theta$.
+This matrix, which we denote $\mathbf{Q}_z(\theta,\phi)$, is given by %%NOTE%% cite?
+\begin{equation}\label{eq:A1_Navigation_Filters:z_Rotation}
+\mathbf{Q}_z(\theta,\phi) = \mathbf{Q}_\text{Y}(\phi) \mathbf{Q}_\text{P}(\theta - \pi/2).
+\end{equation} % matches code

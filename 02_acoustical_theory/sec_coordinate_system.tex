@@ -1,0 +1,27 @@
+As is common in ambisonics, we adopt Cartesian and spherical coordinate systems in which, for a listener positioned at the origin, the $+x$-axis points forward, the $+y$-axis points to the left, and the $+z$-axis points upward.
+The point $(x,y,z)$ in Cartesian coordinates is given in spherical coordinates by
+\begin{equation}\label{eq:02_Acoustical_Theory:Spherical_Coordinates}
+\begin{aligned}
+    r &= \sqrt{x^2 + y^2 + z^2},\\
+    \theta &= \arcsin \frac{z}{r},\\ % = \arcsin \mu
+    \phi &= \arctan \frac{y}{x}.
+\end{aligned}
+\end{equation}
+From this definition we see that $r$ is the (nonnegative) radial distance from the origin, $\theta \in [-\pi/2, \pi/2]$ is the elevation angle above the horizontal ($x$-$y$) plane, and $\phi \in [0, 2\pi)$ is the azimuthal angle around the vertical ($z$) axis, with $(\theta,\phi) = (0,0)$ corresponding to the $+x$ direction and $(0,\pi/2)$ to the $+y$ direction.
+These variables are defined graphically in~\figref{fig:02_Acoustical_Theory:Coordinate_System}.
+Conversion back to Cartesian coordinates is given by
+\begin{equation}\label{eq:02_Acoustical_Theory:Cartesian_Coordinates}
+\begin{aligned}
+    x &= r \cos \theta \cos \phi,\\
+    y &= r \cos \theta \sin \phi,\\
+    z &= r \sin \theta.
+\end{aligned}
+\end{equation}
+For a position vector $\vec{r} = (x,y,z)$, we denote the corresponding unit vector by $\hat{r} \equiv \vec{r}/r$.
+
+\input{02_acoustical_theory/figures/coordinate_system}
+
+%% Short version for papers
+%As is common in ambisonics, we adopt Cartesian and spherical coordinate systems in which, for a listener positioned at the origin, the $+x$-axis points forward, the $+y$-axis points to the left, and the $+z$-axis points upward.
+%Correspondingly, $r$ is the (nonnegative) radial distance from the origin, $\theta \in [-\pi/2, \pi/2]$ is the elevation angle above the horizontal ($x$-$y$) plane, and $\phi \in [0, 2\pi)$ is the azimuthal angle around the vertical ($z$) axis, with $(\theta,\phi) = (0,0)$ corresponding to the $+x$ direction and $(0,\pi/2)$ to the $+y$ direction.
+%For a position vector $\vec{r} = (x,y,z)$, we denote the corresponding unit vector by $\hat{r} \equiv \vec{r}/r$.

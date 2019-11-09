@@ -1,0 +1,38 @@
+%%%% NAVIGATION FILTERS %%%%
+\chapter{Algorithms for computing ambisonics translation filters}\label{chap:A1_Navigation_Filters}
+In this appendix, we distill and reproduce the necessary algorithms for computing the ambisonics translation filters introduced in \secref{sec:02_Acoustical_Theory:Ambisonics_Translation}.
+These algorithms are also described by \citet[chapter 3]{GumerovDuraiswami2005} for complex-valued spherical harmonics and by \citet[chapter III]{Zotter2009PhD} for both complex- and real-valued spherical harmonics.
+The translation operation consists of three steps:
+\begin{enumerate}
+\item rotating the coordinate system to align the $z$-axis with the desired translation direction,
+\item translating along the new $z$-axis, and
+\item rotating the coordinate system back to its original orientation.
+\end{enumerate}
+In \secref{sec:A1_Navigation_Filters:Recurrence_Coefficients}, we present recurrence coefficients which will be used both
+in \secref{sec:A1_Navigation_Filters:Rotation_Matrices} to derive the rotation matrices needed to align the $z$-axis and
+in \secref{sec:A1_Navigation_Filters:Coaxial_Filters} to derive the coefficient matrix used to translate along the $z$-axis.
+We then show in \secref{sec:A1_Navigation_Filters:Translation_Filters} how to combine these individual matrices in order to compute the coefficients matrix for an arbitrary translation.
+
+\section{Recurrence coefficients}\label{sec:A1_Navigation_Filters:Recurrence_Coefficients}
+\input{a1_navigation_filters/sec_recurrence_coefficients}
+
+\section{Rotation matrices}\label{sec:A1_Navigation_Filters:Rotation_Matrices}
+\input{a1_navigation_filters/sec_rotation_matrices}
+
+\section{Coaxial translation coefficients matrix}\label{sec:A1_Navigation_Filters:Coaxial_Filters}
+\input{a1_navigation_filters/sec_coaxial_filters}
+
+\section{General translation coefficients matrix}\label{sec:A1_Navigation_Filters:Translation_Filters}
+Combining the results of the previous sections, we can now write the translation coefficients matrix for an arbitrary translation of distance $r_0$ in the direction $(\theta,\phi)$.
+Using \eqnreftwo{eq:A1_Navigation_Filters:Listener_Rotation}{eq:A1_Navigation_Filters:z_Translation}, the combined translation coefficient matrix is then given by
+\begin{equation}
+\begin{aligned}
+\left( \mathbf{T}(k, \vec{r}_0) \right)^\text{T} &= \mathbf{Q}_z(\theta,\phi) \cdot \left( \mathbf{T}_z(k, r_0 \hat{z}) \right)^\text{T} \cdot (\mathbf{Q}_z(\theta,\phi))^\text{T}, \\
+\implies \mathbf{T}(k, \vec{r}_0) &= \mathbf{Q}_z(\theta,\phi) \cdot \mathbf{T}_z(k, r_0 \hat{z}) \cdot (\mathbf{Q}_z(\theta,\phi))^\text{T}
+\end{aligned}
+\end{equation}
+where $\mathbf{Q}_z$ is given by \eqnref{eq:A1_Navigation_Filters:z_Rotation} and $\mathbf{T}_z$ is found as described in \secref{sec:A1_Navigation_Filters:Coaxial_Filters}. 
+
+\section*{Acknowledgements}
+The contents of this appendix were originally published by \citet{TylkaChoueiri2019a} in Technical Report \#2 of the 3D Audio and Applied Acoustics Laboratory at Princeton University.
+%These algorithms have also been implemented in a MATLAB toolkit, which is freely available online.\citefooturl{AmbiNavToolkitURL}

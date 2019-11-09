@@ -1,0 +1,17 @@
+The $a$ and $b$ recurrence coefficients are given, respectively, by \citep[Eq.~(145)]{Zotter2009PhD}
+\begin{equation}\label{eq:A1_Navigation_Filters:Recurrence_Coefficient_a}
+a_l^m =
+\begin{cases}
+  \displaystyle \sqrt{\frac{(l - |m| + 1) (l + |m| + 1)}{(2 l + 1) (2 l + 3)}} & \text{for}~l \geq 0~\text{and}~0 \leq |m| \leq l, \\
+  0 & \text{otherwise,}
+\end{cases}
+\end{equation}
+and \citep[Eq.~(146)]{Zotter2009PhD}
+\begin{equation}\label{eq:A1_Navigation_Filters:Recurrence_Coefficient_b}
+b_l^m =
+\begin{cases}
+  \displaystyle \sqrt{\frac{(l - m - 1) (l - m)}{(2 l - 1) (2 l + 1)}} & \text{for}~l \geq 0~\text{and}~0 \leq m \leq l, \\
+  \displaystyle -\sqrt{\frac{(l - m - 1) (l - m)}{(2 l - 1) (2 l + 1)}} & \text{for}~l \geq 0~\text{and}~-l \leq m < 0, \\
+  0 & \text{otherwise.}
+\end{cases}
+\end{equation}

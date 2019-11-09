@@ -1,0 +1,36 @@
+\begin{sidewaystable}
+\centering
+\begin{tabular}{c|c}
+\textbf{Method} & \textbf{Equation(s)} \\\hline\hline
+\rule[-1cm]{0pt}{2.1cm} \parbox{3cm}{\centering Weighted-average interpolation} & $\mathbf{\tilde{a}}(k) = \displaystyle \left. \sum_{p=1}^P w_p \mathbf{b}_p(k) \right/ \sum_{p=1}^P w_p$ \\\hline
+\rule[-1.5cm]{0pt}{3.1cm} \parbox{3cm}{\centering Regularized least-squares ambisonics interpolation} &
+  $\mathbf{\tilde{a}}(k) =
+    \left[ \begin{array}{c}
+    \left( \mathbf{T}(k,\vec{u}_1 - \vec{r}_0) \right)^\text{T} \\
+    \left( \mathbf{T}(k,\vec{u}_2 - \vec{r}_0) \right)^\text{T} \\
+    \vdots\\
+    \left( \mathbf{T}(k,\vec{u}_P - \vec{r}_0) \right)^\text{T}
+    \end{array} \right]^{+} \cdot
+    \left[ \begin{array}{c}
+    \mathbf{b}_1(k)\\
+    \mathbf{b}_2(k)\\
+    \vdots\\
+    \mathbf{b}_P(k)
+    \end{array} \right]$ \\\hline
+\rule[-2.1cm]{0pt}{4.3cm} \parbox{3cm}{\centering Sound field analysis and modeling} & 
+  \begin{tabular}{c|c}
+  \textbf{Analysis} & \textbf{Synthesis} \\\hline
+  \rule[-1.6cm]{0pt}{3.3cm} $\begin{array}{l} 
+    S_\textrm{dir}(\xi,\kappa) = \displaystyle \sqrt{\frac{\Gamma(\xi,\kappa)}{1 + \Gamma(\xi,\kappa)}} \frac{\psi^{[p_\textrm{ref}]}(\xi,\kappa)}{i k h_0(k \|\vec{s}_0 - \vec{u}_{p_\textrm{ref}}\|)} \\[0.5cm]
+    S_\textrm{diff}(\xi,\kappa) = \displaystyle \sqrt{\frac{1}{1 + \Gamma(\xi,\kappa)}} \psi^{[p_\textrm{ref}]}(\xi,\kappa)
+  \end{array}$ & 
+  $\begin{array}{l}
+    \tilde{A}_n(\xi,\kappa) = \displaystyle \sqrt{\frac{\|Y_n\|^2}{4\pi}} S_\textrm{diff}(\xi,\kappa) \\[0.5cm]
+    \quad+ i^{l+1} k h_l(k \|\vec{s}_0 - \vec{r}_0\|) Y_n \displaystyle \left( \frac{\vec{s}_0 - \vec{r}_0}{\|\vec{s}_0 - \vec{r}_0\|} \right) S_\textrm{dir}(\xi,\kappa)
+  \end{array}$
+  \end{tabular}
+\end{tabular}
+\caption[Summary of main equations for interpolation methods.]{
+Summary of main equations for the interpolation-based navigational methods reviewed in \secref{sec:03_Navigation_Techniques:Interpolation_Methods}.}
+\label{tab:03_Navigational_Techniques:Interpolation_Equations}
+\end{sidewaystable}

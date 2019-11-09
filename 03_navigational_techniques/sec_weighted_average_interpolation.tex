@@ -1,0 +1,28 @@
+In the navigational method proposed by \citet{MarietteKatz2009} and \citet{Southern2009}, a weighted sum of the captured ambisonics signals is computed to obtain an estimate of the ambisonics signals at the listening position, given by
+\begin{equation}\label{eq:03_Navigation_Techniques:Crossfading}
+\mathbf{\tilde{a}}(k) = \sum_{p=1}^P w_p \mathbf{b}_p(k),
+\end{equation}
+where the weights are normalized such that
+\begin{equation}\label{eq:03_Navigation_Techniques:Weight_Normalization}
+\sum_{p=1}^P w_p = 1.
+\end{equation}
+Note that as the sum in \eqnref{eq:03_Navigation_Techniques:Crossfading} is computed term-by-term, we must have an output order $L_\text{out} \leq L_\text{in}$, where the inequality arises if one chooses to discard higher-order terms captured by the microphones.
+Depending on the placement of the microphones in the sound field, the weights $w_p$ may be computed using standard linear or bilinear schemes, for example.
+
+For $P = 2$ microphones, we first define the distance between the two microphones, given by $\Delta = \|\vec{u}_2 - \vec{u}_1\|$.
+We then compute the effective position, $y_1$, of the listener, as projected onto the vector connecting the two microphones, such that $y_1$ is given by
+\begin{equation}
+y_1 = \frac{\langle \vec{r}_0 - \vec{u}_1, \vec{u}_2 - \vec{u}_1 \rangle}{\Delta},
+\end{equation}
+where $\langle \cdot, \cdot \rangle$ denotes the inner (dot) product of two Cartesian vectors.
+From this, linear interpolation weights are given by
+\begin{equation}\label{eq:03_Navigation_Techniques:Linear_Interpolation_Weights}
+w_1 = 1 - w_2
+\quad\quad\text{and}\quad\quad
+w_2 = 
+\begin{cases}
+0 & \text{for}~y_1 \leq 0,\\
+y_1/\Delta & \text{for}~0 < y_1 < \Delta,\\
+1 & \text{for}~y_1 \geq \Delta.
+\end{cases}
+\end{equation}

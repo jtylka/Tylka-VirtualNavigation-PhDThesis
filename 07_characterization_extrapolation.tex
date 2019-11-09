@@ -1,0 +1,37 @@
+%%%% CHARACTERIZATION OF EXTRAPOLATION TECHNIQUES %%%%
+\chapter{Performance errors incurred by linear extrapolation methods}\label{chap:07_Characterization_Extrapolation}
+In this chapter, we evaluate, through a comprehensive set of the numerical simulations described in \chapref{chap:06_Simulation_Framework}, the performance of two extrapolation-based navigational methods.
+The methods considered here are chosen for their broad applicability to arbitrary sound fields due to the linear nature of the processing involved.
+However, these methods are also susceptible to violating the region of validity restriction (see \secref{sec:02_Acoustical_Theory:Helmholtz_Equation}) if the listener attempts to navigate beyond the distance of the nearest source to the microphone.
+Through the analyses presented here, we aim to determine, in terms of the metrics enumerated in \secref{sec:06_Simulation_Framework:Metrics}, the nature and degree of any penalties incurred by violating this region of validity restriction.
+
+%% saved for a paper abstract
+%In the first method, a plane-wave decomposition is employed to simplify the translation operation, however different methods and grid distributions for the plane-wave decomposition can introduce varying errors.
+%Consequently, these parameters are first explored in isolation via numerical simulations of a single-microphone array, as described in \chapref{chap:06_Simulation_Framework}.
+%Results show that matching the number of plane-waves to the number of ambisonics signals and employing the ``beamforming'' plane-wave decomposition method yields the most reliable results.
+%%NOTE%% for the paper, make sure we establish right away the universality of this paper in that it should apply to all linear methods
+
+%The second navigational method employs spherical harmonic translation coefficients to directly extrapolate the ambisonics signals.
+%Performance errors are characterized for both methods via numerical simulations in terms of the metrics identified in \secref{sec:06_Simulation_Framework:Metrics}.
+%Results show that both methods tend to exhibit two distinct regimes of behavior for far- and near-field sources, and that the performance for near-field sources is often degraded (compared to that for far-field sources) due to the violation of the region of validity restriction.
+%In particular, both methods were found to incur significant errors in both overall level and localization when the region of validity restriction is violated.
+%Additionally, the plane-wave translation method is shown to perform well for far-field sources, whereas the ambisonics translation method yields significant errors which tend to increase steadily with navigation distance.
+
+\section{Introduction}\label{sec:07_Characterization_Extrapolation:Introduction}
+\input{07_characterization_extrapolation/sec_introduction}
+
+\section{Plane-wave decomposition parameters}\label{sec:07_Characterization_Extrapolation:Plane-wave_Dependence}
+\input{07_characterization_extrapolation/sec_planewave_dependence}
+
+\section{Source azimuth dependence}\label{sec:07_Characterization_Extrapolation:Azimuth_Dependence}
+\input{07_characterization_extrapolation/sec_azimuth_dependence}
+
+\section{Characterization and discussion}\label{sec:07_Characterization_Extrapolation:Results}
+\input{07_characterization_extrapolation/sec_results}
+
+\section{Conclusions}\label{sec:07_Characterization_Extrapolation:Conclusions}
+\input{07_characterization_extrapolation/sec_conclusions}
+
+\section*{Acknowledgements}
+This work is a significantly updated version of a paper originally presented by \citet{TylkaChoueiri2015} at the 139\textsuperscript{th} Convention of the Audio Engineering Society.
+The analysis presented here was originally submitted by \citet{TylkaChoueiri2019c} to \textit{The Journal of the Audio Engineering Society}.

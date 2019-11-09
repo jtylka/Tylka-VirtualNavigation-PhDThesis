@@ -1,0 +1,27 @@
+In this section, we first describe our proposed parametric navigational method, which comprises two components:
+\begin{enumerate}
+\item a parametric method for performing interpolation using only a subset of the microphones, where this subset is determined based on estimated source positions (as described in \secref{sec:08_Proposed_Method:Microphone_Validity}), and
+%\item a parametric method for excluding microphones from the interpolation calculation based on estimated source positions (described in \secref{sec:08_Proposed_Method:Microphone_Validity}), and
+\item a particular two-band implementation of the regularized least-squares interpolation filters (detailed here in \secreftwo{sec:08_Proposed_Method:Reg-LS_Technique}{sec:08_Proposed_Method:Hybrid_Technique}).
+\end{enumerate}
+Later in this section, we illustrate basic spectral properties of the interpolation filters in \secref{sec:08_Proposed_Method:Azimuth_Dependence} and briefly discuss practical implementation issues in \secref{sec:08_Proposed_Method:Practical_Implementation}.
+
+%%%% Microphone Validity %%%%
+\subsection{Source localization and microphone validity}\label{sec:08_Proposed_Method:Microphone_Validity}
+\input{08_proposed_method/sec_microphone_validity}
+
+%%%% Least-Squares Interpolation Filters %%%%
+\subsection{Regularized least-squares interpolation filters}\label{sec:08_Proposed_Method:Reg-LS_Technique}
+\input{08_proposed_method/sec_regularized_least-squares_interpolation}
+
+%%%% Hybrid Filters %%%%
+\subsection{Two-band interpolation filters}\label{sec:08_Proposed_Method:Hybrid_Technique}
+\input{08_proposed_method/sec_hybrid_interpolation}
+
+%%%% Source Azimuth Dependence %%%%
+\subsection{Source azimuth dependence}\label{sec:08_Proposed_Method:Azimuth_Dependence}
+\input{08_proposed_method/sec_azimuth_dependence}
+
+%%%% Practical Implementation %%%%
+\subsection{Practical implementation}\label{sec:08_Proposed_Method:Practical_Implementation}
+\input{08_proposed_method/sec_practical_implementation}

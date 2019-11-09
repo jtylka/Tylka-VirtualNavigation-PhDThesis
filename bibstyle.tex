@@ -1,0 +1,52 @@
+%% macro for citing url in a footnote
+\newcommand{\citefooturl}[1]{\footnote{\citefield{#1}{howpublished} \citep{#1}}}
+
+%% journal bibliography entries formatting
+%\renewcommand{\intitlepunct}{ } % get rid of colon after "In"
+%\DeclareFieldFormat[article]{title}{#1} % remove quotes around title
+\DeclareFieldFormat[article]{journaltitle}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+\DeclareFieldFormat[article]{pages}{#1}
+
+%% macros defined in:
+%% /usr⁩/local⁩/texlive⁩/2018⁩/texmf-dist⁩/tex⁩/latex⁩/biblatex⁩/bbx/standard.bbx
+\renewbibmacro*{volume+number+eid}{% only used for article and periodical
+  \printfield{volume}%
+  \printfield{number}%
+  \setunit{\addcolon}%
+  \printfield{pages}%
+  \setunit{\addcomma\space}%
+  \usebibmacro{date}}
+  
+\newbibmacro*{note+pages}{% only used for article
+  \printfield{note}%
+  %\setunit{\bibpagespunct}%
+  %\printfield{pages}%
+  \newunit}
+  
+\renewbibmacro*{issue+date}{% only used for article and periodical
+  \iffieldundef{issue}
+    {}
+    {\printtext[parens]{%
+    \printfield{issue}}%
+    %\setunit*{\addspace}%
+    %\usebibmacro{date}}%
+    }
+  \newunit}
+
+\renewbibmacro*{doi+eprint+url}{%
+  \iftoggle{bbx:doi}
+    {\iffieldundef{doi}
+      {\iffieldundef{url}
+        {\iffieldundef{eprint}
+          {}
+          {\iftoggle{bbx:eprint}
+            {\usebibmacro{eprint}}
+            {}}}
+        {\iftoggle{bbx:url}
+          {\usebibmacro{url+urldate}}
+          {}}}
+      {\printfield{doi}}}
+    {}
+  }

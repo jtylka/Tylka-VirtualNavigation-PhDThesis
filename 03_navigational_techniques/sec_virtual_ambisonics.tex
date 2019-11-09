@@ -1,0 +1,27 @@
+The first navigational method we consider involves simulating ambisonics playback over a virtual array of loudspeakers (hereafter called ``virtual ambisonics'').
+In this case, virtual navigation requires only that each loudspeaker signal be appropriately attenuated and delayed based on the distance of the listener to that loudspeaker.
+The process of decoding ambisonics signals of order $L_\text{in}$ to $Q$ loudspeakers is reviewed in \secref{sec:02_Acoustical_Theory:VA_Binaural}, which converts the $N_\text{in}$ recorded ambisonics signals, $b_n$, into a set of loudspeaker signals, $g_q$.
+
+Here we model the virtual loudspeakers as point-sources,\footnote{Note that we could have instead modeled the loudspeakers as plane-wave sources, infinitely far away from the listener. However, we chose to use finite-distance virtual loudspeakers so that this technique will differ more significantly from the plane-wave expansion technique described in \secref{sec:03_Navigation_Techniques:PW_Technique}.} where the $q^\text{th}$ loudspeaker is placed at $\vec{v}_q$ and is driven with a (Fourier-transformed) signal $G_q = \mathcal{F} \left[ g_q \right]$.
+%Each loudspeaker then produces a potential field given by
+%\begin{equation}\label{eq:03_Navigation_Techniques:Point_Source}
+%\psi_q(k,\vec{r}) = \frac{e^{i k \left\| \vec{r} - \vec{v}_q \right\|}}{\left\| \vec{r} - \vec{v}_q \right\|} G_q(k),
+%\end{equation}
+%where we have used \eqnref{eq:02_Acoustical_Theory:PointSource}.
+%The total potential field produced by virtual ambisonics playback is then given by
+%\begin{equation}\label{eq:03_Navigation_Techniques:VA_Rendered_Field}
+%\psi(k,\vec{r}) = \sum_{q = 1}^Q \frac{e^{i k \left\| \vec{r} - \vec{v}_q \right\|}}{\left\| \vec{r} - \vec{v}_q \right\|} G_q(k).
+%\end{equation}
+These signals are then re-encoded into ambisonics up to an arbitrary order, $L_\text{out}$, at the position of the listener, $\vec{r}_0$, via \eqnref{eq:02_Acoustical_Theory:PointSource_An}, such that
+\begin{equation}\label{eq:03_Navigation_Techniques:VA_Output}
+A_n(k) = \sum_{q = 1}^Q i^{l+1} k h_l(k \left\| \vec{v}_q - \vec{r}_0 \right\|) Y_n \left( \frac{\vec{v}_q - \vec{r}_0}{\left\| \vec{v}_q - \vec{r}_0 \right\|} \right) G_q(k).
+\end{equation}
+
+Note that, for binaural playback, we can skip the step of re-encoding to ambisonics and instead simply filter the point-source signals (appropriately attenuated and delayed based on distance to the listener) by the corresponding HRTFs of the listener.
+However, for mathematical consistency when comparing different navigational methods, we choose an ambisonics output.
+
+%To binaurally render the sound field described by~\eqnref{eq:03_Navigation_Techniques:VA_Rendered_Field} for a listener at position $\vec{r}_0$, the left and right binaural potentials (indicated by the superscripts ``$\text{L}$'' and ``$\text{R}$,'' respectively) are computed by
+%\begin{equation}\label{eq:VA_Binaural}
+%\psi_\text{VA}^\text{L,R}(k,\vec{r}_0) = \sum_{q=1}^{Q} \frac{e^{i k \left\| \vec{v}_q - \vec{r}_0 \right\|}}{\left\| \vec{v}_q - \vec{r}_0 \right\|} G_q(k) \cdot H^\text{L,R} \left( k, \frac{\vec{v}_q - \vec{r}_0}{\left\| \vec{v}_q - \vec{r}_0 \right\|} \right),
+%\end{equation}
+%where $H^\text{L,R}(k,\hat{v})$ is the far-field HRTF for a source in the direction $\hat{v}$.

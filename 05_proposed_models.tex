@@ -1,0 +1,51 @@
+%%%% PROPOSED MODELS %%%%
+\chapter{Auditory models for evaluating navigational methods}\label{chap:05_Proposed_Models}
+In this chapter, we propose and validate models that predict perceived source localization (i.e., the direction of a source relative to the listener) and spectral coloration (changes in the spectral content of a sound) for the specific purpose of evaluating navigational methods for ambisonics-encoded sound fields.
+Previous evaluations of navigational methods have typically relied on binaural localization models, which conflate the effects of the navigational method with those of the adopted ambisonics-to-binaural rendering approach, and previous studies on navigation-induced coloration have been largely qualitative.
+Consequently, in this chapter, we seek to develop perceptually-relevant auditory models that can be applied directly to translated ambisonics impulse responses (i.e., before rendering to binaural) and give numerical predictions for localization direction and coloration.
+
+\section{Introduction}\label{sec:05_Proposed_Models:Introduction}
+\input{05_proposed_models/sec_introduction}
+
+%%%% Auditory Models %%%%
+%% Proposed Localization Model
+\section{Localization model}\label{sec:05_Proposed_Models:Localization_Model}
+\input{05_proposed_models/sec_localization_model}
+
+%% Proposed Coloration Models
+\section{Coloration models}\label{sec:05_Proposed_Models:Coloration_Models}
+\input{05_proposed_models/sec_coloration_models}
+
+%%%% Validation of Proposed Models %%%%
+\section{Listening experiments}\label{sec:05_Proposed_Models:Listening_Tests}
+\input{05_proposed_models/sec_listening_tests}
+
+\section{Results and discussion}\label{sec:05_Proposed_Models:Results}
+\input{05_proposed_models/sec_results}
+
+\begin{figure}[t]
+  \centering
+  \setlength{\fboxsep}{0pt}
+  \setlength{\fboxrule}{1pt}
+  \fbox{\includegraphics[page=1,width=0.99\textwidth]{05_proposed_models/figures/test_instructions}}
+  \caption{Instructions provided to each subject for the localization test.}
+  \label{fig:05_Proposed_Models:Localization_Instructions}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \setlength{\fboxsep}{0pt}
+  \setlength{\fboxrule}{1pt}
+  \fbox{\includegraphics[page=2,width=0.99\textwidth]{05_proposed_models/figures/test_instructions}}
+  \caption{Instructions provided to each subject for the coloration test.}
+  \label{fig:05_Proposed_Models:Coloration_Instructions}
+\end{figure}
+
+\section{Conclusions}\label{sec:05_Proposed_Models:Conclusions}
+\input{05_proposed_models/sec_conclusions}
+
+\section*{Acknowledgements}
+The ambisonics room impulse responses were recorded using the Eigenmike by mh Acoustics \citep{EigenmikeURL}.
+The present author wishes to thank P.~Stitt for providing the MATLAB code for the precedence-effect-based energy vector model (available online).\citefooturl{StittCodeURL}
+This work was approved by the Institutional Review Board for human subjects research at Princeton University,
+and was originally presented by \citeauthor{TylkaChoueiri2017a} at the 173\textsuperscript{rd} Meeting of Acoustical Society of America (Acoustics '17 Boston) and published in \textit{Proceedings of Meetings on Acoustics} \citep{TylkaChoueiri2017a}.

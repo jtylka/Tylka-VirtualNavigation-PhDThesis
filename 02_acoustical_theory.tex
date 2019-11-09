@@ -1,0 +1,40 @@
+\chapter{Review of acoustical and ambisonic theory}\label{chap:02_Acoustical_Theory}
+In this chapter, we review relevant acoustical and ambisonic theory which will be employed throughout this thesis.
+First, in \secrefthru{sec:02_Acoustical_Theory:Coordinate_System}{sec:02_Acoustical_Theory:Helmholtz_Equation}, we review the spherical Fourier-Bessel series solution to the free-field Helmholtz equation in three dimensions, which provides a frequency-domain representation of any sound pressure field in spherical coordinates.
+These solutions lay the mathematical foundation for ambisonics, which we adopt to formulate the problem of virtual navigation in general, as described in \secref{sec:03_Navigation_Techniques:Problem_Formulation}, as well as to describe the implementation of each existing navigational method reviewed in \secreftwo{sec:03_Navigation_Techniques:Extrapolation_Methods}{sec:03_Navigation_Techniques:Interpolation_Methods}.
+
+Next, in \secref{sec:02_Acoustical_Theory:Ambisonics_Encoding}, we review the so-called \textit{ambisonic encoding} equations for synthesizing ambisonics signals for point-sources and plane-waves.
+These encoding equations are employed in order to simulate simple incident sound fields, as described in \chapref{chap:06_Simulation_Framework}.
+These simulations are later used to comprehensively characterize the performance of various navigational methods, as described in \chaprefthru{chap:07_Characterization_Extrapolation}{chap:09_Thiergart_Comparison}.
+
+In \secref{sec:02_Acoustical_Theory:Plane-Wave_Expansion}, we provide equations for converting between spherical-harmonic (i.e., ambisonic) and plane-wave representations of a sound field, a process which is used in the plane-wave translation method reviewed in \secref{sec:03_Navigation_Techniques:PW_Technique}.
+The conversion from ambisonics to plane-wave signals is also used in the plane-wave-based ambisonics-to-binaural rendering approach described in \secref{sec:02_Acoustical_Theory:PW_Quadrature_Binaural}, as well as in the localization model proposed in \secref{sec:05_Proposed_Models:Localization_Model}.
+Next, in \secref{sec:02_Acoustical_Theory:Ambisonics_Translation}, we review the spherical Fourier-Bessel translation coefficients, which are needed for the ambisonics translation method reviewed in \secref{sec:03_Navigation_Techniques:SR_Technique}.
+
+Finally, in \secref{sec:02_Acoustical_Theory:Binaural_Rendering}, we review three linear ambisonics-to-binaural rendering approaches, one of which is employed in the listening experiments presented in \chapref{chap:05_Proposed_Models}, and all three of which have been implemented in the MATLAB toolkit described in \apxref{chap:A2_SABRE_Toolkit}.
+
+\section{Coordinate system}\label{sec:02_Acoustical_Theory:Coordinate_System}
+\input{02_acoustical_theory/sec_coordinate_system}
+
+\section{Definitions and conventions}\label{sec:02_Acoustical_Theory:Definitions}
+\input{02_acoustical_theory/sec_Fourier_transform}
+
+\input{02_acoustical_theory/sec_spherical_harmonics}
+
+\section{Helmholtz equation and region of validity}\label{sec:02_Acoustical_Theory:Helmholtz_Equation}
+\input{02_acoustical_theory/sec_Helmholtz_equation}
+
+\section{Ambisonics encoding equations}\label{sec:02_Acoustical_Theory:Ambisonics_Encoding}
+\input{02_acoustical_theory/sec_ambisonics_encoding}
+
+\subsection{Near-field amplification and compensation}\label{sec:02_Acoustical_Theory_Nearfield_Compensation}
+\input{02_acoustical_theory/sec_nearfield_compensation}
+
+\section{Plane-wave decomposition}\label{sec:02_Acoustical_Theory:Plane-Wave_Expansion}
+\input{02_acoustical_theory/sec_plane-wave_decomposition}
+
+\section{Ambisonics translation coefficients}\label{sec:02_Acoustical_Theory:Ambisonics_Translation}
+\input{02_acoustical_theory/sec_ambisonics_translation_coefficients}
+
+\section{Rendering (decoding) ambisonics to binaural}\label{sec:02_Acoustical_Theory:Binaural_Rendering}
+\input{02_acoustical_theory/sec_binaural_rendering}

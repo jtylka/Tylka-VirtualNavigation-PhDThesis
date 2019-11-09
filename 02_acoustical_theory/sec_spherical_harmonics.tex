@@ -1,0 +1,69 @@
+Here, we use real-valued spherical harmonics, such that the spherical harmonic of degree%
+\footnote{Note that ambisonics literature has long interchanged the use of the terms ``degree'' and ``order'' compared to traditional mathematical definitions of the spherical harmonics, which originate from the solutions to Laplace's equation in spherical coordinates.
+Hence, the ambisonics \textit{order} actually corresponds to the mathematical \textit{degree} of the spherical harmonic.}
+$l$ and order $m$ is given by~\citet[section~2.2]{Zotter2009PhD}
+\begin{equation}\label{eq:02_Acoustical_Theory:Spherical_Harmonic}
+Y_l^m(\theta,\phi) = N_l^{|m|} P_l^{|m|} (\sin \theta) \times
+    \begin{cases}
+	\cos m \phi & \textrm{for } m \geq 0,\\
+	\sin |m| \phi & \textrm{for } m < 0,
+    \end{cases}
+\end{equation}
+where $P_l^m$ is the associated Legendre polynomial of degree $l$ and order $m$, as defined in the MATLAB \texttt{legendre} function\citefooturl{MATLABlegendreURL} by
+\begin{equation}
+P_l^m(x) = (-1)^m (1 - x^2)^{m/2} \frac{d^m}{dx^m} P_l(x), \quad
+\textrm{with} \quad
+P_l(x) = \frac{1}{2^l l!} \left[ \frac{d^l}{dx^l}(x^2 - 1)^l \right],
+\end{equation}
+and $N_l^m$ is a normalization term which, for the orthonormal (N3D) spherical harmonics with Condon-Shortley phase,%
+\footnote{Note that including Condon-Shortley phase in the normalization term cancels it in the associated Legendre term.} is given by
+\begin{equation}\label{eq:02_Acoustical_Theory:Spherical_Harmonic_N3D_Normalization}
+N_l^m = (-1)^m \sqrt{\frac{(2l+1)(2 - \delta_m)}{4 \pi} \frac{(l-m)!}{(l+m)!}},
+\end{equation}
+where $\delta_m$ is the single-argument Kronecker delta.
+
+We define an inner product on the unit sphere by
+\begin{equation}
+\left< h, g \right> \equiv \int_{\phi=0}^{2 \pi} \int_{\theta=-\frac{\pi}{2}}^{\frac{\pi}{2}} h(\theta,\phi) \overline{g(\theta,\phi)} \cos \theta d\theta d\phi,
+\end{equation}
+where $\overline{g}$ denotes the complex conjugate of $g$.
+Therefore, the inner product of any two N3D-normalized spherical harmonic functions is given by
+\begin{equation}
+\left< Y_l^m, Y_{l'}^{m'} \right> = \delta_{l,l'} \delta_{m,m'},
+\end{equation}
+where $\delta_{m,m'}$ is the Kronecker delta (with two arguments),
+and the squared norm of any spherical harmonic function is given by
+\begin{equation}
+\|Y_l^m\|^2 \equiv \left< Y_l^m, Y_l^m \right> = 1.
+\end{equation} % Follows from inner product
+Consequently, we see that the N3D spherical harmonics form an orthonormal basis on the unit sphere.
+
+A commonly-used alternative is the Schmidt seminormalized (SN3D) spherical harmonic normalization convention (again with Condon-Shortley phase), given by \citep{Nachbar2011}
+\begin{equation}\label{eq:02_Acoustical_Theory:Spherical_Harmonic_SN3D_Normalization}
+N_l^m = (-1)^m \sqrt{\frac{2 - \delta_m}{4 \pi} \frac{(l-m)!}{(l+m)!}}.
+\end{equation}
+With the same choice of inner product, the inner product of any two spherical harmonic functions is given by
+\begin{equation}
+\left< Y_l^m, Y_{l'}^{m'} \right> = \frac{\delta_{l,l'} \delta_{m,m'}}{2l+1}
+\end{equation}
+and the squared norm of any spherical harmonic function is given by
+\begin{equation}
+\|Y_l^m\|^2 = \frac{1}{2l+1}.
+\end{equation} % Follows from inner product
+Consequently, we note that the SN3D spherical harmonics are \textit{not} orthonormal on the unit sphere, but they do yield an orthogonal basis.
+
+We also adopt the ambisonics channel numbering (ACN) convention~\citep{Nachbar2011} such that for a spherical harmonic function of degree $l \in [0,\infty)$ and order $m \in [-l,l]$, the ACN index $n$ is given by
+\begin{equation}\label{eq:02_Acoustical_Theory:AmbOrder_To_ACN}
+n = l (l + 1) + m
+\end{equation}
+and we denote the spherical harmonic function by $Y_n \equiv Y_l^m$.
+Correspondingly, for ACN index $n$, the spherical harmonic degree and order are given by
+\begin{equation}\label{eq:02_Acoustical_Theory:ACN_To_AmbOrder}
+\begin{aligned}
+l &= \left\lfloor \sqrt{n} \right\rfloor,\\
+m &= n - l (l + 1),
+\end{aligned}
+\end{equation}
+where $\lfloor \cdot \rfloor$ denotes rounding down to the nearest integer (i.e., the ``floor'' function).
+
+Alternative ordering and normalization schemes, such as Furse-Malham (``FuMa'') and ``MaxN'', are discussed by \citet[and references therein]{Carpentier2017}.

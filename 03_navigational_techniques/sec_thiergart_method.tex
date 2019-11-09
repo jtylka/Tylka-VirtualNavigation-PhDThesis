@@ -1,0 +1,82 @@
+In the interpolation method proposed by \citet{Thiergart2013}, the sound field is first analyzed in the time-frequency domain and subsequently modeled as a finite set of monochromatic omnidirectional point sources.
+As will become clear below, this method can only use the first-order ambisonics signals, so we must have $L_\text{in} = 1$.
+The output signals, however, can be computed to an arbitrary order $L_\text{out}$.
+Here, we describe our implementation of this method.
+
+\subsubsection{Sound field analysis}
+First, we compute three basic quantities: pressure, acoustic intensity, and diffuseness.
+For each microphone, we compute the STFT of each of the first four ambisonics signals, which gives $B^{[p]}_n(\xi,\kappa)$ for $n \in [0,3]$ and where $\xi$ is the index of the time frame, $\kappa$ is the frequency index, and the superscript ``$[p]$'' denotes the microphone index.
+Typically, we take an overlap fraction of $R = 0.5$, and set the FFT length to be
+\begin{equation}
+N_\textrm{FFT} = 2^{\left\lceil \log_2 \left( \frac{F_s}{1-R} \frac{\Delta}{c} \right) \right\rceil},
+\end{equation}
+where $\lceil \cdot \rceil$ denotes rounding up to the nearest integer, $F_s$ is the sampling rate of the system, and $\Delta$ is again the distance between microphones.
+We let the window length also equal $N_\textrm{FFT}$ and choose a Hamming window, as defined in the MATLAB \texttt{hamming} function.\citefooturl{MATLABhammingURL}
+
+Using these signals in the time-frequency domain, we compute the acoustic potential (pressure), given by
+\begin{equation}\label{eq:03_Navigation_Techniques:Time-Frequency_Potential}
+\psi^{[p]}(\xi,\kappa) = B^{[p]}_0(\xi,\kappa) \sqrt{\frac{4\pi}{\|Y_0\|^2}}.
+\end{equation}
+We then compute the acoustic intensity vector, $\vec{\nu}^{[p]}_\textrm{I}(\xi,\kappa)$, and the diffuseness parameter, $\Psi^{[p]}(\xi,\kappa)$, as given below in \eqnreftwo{eq:04_Auditory_Models:Intensity_Vector}{eq:04_Auditory_Models:Diffuseness}, respectively.
+
+Using the acoustic intensity vectors, we then triangulate a single source for each time-frequency bin.
+For two microphones and with sources restricted to the horizontal plane, this is computed as follows:
+\begin{equation}\label{eq:03_Navigation_Techniques:Time-Frequency_Source_Position}
+\begin{gathered}
+\vec{s}_0(\xi,\kappa) = \vec{u}_1 + c_1 \hat{\nu}^{[1]}_\textrm{I}(\xi,\kappa) = \vec{u}_2 + c_2 \hat{\nu}^{[2]}_\textrm{I}(\xi,\kappa),\\
+\implies \vec{u}_2 - \vec{u}_1 = c_1 \hat{\nu}^{[1]}_\textrm{I}(\xi,\kappa) - c_2 \hat{\nu}^{[2]}_\textrm{I}(\xi,\kappa),
+\end{gathered}
+\end{equation}
+where $\vec{s}_0$ is the triangulated source position and $c_1$ and $c_2$ are scalars found for each time-frequency bin.
+These scalars are computed by
+\begin{equation}\label{eq:03_Navigation_Techniques:Source_Triangulation}
+\left[
+\begin{array}{c}
+c_1 \\
+c_2
+\end{array}
+\right]
+ = 
+\left[
+\begin{array}{cc}
+\cos \phi_\textrm{I}^{[1]} & -\cos \phi_\textrm{I}^{[2]} \\[6pt]
+\sin \phi_\textrm{I}^{[1]} & -\sin \phi_\textrm{I}^{[2]}
+\end{array}
+\right]^{-1}
+ \cdot 
+\left[
+\begin{array}{c}
+x_2 - x_1 \\
+y_2 - y_1
+\end{array}
+\right],
+\end{equation}
+where $\phi_\textrm{I}^{[p]}$ denotes the azimuth of $\vec{\nu}_\textrm{I}^{[p]}$ and $x_p$ and $y_p$ denote the $x$ and $y$ components of $\vec{u}_p$, respectively.
+Note that the matrix inversion in \eqnref{eq:03_Navigation_Techniques:Source_Triangulation} fails when $\phi_\textrm{I}^{[1]} = \phi_\textrm{I}^{[2]}$, i.e., when the intensity vectors are parallel.
+A more general approach for source triangulation, either in three dimensions or for $P > 2$ microphones (or both), is described by \citet[section IV.A]{Thiergart2013}.
+
+\subsubsection{Sound field modeling and synthesis}
+The estimated ambisonics output signals are assembled in the time-frequency domain as follows.
+For a given listener position $\vec{r}_0$, we let $\vec{s}_0{}' = \vec{s}_0 - \vec{r}_0$ be the position of the triangulated source relative to the listener at each time-frequency bin.
+Additionally, we choose a reference microphone with index $p = p_\textrm{ref}$, such that the position of the triangulated source relative to the reference microphone is given by $\vec{s}_{p_\textrm{ref}} = \vec{s}_0 - \vec{u}_{p_\textrm{ref}}$.
+By default, we choose as the reference the nearest microphone to the listener.
+We further define a direct-to-diffuse ratio parameter, given by
+\begin{equation}\label{eq:03_Navigation_Techniques:Direct-to-Diffuse_Ratio}
+\Gamma(\xi,\kappa) = \frac{1}{\Psi^{[p_\textrm{ref}]}(\xi,\kappa)} - 1,
+\end{equation}
+as well as direct and diffuse components of the sound field, respectively, given by
+\begin{align}
+S_\textrm{dir}(\xi,\kappa) &= \sqrt{\frac{\Gamma(\xi,\kappa)}{1 + \Gamma(\xi,\kappa)}} \frac{\psi^{[p_\textrm{ref}]}}{i k h_0(k s_{p_\textrm{ref}})}, \\
+S_\textrm{diff}(\xi,\kappa) &= \sqrt{\frac{1}{1 + \Gamma(\xi,\kappa)}} \psi^{[p_\textrm{ref}]}.
+\end{align}
+Recall that direct point-source components are encoded into ambisonics using \eqnref{eq:02_Acoustical_Theory:PointSource_An}.
+Correspondingly, diffuse sound components are encoded into ambisonics by integrating the ``directivity'' of each ambisonics channel.
+That is, the effective ambisonic encoding filters for diffuse sound are given by
+\begin{equation}
+A_n = \sqrt{\frac{\|Y_n\|^2}{4\pi}}.
+\end{equation}
+From this, we compute the ambisonics output signals up to order $L_\text{out}$ by
+\begin{equation}\label{eq:03_Navigation_Techniques:Thiergart_Synthesis}
+\tilde{A}_n(\xi,\kappa) = i^{l+1} k h_l(k s_0{}') Y_n(\hat{s}_0{}') S_\textrm{dir}(\xi,\kappa) + \sqrt{\frac{\|Y_n\|^2}{4\pi}} S_\textrm{diff}(\xi,\kappa),
+\end{equation}
+which is converted into the time domain via an inverse STFT for all $n \in [0, N_\text{out}-1]$.

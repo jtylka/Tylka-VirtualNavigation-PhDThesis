@@ -1,0 +1,33 @@
+Binaural rendering of ambisonics enables a user to convert the multichannel ambisonics representation of a 3D sound field
+into a spatially-accurate, two-channel representation suitable for playback over headphones.
+Ideally, when rendering, the user would apply their own individualized head-related transfer functions (HRTFs)
+in order to achieve the highest possible spatial fidelity and an externalized sound image.
+However, freely-available tools for creating such individualized binaural renderings are limited.
+
+% Existing SOFA Amb2Bin tools:
+% Ambi Head by Noise Makers
+% JSAmbisonics for web
+% IRCAM's SPAT?
+% Harpex-X
+
+% Review of previous work focusing on the remaining problems (questions or deficiencies)
+% the present paper claims to contribute to solving
+Recently, \citet{Kronlachner2013} released an open-source suite of ambisonics plug-ins
+(known as the ``ambiX plug-ins'') which includes a plug-in for rendering ambisonics to binaural.
+Additionally, HRTFs are becoming widely available in the recently-standardized ``SOFA format''
+(spatially-oriented format for acoustics) \citep{AES69-2015},
+but there is currently no (easy) way to use custom HRTFs with the ambiX binaural plug-in.
+
+% A statement of the paper's main question(s) and goal(s),
+% followed by a succinct description of the general method and approach to be described in the paper
+Consequently, it is the goal of this work to provide a freely-available tool for users to create custom
+(and ideally, individualized) binaural renderings of ambisonics via the ambiX binaural plug-in.
+To that end, we present an open-source collection of MATLAB functions % Open-source motivation?
+for the purpose of creating ambiX binaural rendering configurations (also called ``decoder presets'')
+from SOFA-formatted HRTFs.
+
+% A brief section by section description of the structure of the paper
+In \secref{sec:A2_SABRE_Toolkit:Conventions}, we review the ambiX mathematical conventions and subsequently,
+in \secref{sec:A2_SABRE_Toolkit:Decoding_Ambisonics}, we describe the ambisonics decoding approaches implemented in this toolkit.
+Then, in \secref{sec:A2_SABRE_Toolkit:HRTF_Processing}, we discuss the various processing options that can be applied to the HRTFs.
+Finally, we summarize these contributions in \secref{sec:A2_SABRE_Toolkit:Summary}.

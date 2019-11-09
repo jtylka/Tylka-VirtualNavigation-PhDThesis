@@ -1,0 +1,51 @@
+For a point-source that generates an impulse at $t = t_0$ and is located at $\vec{s}_0$, the emitted pressure field (impulse response) is given by
+\begin{equation}
+p(t,\vec{r}) = \frac{2 \pi}{\left\| \vec{r} - \vec{s}_0 \right\|} \cdot \delta \left( (t-t_0) - \frac{\left\| \vec{r} - \vec{s}_0 \right\|}{c} \right),
+\end{equation}
+where $\|\cdot\|$ denotes the $\ell^2$ norm (Euclidean distance) of a vector.
+Taking the Fourier transform yields the acoustic potential field (transfer function) of that point-source, given by \citep[Eq.~(6.73)]{Williams1999}
+\begin{equation}\label{eq:02_Acoustical_Theory:PointSource}
+\psi(k,\vec{r}) = \frac{e^{i k \left\| \vec{r} - \vec{s}_0 \right\|}}{\left\| \vec{r} - \vec{s}_0 \right\|} e^{i k c t_0} = i k \cdot h_0 (k \left\| \vec{r} - \vec{s}_0 \right\| ) \cdot e^{i k c t_0}.
+\end{equation} % Confirmed in Mathematica
+%where, in general, $h_l$ is the (outgoing) spherical Hankel function of the first kind and of order $l$.
+The spherical Fourier-Bessel expansion of this expression (ignoring the time delay term) is given by~\citep[Eq.~(8.22)]{Williams1999}
+\begin{align}
+\frac{e^{i k \left\| \vec{r} - \vec{s}_0 \right\|}}{\left\| \vec{r} - \vec{s}_0 \right\|} &= 4 \pi i k \sum_{l=0}^{\infty} j_l(k r) h_l(k s_0) \sum_{m=-l}^{l} Y_l^m (\hat{s}_0) \frac{Y_l^m (\hat{r})}{\|Y_l^m\|^2} \\
+	&= \sum_{n=0}^{\infty} \left[ i^{l+1} k h_l(k s_0) Y_n (\hat{s}_0) \right] 4 \pi (-i)^l j_l(k r) \frac{Y_n (\hat{r})}{\|Y_n\|^2},
+\end{align} % Confirmed in MATLAB
+where we have assumed $r < s_0$ in order for $\vec{r}$ to be within the region of validity.
+Thus, the ambisonics encoding filters for this point source are given by
+\begin{equation}\label{eq:02_Acoustical_Theory:PointSource_An}
+A_n(k) = \underbrace{i^{l+1} k h_l(k s_0)}_{\text{distance coding}} \underbrace{Y_n (\hat{s}_0)}_{\text{panning}} \underbrace{ \vphantom{ Y_n (\hat{s}_0) } e^{i k c t_0}}_{\text{delay}}.
+\end{equation}
+
+%The ambisonics encoding filters for a point source located at $\vec{s}_0$ are given in the frequency domain by~\citep[Eq.~(10)]{Poletti2005}
+%\begin{equation}\label{eq:02_Acoustical_Theory:PointSource_An}
+%A_n(k) = i^{l+1} k h_l(k s_0) Y_n (\hat{s}_0),
+%\end{equation}
+%where $h_l$ is the (outgoing) spherical Hankel function of order $l$.
+
+For a plane-wave source located in the direction $\hat{s}_0$ (and propagating in the direction $-\hat{s}_0$), the pressure field is given by
+\begin{equation}
+p(t,\vec{r}) = 2 \pi \cdot \delta \left( (t-t_0) + \frac{\hat{s}_0 \cdot \vec{r}}{c} \right),
+\end{equation}
+where now $t = t_0$ indicates the time at which the impulse reaches the origin ($r = 0$).
+Taking the Fourier transform yields the acoustic potential field of this plane-wave, given by \citep[Eq.~(2.24), with $\vec{k} = -k\hat{s}_0$]{Williams1999}
+\begin{equation}
+\psi(k,\vec{r}) = e^{-i k \hat{s}_0 \cdot \vec{r}} e^{i k c t_0}.
+\end{equation} % Confirmed in Mathematica
+The spherical Fourier-Bessel expansion of this expression (ignoring the time delay term) is given by~\citep[Eq.~(6.175)]{Williams1999}
+\begin{align}
+e^{-i k \hat{s}_0 \cdot \vec{r}} &= 4 \pi \sum_{l=0}^{\infty} i^l j_l(k r) \sum_{m=-l}^{l} Y_l^m (-\hat{s}_0) \frac{Y_l^m (\hat{r})}{\|Y_l^m\|^2}\\
+	&= \sum_{n=0}^{\infty} Y_n (\hat{s}_0) 4 \pi (-i)^l j_l(k r) \frac{Y_n (\hat{r})}{\|Y_n\|^2} ,
+\end{align} % Confirmed in MATLAB
+since $Y_l^m (-\hat{s}_0) = (-1)^l Y_l^m (\hat{s}_0)$.
+Thus, the ambisonics encoding filters for this plane-wave source are given by
+\begin{equation}\label{eq:02_Acoustical_Theory:PlaneSource_An}
+A_n(k) = \underbrace{Y_n (\hat{s}_0)}_{\text{panning}} \underbrace{ \vphantom{ Y_n (\hat{s}_0) } e^{i k c t_0}}_{\text{delay}}.
+\end{equation}
+
+%For a plane-wave source, the ambisonics encoding filters are given by
+%\begin{equation}\label{eq:02_Acoustical_Theory:PlaneSource_An}
+%A_n(k) = Y_n (\hat{s}_0).
+%\end{equation}

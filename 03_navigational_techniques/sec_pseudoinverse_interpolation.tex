@@ -1,0 +1,48 @@
+\citet[section III.A]{Samarasinghe2014a} propose a pseudoinversion-based interpolation method in which they consider the ambisonics signals at the listening position and, using the spherical Fourier-Bessel translation coefficient matrices from \secref{sec:02_Acoustical_Theory:Ambisonics_Translation}, write a system of equations simultaneously describing the ambisonics signals at all $P$ ambisonics microphones.%
+\footnote{Note that \citeauthor{Samarasinghe2014a} only carry out their derivation for a two-dimensional sound field, but we have extended it here for three-dimensional sound fields \citep[section 3.2]{TylkaChoueiri2016}.}
+That is, for each wavenumber (or frequency) $k$, we can write
+\begin{equation}\label{eq:03_Navigation_Techniques:Linear_System}
+\mathbf{M}(k) \cdot \mathbf{x}(k) = \mathbf{y}(k),
+\end{equation}
+where, omitting frequency dependencies,
+\begin{equation}\label{eq:03_Navigation_Techniques:Linear_System_Matrices}
+\mathbf{M} = 
+    \left[ \begin{array}{c}
+    \left( \mathbf{T}(-\vec{r}_1) \right)^\text{T} \\
+    \left( \mathbf{T}(-\vec{r}_2) \right)^\text{T} \\
+    \vdots\\
+    \left( \mathbf{T}(-\vec{r}_P) \right)^\text{T}
+    \end{array} \right]
+,\quad
+\mathbf{y} = 
+    \left[ \begin{array}{c}
+    \mathbf{b}_1\\
+    \mathbf{b}_2\\
+    \vdots\\
+    \mathbf{b}_P
+    \end{array} \right],
+\end{equation}
+and $\vec{r}_p$ is the vector from the $p^\textrm{th}$ microphone to the listening position, given by $\vec{r}_p = \vec{r}_0 - \vec{u}_p$.
+Ideally, as $L_\textrm{in} \to \infty$, we should find $\mathbf{x} \to \mathbf{a}$ (the exact ambisonics signals of the sound field at $\vec{r}_0$).
+In practice, each microphone captures only $N_\textrm{in}$ ambisonics signals, so each $\mathbf{b}_p$ is a column-vector of length $N_\textrm{in}$ and $\mathbf{y}$ is a column-vector of length $P \cdot N_\textrm{in}$.
+
+In order to ensure that the system in \eqnref{eq:03_Navigation_Techniques:Linear_System} is not under-determined, we define the maximum order for $\mathbf{x}$, given by
+\begin{equation}\label{eq:03_Navigation_Techniques:Pinv_Interpolation_Lmax}
+L_\textrm{max} = \left\lfloor \sqrt{P \cdot N_\textrm{in}} \right\rfloor - 1,
+\end{equation}
+where $\lfloor \cdot \rfloor$ denotes rounding down to the nearest integer.
+Therefore, $\mathbf{x}$ is a column-vector of length $N_\textrm{max} = (L_\textrm{max} + 1)^2$ and each matrix $\mathbf{T}$ in \eqnref{eq:03_Navigation_Techniques:Linear_System_Matrices} will have dimensions $N_\textrm{max} \times N_\textrm{in}$ (rows $\times$ columns).
+Note that by this definition, we will always have $L_\textrm{max} \geq L_\textrm{in}$ irrespective of the number of microphones.
+
+Next, we compute the pseudoinverse (or inverse if $\mathbf{M}$ is square) of $\mathbf{M}$ by first finding its singular value decomposition, given by $\mathbf{M} = \mathbf{U} \Sigma \mathbf{V}^*$, where $(\cdot)^*$ represents conjugate-transposition.
+In their original paper, \citet{Samarasinghe2014a} suggest taking a truncated singular value regularization approach such that, for some tolerance level $\sigma_\text{min}$, all singular values $\sigma_n < \sigma_\text{min}$ are set to zero.
+This allows us to compute the regularized pseudoinverse of $\mathbf{M}$, given by \citep[Eq.~(17)]{Samarasinghe2014a}
+\begin{equation}
+\mathbf{L} = \mathbf{M}^{+} = \mathbf{V} \Sigma^{+} \mathbf{U}^*,
+\end{equation}
+where $(\cdot)^+$ represents pseudoinversion.
+Finally, we obtain an estimate of $\mathbf{a}$, given by
+\begin{equation}
+\mathbf{\tilde{a}}(k) = \mathbf{L}(k) \cdot \mathbf{y}(k).
+\end{equation}
+Note that, as with the weighted average method, we may choose to drop the higher-order terms in $\mathbf{\tilde{a}}$ such that we keep only up to order $L_\textrm{out}$, where $L_\textrm{out} \leq L_\textrm{max}$.

@@ -1,0 +1,49 @@
+As found in a previous analysis, the regularized least-squares interpolation filters derived in the previous section can induce significant spectral coloration at high frequencies, whereas, below some critical frequency, they induce negligible coloration \citep[cf.~Fig.~4b]{TylkaChoueiri2016}.
+%In particular, in the case of $P = 2$ microphones, this critical frequency was found to correspond to $k \Delta \approx 2 L_\textrm{in}$ \citep[cf.~Fig.~5]{TylkaChoueiri2016}.
+Consequently, we propose a two-band approach which applies the regularized least-squares interpolation filters at low frequencies ($k < k_0$) and employs the weighted average method at higher frequencies ($k \geq k_0$).
+Here, we let
+\begin{equation}\label{eq:08_Proposed_Method:Hybrid_XO_Freq}
+k_0 = \left\{
+  \begin{array}{c l}
+  \displaystyle \frac{1}{r_1}, & \text{for } P = 1,\\[8pt]
+  \displaystyle \frac{\Delta}{r_1 r_2}, & \text{for } P = 2,\\[8pt]
+  \displaystyle \frac{1}{\max_{p\in[1,P]} r_p}, & \text{otherwise},
+  \end{array} \right.
+\end{equation}
+which we found empirically to perform well in terms of coloration.
+
+We then rewrite the weighted average calculation, given in \eqnref{eq:03_Navigation_Techniques:Crossfading}, as a matrix equation, such that
+\begin{equation}
+\mathbf{\tilde{a}}(k) = 
+    \left[ \begin{array}{c c c c}
+    w_1 \mathbf{I} & w_2 \mathbf{I} & \cdots & w_P \mathbf{I}
+    \end{array} \right]
+\cdot
+     \left[ \begin{array}{c}
+    \mathbf{b}_1(k)\\
+    \mathbf{b}_2(k)\\
+    \vdots\\
+    \mathbf{b}_P(k)
+    \end{array} \right],
+\end{equation}
+where now $\mathbf{I}$ is the $N_\textrm{out} \times N_\textrm{in}$ identity matrix. %%NOTE%% num rows could be N_in, N_max, or N_out
+Thus, we define the combined interpolation filter matrix as
+\begin{equation}\label{eq:08_Proposed_Method:HybridFilters}
+\mathbf{H}(k) = \left\{
+  \begin{array}{c l}
+  \mathbf{L}_w(k), & \textrm{for } k < k_0, \\
+  \left[
+    \begin{array}{c c c c}
+    w_1 \mathbf{I} & w_2 \mathbf{I} & \cdots & w_P \mathbf{I}
+    \end{array}
+  \right], & \textrm{for } k \geq k_0.
+  \end{array} \right.
+\end{equation}
+Note that if we have only $P = 1$ valid microphone, the high-frequency filter matrix becomes the identity matrix (since $w_1 = 1$ after normalization).
+
+Given the well-established rule of thumb that a sound field is accurately represented up to a distance $r$ provided that $k r \leq L_\textrm{in}$ \citep{WardAbhayapala2001}, we expect that for $P = 1$, the coloration should be negligible below $k r_1 \approx L_\textrm{in}$.
+Additionally, for $P = 2$ microphones, we previously found that coloration appeared negligible below $k \Delta \approx 2 L_\textrm{in}$ for a listener equidistant from the microphones \citep[cf.~Fig.~5]{TylkaChoueiri2016}.
+However, these approximations were found to break down due to the near-field compensation filters needed in practice (described in \secref{sec:02_Acoustical_Theory:Ambisonics_Encoding}).
+Consequently, here we take a more conservative critical frequency, as in \eqnref{eq:08_Proposed_Method:Hybrid_XO_Freq}.%
+\footnote{Note that in this work we do not explore the case of $P > 2$, so a superior critical frequency likely exists.
+It may also still be worth pursuing order-dependent critical frequencies for $P = 1,2$, since, in principle, increasing the expansion order should improve accuracy, but we do not do so here.}

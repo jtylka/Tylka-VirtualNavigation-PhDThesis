@@ -1,0 +1,21 @@
+%%%% IMPULSE RESPONSE MEASUREMENTS %%%%
+\chapter{Impulse response measurements}\label{chap:A5_Impulse_Response}
+In this appendix, we review the exponential sine sweep (ESS) approach for measuring the impulse response (IR) of an acoustical system.
+The ESS is advantageous as it enables a high-SNR measurement of the system and tends to isolate and remove a significant portion of any non-linear distortion terms.
+Below, we describe the general procedure for extracting the IR of an acoustical system and subsequently discuss various implementations of the ESS, approaches to extracting the system's IR from the measured response, and possible implementation issues.
+In particular, we describe below our implementation of the so-called ``phase-controlled'' ESS (see \secref{sec:A5_Impulse_Response:PC-ESS}), which is generally sufficient to obtain a reasonably high-SNR measurement and, consequently, which we employ throughout this thesis to measure IRs (see, in particular, \chapreftwo{chap:05_Proposed_Models}{chap:10_Experimental_Validation}).
+
+\section{Introduction}\label{sec:A5_Impulse_Response:Introduction}
+\input{a5_impulse_response/sec_introduction}
+
+\section{General procedure}\label{sec:A5_Impulse_Response:Procedure}
+\input{a5_impulse_response/sec_procedure}
+
+\section{The exponential sine sweep}\label{sec:A5_Impulse_Response:ESS}
+\input{a5_impulse_response/sec_ess}
+
+\section{Summary}\label{sec:A5_Impulse_Response:Summary}
+\input{a5_impulse_response/sec_summary}
+
+\section*{Acknowledgements}
+Much of this work was originally included in a presentation by \citet{Tylka2014} at the 137\textsuperscript{th} Convention of the Audio Engineering Society, along with a more detailed investigation into the recently-patented two-sweep method for measuring acoustical impulse responses, described here in \secref{sec:A5_Impulse_Response:Two-Step-ESS}.

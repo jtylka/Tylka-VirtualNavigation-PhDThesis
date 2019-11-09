@@ -1,0 +1,71 @@
+Let $R_n(k, \vec{r})$ denote the spherical Fourier-Bessel basis functions defined in \secref{sec:02_Acoustical_Theory:Helmholtz_Equation} (see \eqnref{eq:02_Acoustical_Theory:Infinite_Order_Expansion}) and given by
+\begin{equation}\label{eq:02_Acoustical_Theory:Basis_Functions}
+R_n(k, \vec{r}) = 4\pi (-i)^l j_l(kr) \frac{Y_n(\hat{r})}{\|Y_n\|^2}.
+\end{equation}
+It can be shown that these basis functions can be translated along the vector $\vec{r}_0$ by \citep[Eq.~(3.2.1)]{GumerovDuraiswami2005}
+\begin{equation}\label{eq:02_Acoustical_Theory:Translated_Basis_Functions}
+R_n(k, \vec{r} + \vec{r}_0) = \sum_{n' = 0}^\infty T_{n,n'}(k,\vec{r}_0) R_{n'}(k, \vec{r}),
+\end{equation}
+where $T_{n,n'}$ are the so-called \textit{translation coefficients}.
+Integral forms of these translation coefficients as well as fast recurrence relations for computing them are given by \citet[section~3.2]{GumerovDuraiswami2005} and \citet[chapter 3]{Zotter2009PhD}.
+Additionally, a distilled algorithm for computing these coefficients is given by \citet{TylkaChoueiri2019a}, which is reproduced in \apxref{chap:A1_Navigation_Filters} of the present thesis.
+
+Now let us consider two sets of spherical Fourier-Bessel expansion coefficients for the same sound field: $B_n$, which describe the sound field for an expansion about the origin, and $A_{n'}$, which do the same for an expansion about $\vec{r}_0$.
+By \eqnref{eq:02_Acoustical_Theory:Infinite_Order_Expansion}, the acoustic potential field is given by
+\begin{equation}
+\psi(k,\vec{r} + \vec{r}_0) = \sum_{n' = 0}^\infty A_{n'}(k) R_{n'}(k, \vec{r}) = \sum_{n = 0}^\infty B_n(k) R_n(k, \vec{r} + \vec{r}_0).
+\end{equation}
+Substituting \eqnref{eq:02_Acoustical_Theory:Translated_Basis_Functions} into the above equation yields
+\begin{equation}
+\sum_{n' = 0}^\infty A_{n'}(k) R_{n'}(k, \vec{r}) = \sum_{n = 0}^\infty B_n(k) \left[ \sum_{n' = 0}^\infty T_{n,n'}(k,\vec{r}_0) R_{n'}(k, \vec{r}) \right].
+\end{equation}
+Rearranging and interchanging the order of the summations%
+\footnote{Note that this is possible when the summations converge absolutely and uniformly \citep[section 3.1.1]{GumerovDuraiswami2005}, which is likely the case since the expression necessarily converges to a finite $\psi$ for real sound fields.
+In any case, since in practice these summations will be truncated at a finite order, swapping the order becomes trivial.}
+reveals
+\begin{align}
+\sum_{n' = 0}^\infty A_{n'}(k) R_{n'}(k, \vec{r}) &= \sum_{n' = 0}^\infty \left[ \sum_{n = 0}^\infty T_{n,n'}(k,\vec{r}_0) B_n(k) \right] R_{n'}(k, \vec{r}), \\
+\implies A_{n'}(k) &= \sum_{n = 0}^\infty T_{n,n'}(k, \vec{r}_0) B_n(k).
+\end{align}
+
+In practice, we have only a truncated series expansion of the sound field, with measured coefficients $B_n$ up to order $L$, such that we compute
+\begin{equation}\label{eq:02_Acoustical_Theory:Translated_Expansion_Coefficients}
+A_{n'}(k) = \sum_{n = 0}^{N-1} T_{n,n'}(k, \vec{r}_0) B_n(k),
+\end{equation}
+where $N = (L + 1)^2$.
+This translation process is illustrated in \figref{fig:03_Navigation_Techniques:Problem_Formulation} for an arbitrary original expansion center, $\vec{u}$.
+Note that the translated expansion coefficients $A_{n'}$ can be computed to an arbitrary order $L'$, with $N' = (L' + 1)^2$ terms.
+
+In matrix form, we can write \eqnref{eq:02_Acoustical_Theory:Translated_Expansion_Coefficients} as
+\begin{equation}\label{eq:02_Acoustical_Theory:Translated_Expansion_Coefficients_Matrix}
+\mathbf{a}(k) = \left( \mathbf{T}(k, \vec{r}_0) \right)^\text{T} \cdot \mathbf{b}(k),
+\end{equation}
+where $(\cdot)^\text{T}$ denotes the transpose of the argument and, omitting dependencies,
+\begin{equation}\label{eq:02_Acoustical_Theory:Expansion_Coefficients_Vectors}
+\mathbf{a} = 
+    \left[ \begin{array}{c}
+    A_0\\
+    A_1\\
+    \vdots\\
+    A_{N'-1}
+    \end{array} \right]
+,\quad
+\mathbf{b} = 
+    \left[ \begin{array}{c}
+    B_0\\
+    B_1\\
+    \vdots\\
+    B_{N-1}
+    \end{array} \right],
+\end{equation}
+and
+\begin{equation}\label{eq:02_Acoustical_Theory:Translation_Matrix}
+\mathbf{T}_{(N \times N')} = 
+    \left[ \begin{array}{cccc}
+    T_{0,0} & T_{0,1} & \cdots & T_{0,N'-1}\\
+    T_{1,0} & T_{1,1} & \cdots & T_{1,N'-1}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    T_{N-1,0} & T_{N-1,1} & \cdots & T_{N-1,N'-1}
+    \end{array} \right].
+\end{equation}
+An algorithm to compute this matrix via recurrence relations is given in~\apxref{chap:A1_Navigation_Filters}.

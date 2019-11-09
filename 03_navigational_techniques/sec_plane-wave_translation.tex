@@ -1,0 +1,19 @@
+The second navigational method we consider uses a plane-wave decomposition of the finite-order potential field.
+This technique was developed by \citet{SchultzSpors2013}, who showed that translation can be achieved by applying a frequency-domain phase-factor (or group delay in the time domain) to each plane-wave term, based on the direction of travel of the listener relative to the propagation direction of each plane-wave.
+
+Beginning with \eqnref{eq:02_Acoustical_Theory:PW_Quadrature_Rendered_Field}, we see that, for each term in this summation, the potential field at $\vec{r} + \vec{r}_0$ differs only by a phase-factor: $e^{-i k \hat{v}_q \cdot \vec{r}_0}$.
+We combine this factor into the signature function to define the \textit{translated signature function}, $\mu'$, given by \citep{MenziesAlAkaidi2007b}
+\begin{equation}\label{eq:03_Navigation_Techniques:PW_Translation}
+\mu'(k,\hat{v}_q;\vec{r}_0) = \mu(k,\hat{v}_q) e^{-i k \hat{v}_q \cdot \vec{r}_0},
+\end{equation}
+where the dot product in the exponential indicates that the $q^\text{th}$ plane-wave term undergoes a time delay proportional to the distance traveled parallel to the propagation direction, $-\hat{v}_q$, of that term.
+Effectively, this operation translates the expansion center from the origin to $\vec{r}_0$.
+
+Given a set of measured ambisonics signals, $\mathbf{b}$, up to order $L_\text{in}$, we can substitute $B_n$ for $A_n$ in \eqnref{eq:02_Acoustical_Theory:A2mu} to compute the measured signature function, $\mu$.
+Then, using \eqnref{eq:03_Navigation_Techniques:PW_Translation},
+we compute the translated signature function, $\mu'(k,\hat{v}_q;\vec{r}_0 - \vec{u})$,
+where $\vec{u}$ is the position of the ambisonics microphone and $\vec{r}_0$ is the position of the listener.
+By substituting $\mu'$ for $\mu$ in~\eqnref{eq:02_Acoustical_Theory:mu2A_Quadrature}, we then convert this translated signature function back into ambisonics signals, up to an arbitrary order, $L_\text{out}$, yielding ambisonics signals for the listener, $\mathbf{a}$.
+
+Note that, as with the virtual ambisonics method, one could render the translated plane-wave terms directly to binaural by filtering each signal by the appropriate HRTF.
+Here, however, we choose to generate an ambisonics output for mathematical consistency across different navigational methods.

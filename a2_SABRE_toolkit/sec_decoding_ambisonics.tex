@@ -1,0 +1,63 @@
+Implemented in this toolkit are several basic methods of decoding ambisonics (described below),
+but the Ambisonic Decoder Toolbox (ADT) by \citet{Heller2012} is a much more comprehensive tool for creating state-of-the-art ambisonic decoders (available online).\citefooturl{ADTURL}
+Consequently, one intended use of this toolkit is to add custom HRTFs to an existing ambiX decoder preset (such as those generated using the ADT).%
+\footnote{At present, the SABRE toolkit is only compatible with single-band decoders.
+Consequently, multi-band decoders should be implemented in parallel (as a bank of single-band decoders), downstream of a crossover network.}
+Note that doing so requires the user to specify the grid of speaker positions, as that information is not explicitly contained in ambiX decoder presets.
+
+Generally, the ambiX binaural decoder employs the virtual ambisonics rendering approach, as described in \secref{sec:02_Acoustical_Theory:VA_Binaural}.
+However, with this toolkit, we take advantage of that architecture (a decoding matrix followed by HRTF filters) and the linearity of the processing chain, in order to also implement the plane-wave rendering approach (as described in \secref{sec:02_Acoustical_Theory:PW_Quadrature_Binaural}) and the spherical-harmonic HRTF rendering approach (as described in \secref{sec:02_Acoustical_Theory:SH_Binaural}).
+For each of the decoding methods described below, we seek an equation of the form of \eqnref{eq:02_Acoustical_Theory:VA_Binaural_Matrix}, such that the binaural pressure signals, $p^{\text{L,R}}$, are given by
+\begin{equation}\tag{\ref{eq:02_Acoustical_Theory:VA_Binaural_Matrix}}
+p^{\text{L,R}}(t) = \left( \mathbf{h}^{\text{L,R}} \ast \left( \mathbf{D} \cdot \mathbf{a} \right) \right)(t).
+\end{equation}
+
+\subsection{Basic decoding}
+In this toolkit, we have implemented basic ambisonics decoding functionality in order to compute,
+for a given loudspeaker array configuration, the basic (pseudoinverse) decoder.
+Recalling~\eqnref{eq:02_Acoustical_Theory:PinvDecoder}, this decoder matrix $\mathbf{D}$ is given by
+\begin{equation}\tag{\ref{eq:02_Acoustical_Theory:PinvDecoder}}
+\mathbf{D} = \mathbf{Y}^{+}.
+\end{equation}
+The output signals from this decoder matrix are then filtered by the vector, $\mathbf{h}^{\text{L,R}}$, of HRIRs for a given listener and for the directions of each loudspeaker.
+
+\subsection{Quadrature decoding}
+For specific spherical grids (e.g., those derived by \citet{FliegeMaier1999}) that have known corresponding quadrature weights,
+we can alternatively compute a quadrature decoder.
+Recall that, in the case of a finite-term plane-wave expansion (computed on this spherical grid) of a sound field, the resulting binaural pressure signals are given by
+\begin{equation}\tag{\ref{eq:02_Acoustical_Theory:PW_Quadrature_Binaural_Matrix}}
+p^{\text{L,R}}(t) = \left( \mathbf{h}^{\text{L,R}} \ast \left( \mathbf{W} \cdot \mathbf{Y}^{\textrm{T}} \cdot \mathbf{F}^{-1} \cdot \mathbf{a} \right) \right) (t),
+\end{equation}
+where, as defined in \secref{sec:02_Acoustical_Theory:Binaural_Rendering}, we have let
+\begin{equation}\tag{\ref{eq:02_Acoustical_Theory:PW_Quadrature_Weights}}
+\mathbf{W} = \text{diag} \left\{ \begin{bmatrix} w_1 & w_2 & \cdots & w_Q \end{bmatrix} \right\}.
+\end{equation}
+Comparing \eqnreftwo{eq:02_Acoustical_Theory:VA_Binaural_Matrix}{eq:02_Acoustical_Theory:PW_Quadrature_Binaural_Matrix}, we obtain a decoder matrix given by
+\begin{equation}
+\mathbf{D} = \mathbf{W} \cdot \mathbf{Y}^{\textrm{T}} \cdot \mathbf{F}^{-1},
+\end{equation}
+whose output signals would again be filtered by the same vector, $\mathbf{h}^{\text{L,R}}$, of HRIRs.
+
+\subsection{Compact decoding}
+In order to make the decoding matrix as compact as possible, we compute spherical harmonic HRTFs, as described in \secref{sec:02_Acoustical_Theory:SH_Binaural}.
+More generally, we can compute the spherical harmonic HRTFs by performing the matrix multiplication with any decoder matrix, i.e., $\mathbf{\tilde{h}}^{\text{L,R}}(t) = \mathbf{h}^{\text{L,R}}(t) \cdot \mathbf{D}$.
+This process simply combines the decoding matrix and per-direction HRIRs into a single set of filters.\footnote{Conceptually,
+each compacted HRIR $\tilde{h}_{n}^{\text{L,R}}(t)$ represents the signals at the ears in response to an impulse sent through the $n^{\textrm{th}}$ ambisonics channel.}
+Thus, we can write the ambisonics decoder as simply an $N \times N$ identity matrix, i.e., $\mathbf{\tilde{D}} = \mathbf{I}_{(N \times N)}$, such that $\mathbf{\tilde{h}}^{\text{L,R}}(t) \cdot \mathbf{\tilde{D}} = \mathbf{h}^{\text{L,R}}(t) \cdot \mathbf{D}$.
+
+\subsection{Normalization}
+For each HRIR (compacted or not), we first compute the maximum gain, $\alpha_q$, across the entire frequency response.
+Subsequently, we attenuate each HRIR and amplify the corresponding row of the decoder matrix by that gain, i.e.,
+\begin{equation}
+\mathbf{\hat{h}}^{\text{L,R}}(t) = \mathbf{h}^{\text{L,R}}(t) \cdot \mathbf{G}^{-1},
+\quad\quad
+\text{and}
+\quad\quad
+\mathbf{\hat{D}} = \mathbf{G} \cdot \mathbf{D},
+\end{equation}
+where
+\begin{equation}
+\mathbf{G} = \text{diag} \left\{ \begin{bmatrix} \alpha_1 & \alpha_2 & \cdots & \alpha_Q \end{bmatrix} \right\},
+\end{equation}
+such that $\mathbf{\hat{h}}^{\text{L,R}}(t) \cdot \mathbf{\hat{D}} = \mathbf{h}^{\text{L,R}}(t) \cdot \mathbf{D}$.
+Finally, we normalize the overall decoder matrix such that the maximum absolute value of any element in matrix is unity.

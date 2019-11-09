@@ -1,0 +1,44 @@
+Here, we describe physical metrics for the acoustic intensity vector and diffuseness.
+According to \citet{MerimaaPulkki2005}, the acoustic intensity vector and a diffuseness parameter can be computed using the four standard ``B-format'' signals.
+These signals are related to the first four ACN/N3D ambisonics signals by
+\begin{equation}
+\begin{split}
+W &= A_0 / \sqrt{2}, \\
+Y &= A_1 / \sqrt{3}, \\
+Z &= A_2 / \sqrt{3}, \\
+X &= A_3 / \sqrt{3},
+\end{split}
+\end{equation}
+where this relationship can be derived by comparing \eqnref{eq:02_Acoustical_Theory:PlaneSource_An} and the B-format encoding equations specified by \citet[p.~62]{MalhamMyatt1995}.
+We now construct a frequency-dependent Cartesian row vector, $\vec{X}$, given by
+\begin{equation}
+\vec{X} \equiv \begin{bmatrix} X & Y & Z \end{bmatrix} = \frac{1}{\sqrt{3}} \begin{bmatrix} A_3 & A_1 & A_2 \end{bmatrix} = \frac{\vec{A}}{\sqrt{3}},
+\end{equation}
+where we have further defined a proportional vector $\vec{A} = \left[ A_3, A_1, A_2 \right] = \sqrt{3} \vec{X}$.
+We will also need the acoustic impedance of the medium, $Z_0 = \rho_0 c$, where $\rho_0 \approx 1.225$~kg/m\textsuperscript{3} is the density of the medium and $c \approx 343$~m/s is the speed of sound.
+
+\subsection{Acoustic intensity vector (\texorpdfstring{$\vec{\nu}_{\text{I}}$}{vI})}\label{sec:04_Auditory_Models:Intensity_Vector}
+Using the above, the acoustic intensity vector, $\vec{\nu}_{\textrm{I}}$, is given by \citep[Eq.~(11)]{MerimaaPulkki2005}
+\begin{equation}\label{eq:04_Auditory_Models:Intensity_Vector}
+\vec{\nu}_{\textrm{I}}(f) = \frac{\sqrt{2}}{Z_0} \text{Re} \left\{ \overline{W}(f) \vec{X}(f) \right\} = \frac{1}{{Z_0 \sqrt{3}}} \text{Re} \left\{ \overline{A_0}(f) \vec{A}(f) \right\},
+\end{equation}
+where $\overline{(\cdot)}$ and $\text{Re} \left\{ \cdot \right\}$ denote taking the complex conjugate and the real part of the argument, respectively.
+
+\subsection{Diffuseness parameter (\texorpdfstring{$\Psi$}{Psi})}\label{sec:04_Auditory_Models:Diffuseness_Parameter}
+Additionally, the diffuseness parameter $\Psi$ is given by \citep[Eq.~(12)]{MerimaaPulkki2005}
+\begin{equation}\label{eq:04_Auditory_Models:Diffuseness}
+\begin{split}
+\Psi(f) &= 1 - \sqrt{2} \frac{ \left\| \text{Re} \left\{ \overline{W}(f) \vec{X}(f) \right\} \right\|}{\left| W(f) \right|^2 + \left\| \vec{X}(f) \right\|^2 / 2} \\
+	&= 1 - \frac{2}{\sqrt{3}} \frac{ \left\| \text{Re} \left\{ \overline{A_0}(f) \vec{A}(f) \right\} \right\|}{\left| A_0(f) \right|^2 + \left\| \vec{A}(f) \right\|^2 / 3}
+\end{split}
+\end{equation}
+where $\left\| \cdot \right\|$ denotes the norm of a complex-valued vector, given by
+\begin{equation}
+\| \vec{x} \| = \sqrt{\left\langle \vec{x}, \vec{x} \right\rangle} \equiv \sqrt{\vec{x} \vec{x}^\text{H}},
+\end{equation}
+where $(\cdot)^\text{H}$ denotes the conjugate (Hermitian) transpose of the argument.
+We then compute the logarithmically-weighted mean of the difference between the diffuseness spectra for the test and reference samples, given by
+\begin{equation}
+e_\Psi = \frac{\displaystyle \int_{f_\text{L}}^{f_\text{U}} \frac{1}{f} \left( \tilde{\Psi}(f) - \Psi(f) \right) df}{\log(f_\text{U}) - \log(f_\text{L})},
+\end{equation}
+where $f_\text{L} = 50$~Hz and $f_\text{U} = 21$~kHz.

@@ -1,0 +1,8 @@
+We conduct simulations of the time-frequency interpolation method following the simulation framework laid out in \chapref{chap:06_Simulation_Framework}.
+However, note that for this method, we intentionally omit source azimuths of $\varphi_0 = 90^\circ$.
+This is necessary since, for a source azimuth of $\pm90^\circ$, the source becomes collinear with the microphones and consequently the triangulation calculation (see \eqnref{eq:03_Navigation_Techniques:Source_Triangulation}) can no longer produce a unique solution.
+Also, recall that the time-frequency method has only been derived for first-order ambisonics input signals (see \secref{sec:03_Navigation_Techniques:Thiergart_Method}), so we must choose $L_\text{in} = 1$ for this method.
+
+For ease of comparison, we also reproduce in this chapter the simulation results presented in \chapref{chap:08_Proposed_Method} for our proposed parametric interpolation method.
+Note, however, that in those simulations we included source azimuths of $\varphi_0 = 90^\circ$ and chose $L_\text{in} = 4$.
+(Recall from \secref{sec:08_Proposed_Method:Order_Dependence} that the performance of our proposed method does not vary significantly with order.)

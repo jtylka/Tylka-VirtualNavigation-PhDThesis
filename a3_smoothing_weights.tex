@@ -1,0 +1,24 @@
+%%%% FRACTIONAL OCTAVE SMOOTHING %%%%
+\chapter{Log-symmetric fractional-octave smoothing}\label{chap:A3_Smoothing_Weights}
+In this appendix, we reproduce a prior publication \citep{Tylka2017} in which we proposed a method for fractional-octave smoothing that, for spectra that are originally symmetric in log-frequency, preserves said symmetry after smoothing.
+Unlike an existing method, which requires interpolation of the FFT spectra to a log-frequency scale, the proposed method uses analytically-derived smoothing windows and operates directly in the FFT domain, thereby retaining compatibility with well-established spectral smoothing techniques such as complex smoothing.
+In this work, we compared the proposed method to two existing methods by smoothing the magnitude response of an analog band-pass filter (which is symmetric on a log-frequency scale) and subsequently calculating a ``center of mass'' of the smoothed spectra to quantify any loss of symmetry.
+The first existing method uses symmetric (on a linear scale) smoothing windows, which exhibit the correct bandwidths but do not span the correct fractional-octave frequency ranges, whereas the second interpolates the spectrum to logarithmically-spaced frequencies and then uses a symmetric fixed-width smoothing window.
+As reproduced below, the results of this study showed that the proposed method achieves nearly identical smoothed spectra to the second method, but without the need for interpolation, and that the first method indeed skews the log-symmetry of the original spectra.
+Consequently, throughout the present thesis, we employ our proposed method for fractional-octave smoothing where needed (see, in particular, \secref{sec:04_Auditory_Models:Coloration_Metrics:Epk}).
+
+\section{Introduction}\label{sec:A3_Smoothing_Weights:Introduction}
+\input{a3_smoothing_weights/sec_introduction}
+
+\section{Smoothing methods}\label{sec:A3_Smoothing_Weights:Smoothing_Methods}
+\input{a3_smoothing_weights/sec_smoothing_methods}
+
+\section{Analysis}\label{sec:A3_Smoothing_Weights:Analysis}
+\input{a3_smoothing_weights/sec_analysis}
+
+\section{Conclusions}\label{sec:A3_Smoothing_Weights:Conclusions}
+\input{a3_smoothing_weights/sec_conclusions}
+
+\section*{Acknowledgements}
+This work was originally published by \citet{Tylka2017} in \textit{The Journal of the Audio Engineering Society}.
+The present author wishes to thank R.~Sridhar for fruitful discussions during this work and the anonymous reviewers for their feedback.

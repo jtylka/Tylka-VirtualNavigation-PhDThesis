@@ -1,0 +1,26 @@
+%%%% SABRE TOOLKIT %%%%
+\chapter{MATLAB toolkit for ambisonics-to-binaural rendering}\label{chap:A2_SABRE_Toolkit}
+In this appendix, we reproduce a prior publication \citep{TylkaChoueiri2017b} in which we presented an open-source collection of MATLAB functions, referred to as the SOFA/ambiX binaural rendering (SABRE) toolkit, which can be used to generate custom ambisonics-to-binaural decoders for the ambiX binaural plug-in.
+Although databases of head-related transfer functions (HRTFs) are becoming widely available in the recently-standardized  ``SOFA format'' (spatially-oriented format for acoustics), there was previously no (easy) way to use custom HRTFs with the ambiX binaural plug-in.
+The SABRE toolkit enables the user to generate custom binaural rendering configurations for the plug-in from any SOFA-formatted HRTFs or to add HRTFs to an existing ambisonics decoder.
+As described below, implemented in the toolkit are various approaches for ambisonics decoding as well as several methods of HRTF interpolation and equalization.
+
+\section{Introduction}\label{sec:A2_SABRE_Toolkit:Introduction}
+\input{a2_SABRE_toolkit/sec_introduction}
+
+\section{Conventions}\label{sec:A2_SABRE_Toolkit:Conventions}
+\input{a2_SABRE_toolkit/sec_conventions}
+
+\section{Decoding ambisonics}\label{sec:A2_SABRE_Toolkit:Decoding_Ambisonics}
+\input{a2_SABRE_toolkit/sec_decoding_ambisonics}
+
+\section{HRTF processing}\label{sec:A2_SABRE_Toolkit:HRTF_Processing}
+\input{a2_SABRE_toolkit/sec_HRTF_processing}
+
+\section{Summary}\label{sec:A2_SABRE_Toolkit:Summary}
+\input{a2_SABRE_toolkit/sec_summary}
+
+\section*{Acknowledgements}
+The SABRE toolkit relies on the ambiX ambisonic plug-in suite by \citet{Kronlachner2013,ambiXPlugInURL} and requires head-related transfer functions (HRTFs) stored in the SOFA format \citep{AES69-2015,SOFAMainPageURL}.
+Accordingly, the SOFA API for MATLAB is needed to import the HRTF files (available online).\citefooturl{SOFAAPIURL}
+The toolkit was originally presented by \citet{TylkaChoueiri2017b} at the 143\textsuperscript{rd} Convention of the Audio Engineering Society.

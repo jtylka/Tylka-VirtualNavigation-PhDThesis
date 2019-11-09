@@ -1,0 +1,10 @@
+We ultimately compute errors incurred through navigation by each method using the following metrics:
+\begin{enumerate}
+\item the level error, $e_\lambda$, of the mean audible energy (MAE), as given in \secref{sec:04_Auditory_Models:Audible_Energy},
+\item the spectral range, $\rho_\eta$, of the auditory band spectral error (ABSE), as given in \secref{sec:04_Auditory_Models:Coloration_Metrics:ABSE},
+\item the localization error, $e_\nu$, as given in \eqnref{eq:04_Auditory_Models:Localization_Error}, for the localization vector model proposed in \secref{sec:05_Proposed_Models:Localization_Model}, and
+\item the error, $e_\Psi$, in the diffuseness parameter, as given in \secref{sec:04_Auditory_Models:Diffuseness_Parameter}.
+\end{enumerate}
+In the following chapters, we plot these predicted errors, averaged over the entire navigable region (as defined above) and all source azimuths,%
+\footnote{Note that doing so yields an effective navigable region which is disk-shaped relative to a single fixed source position and, due to symmetry, we need only compute these errors on half of the disk.}
+for various combinations of source distance $s_0$ and either microphone distance $u$ (for extrapolation methods) or microphone spacing $\Delta$ (interpolation methods).

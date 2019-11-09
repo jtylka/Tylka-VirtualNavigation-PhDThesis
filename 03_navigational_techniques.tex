@@ -1,0 +1,85 @@
+%%%% NAVIGATIONAL TECHNIQUES %%%%
+\chapter{Review of existing navigational methods}\label{chap:03_Navigation_Techniques}
+As mentioned in \secref{sec:01_Introduction:Background}, the goal of virtual navigation is to reconstruct, at a specified position (e.g., the location of a listener), a sound field that has been measured from one or more known locations (e.g., the locations of ambisonics microphones).
+In this section, we review existing methods for such virtual navigation of ambisonics-encoded sound fields.
+The methods reviewed here are listed in \tabref{tab:01_Introduction:Methods} (although not all those methods listed in the table are reviewed here).
+We first present a general mathematical formulation of the navigation problem in \secref{sec:03_Navigation_Techniques:Problem_Formulation} in order to establish a consistent framework and nomenclature for describing the methods.
+We then describe several existing navigational methods: in \secref{sec:03_Navigation_Techniques:Extrapolation_Methods}, we present three linear extrapolation-based navigational methods and, in \secref{sec:03_Navigation_Techniques:Interpolation_Methods}, we present three (two linear and one parametric) interpolation-based navigational methods.
+The performance of several of these methods will be characterized in \chaprefthru{chap:07_Characterization_Extrapolation}{chap:09_Thiergart_Comparison}.
+%Several of these methods have also been implemented in a MATLAB toolkit, which is freely available online.\citefooturl{AmbiNavToolkitURL}
+
+\section{Mathematical formulation}\label{sec:03_Navigation_Techniques:Problem_Formulation}
+\input{03_navigational_techniques/sec_navigation_problem}
+
+\section{Extrapolation methods}\label{sec:03_Navigation_Techniques:Extrapolation_Methods}
+In this section, we review three linear extrapolation-based navigational methods:
+\begin{enumerate}
+\item virtual ambisonics \citep[section 3.1]{TylkaChoueiri2015},
+\item plane-wave translation \citep{SchultzSpors2013}, and
+\item ambisonics translation \citep{GumerovDuraiswami2005,MenziesAlAkaidi2007a,Zotter2009PhD}.
+\end{enumerate}
+
+%% VIRTUAL AMBISONICS %%
+\subsection{Virtual ambisonics}\label{sec:03_Navigation_Techniques:VA_Technique}
+\input{03_navigational_techniques/sec_virtual_ambisonics}
+
+%% PLANE-WAVE TRANSLATION %%
+\subsection{Plane-wave translation}\label{sec:03_Navigation_Techniques:PW_Technique}
+\input{03_navigational_techniques/sec_plane-wave_translation}
+
+%% AMBISONICS TRANSLATION %%
+\subsection{Ambisonics translation}\label{sec:03_Navigation_Techniques:SR_Technique}
+\input{03_navigational_techniques/sec_ambisonics_translation}
+
+%%%% INTERPOLATION METHODS %%%%
+\section{Interpolation methods}\label{sec:03_Navigation_Techniques:Interpolation_Methods}
+In this section, we review three interpolation-based navigational methods:
+\begin{enumerate}
+\item weighted-average interpolation \citep{Southern2009,MarietteKatz2009},
+\item regularized least-squares (i.e., pseudoinversion-based) ambisonics interpolation \citep{Samarasinghe2014a,TylkaChoueiri2016}, and
+\item time-frequency sound field analysis and modeling \citep{Thiergart2013}.
+\end{enumerate}
+
+%%%% Crossfading Method %%%%
+\subsection{Weighted-average interpolation}\label{sec:03_Navigation_Techniques:XF_Technique}
+\input{03_navigational_techniques/sec_weighted_average_interpolation}
+
+%%%% Pseudoinverse Method %%%%
+\subsection{Regularized least-squares ambisonics interpolation}\label{sec:03_Navigation_Techniques:Pinv_Technique}
+\input{03_navigational_techniques/sec_pseudoinverse_interpolation}
+
+%%%% Thiergart Method %%%%
+\subsection{Sound field analysis and modeling}\label{sec:03_Navigation_Techniques:Thiergart_Method}
+\input{03_navigational_techniques/sec_thiergart_method}
+
+\section{Summary of methods}
+In this section, we summarize the main equations for, and important differences between, the methods reviewed in this chapter.
+
+\subsection{Extrapolation methods}
+The virtual ambisonics and plane-wave translation methods are generally very similar:
+both methods entail representing the sound field with a finite number of discrete sources, which are often distributed spherically around the recording point.
+They differ, however, in that the virtual ambisonics method represents the sound field using point-sources, whereas the plane-wave translation method uses plane-wave sources.
+Consequently, while translation for the plane-wave translation method requires only a simple time-delay term (see \eqnref{eq:03_Navigation_Techniques:PW_Translation}), translation for the virtual ambisonics method additionally requires directional changes and amplification (or attenuation) based on distance changes for each point-source (see \eqnref{eq:03_Navigation_Techniques:VA_Output}).
+Nevertheless, due to the similarities between these two methods, in \chapref{chap:07_Characterization_Extrapolation} we omit the virtual ambisonics method and instead focus our analysis only on the plane-wave and ambisonics translation methods.
+
+The ambisonics translation method is categorically different from the other two methods, as it does not seek an alternative representation of the sound field.
+Instead, the method operates directly on the ambisonics signals by applying a matrix of frequency-dependent translation coefficients (see \eqnref{eq:03_Navigation_Techniques:Forward_Ambisonics_Translation}).
+As demonstrated in \secref{sec:03_Navigation_Techniques:SR_Technique}, these coefficients necessarily introduce a low-pass-like roll-off of high-frequency energy (see \figref{fig:03_Navigation_Techniques:SRE_RollOff}).
+The main equations describing these methods are reproduced (in slightly modified forms) in \tabref{tab:03_Navigational_Techniques:Extrapolation_Equations}.
+
+\input{03_navigational_techniques/extrap_equations}
+
+\subsection{Interpolation methods}
+The weighted-average and regularize least-squares interpolation methods are similar in that they are both linear with respect to the measured ambisonics signals.
+That is, given the microphone positions and the desired listening position, the interpolation weights $w_p$ (see \eqnref{eq:03_Navigation_Techniques:Crossfading}) and interpolation coefficients $\mathbf{T}$ (\eqnref{eq:03_Navigation_Techniques:Linear_System_Matrices}) can be computed immediately, irrespective of the measured signals.
+The time-frequency sound field analysis and modeling method, however, uses the measured ambisonics signals to compute the potential $\psi$ (see \eqnref{eq:03_Navigation_Techniques:Time-Frequency_Potential}), the direct-to-diffuse ratio parameter $\Gamma$ (\eqnref{eq:03_Navigation_Techniques:Direct-to-Diffuse_Ratio}), and the triangulated source position $\vec{s}_0$ (\eqnref{eq:03_Navigation_Techniques:Time-Frequency_Source_Position}).
+The main equations describing these methods are reproduced (in slightly modified forms) in \tabref{tab:03_Navigational_Techniques:Interpolation_Equations}.
+
+Due to this fundamental difference, the time-frequency method is, in principle, free from the region of validity restriction (see \secref{sec:02_Acoustical_Theory:Helmholtz_Equation}) that limits the other two methods.
+This is because the modeled sound field for that method consists of a finite number of known point-sources, which are all rendered during playback at the desired listening position (see \eqnref{eq:03_Navigation_Techniques:Thiergart_Synthesis}).
+Therefore, by definition, the rendered sound field is valid at that position.
+The linear methods, however, have no knowledge of the positions of any of the real sources, so the region of validity restriction for a given microphone might inadvertently be violated as the listener navigates.
+It is worth recalling, however, that the precise penalties for violating the region of validity restriction have not been established and, in any case, the performance of the time-frequency method depends on the accuracy with which the various required parameters can be estimated.
+These issues are the subjects of our investigations in \chapreftwo{chap:08_Proposed_Method}{chap:09_Thiergart_Comparison}.
+
+\input{03_navigational_techniques/interp_equations}

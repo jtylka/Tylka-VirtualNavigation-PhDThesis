@@ -1,0 +1,24 @@
+In this chapter, we proposed and characterized an interpolation-based method for virtual navigation, wherein the subset of microphones to be used is parametrically determined to ensure that the region of validity restriction is not violated.
+An existing alternative method, in which navigation is performed by computing a weighted average of the ambisonics signals from each microphone, was shown in \secref{sec:08_Proposed_Method:Fundamental_Problems} to incur spectral coloration due to comb-filtering and localization errors due to the precedence effect.
+The proposed method, described in \secref{sec:08_Proposed_Method:Proposed_Techniques}, employs knowledge of the locations of any near-field sources in order to determine which ambisonics microphones are valid for use in the navigation calculation as a function of the desired listening position.
+Additionally, at low frequencies, the proposed method applies a matrix of regularized least-squares inverse filters to estimate the ambisonics signals at the listening position, while at high frequencies, the weighted average method is employed.
+
+Following the numerical simulation framework laid out in \chapref{chap:06_Simulation_Framework}, we compared the proposed method to the weighted average method.
+These two methods were evaluated for a linear array geometry (illustrated in \figref{fig:06_Simulation_Framework:Linear_Geometry}) in terms of the metrics enumerated in \secref{sec:06_Simulation_Framework:Metrics} for sound level, spectral coloration, source localization, and diffuseness.
+Results show that, for interior sources (as defined in \figref{fig:06_Simulation_Framework:Linear_Geometry}), both methods fail to achieve a sufficient reproduced sound level.
+As sound level is well-known to be a primary distance cue \citep[section 3.1.1]{Zahorik2005}, the impact of these errors on distance perception should be investigated through subjective listening tests.
+
+Otherwise, for interior sources, the proposed method achieves a significant improvement (in terms of coloration, localization, and diffuseness) over the existing method.
+In particular, the proposed method yields significantly improved localization errors over the existing method for large microphone spacings (larger than $0.5$~m).
+This improvement is primarily a result of excluding the invalid microphone, which would otherwise add spectral coloration, corrupt the localization information, and increase diffuseness in the reproduced signals.
+Additionally, for small microphone spacings (smaller than $0.5$~m) and exterior sources, the proposed method achieves slightly smaller spectral errors than does the existing method.
+This is due to the widening (as microphone spacing decreases) of the frequency range over which the regularized least-squares interpolation filters achieve a nearly flat frequency response (see \figref{fig:08_Proposed_Method:Azimuth_Dependence}). % (cf.~\citet[Fig.~4b]{TylkaChoueiri2016}).
+% this is basically the main result of the sourceAz section
+
+Results also show that the performance of the proposed method is largely independent of the input ambisonics order (see \secref{sec:08_Proposed_Method:Results}).
+As this is primarily a consequence of our order-independent choice of critical frequency for the hybrid interpolation filters (see \eqnref{eq:08_Proposed_Method:Hybrid_XO_Freq}), future refinements to the proposed method should explore the use of order-dependent critical frequencies in an effort to better leverage the additional information about the sound field contained in the higher-order signals.
+Ideally, this information could be used to further improve localization accuracy for interior sources and/or mitigate the spectral coloration induced by the proposed method for exterior sources.
+
+The results presented in this chapter further corroborate the primary finding of \chapref{chap:07_Characterization_Extrapolation}: that violating the region of validity restriction introduces significant errors (in this case, primarily in terms of coloration and localization).
+As demonstrated here, our proposed method successfully mitigates these errors by parametrically ensuring that the region of validity restriction is not violated as the listener navigates.
+In \chapref{chap:09_Thiergart_Comparison}, we consider another parametric interpolation method, which is based on a time-frequency analysis of the sound field, and compare its performance to that of our proposed method.

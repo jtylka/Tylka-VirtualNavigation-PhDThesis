@@ -1,0 +1,17 @@
+\begin{table}[tbp]
+\centering
+\begin{tabular}{c|c|c}
+\textbf{Metric} & \textbf{Equation(s)} & \textbf{Input} \\\hline\hline
+\rule[-0.8cm]{0pt}{1.7cm} Velocity vector & $\vec{\nu}_{\text{V}}(f) = \textrm{Re} \left\{ \displaystyle \frac{ \sum_q G_q(f) \hat{v}_q}{ \sum_q G_q(f)} \right\}$ & Source gains \\\hline
+\rule[-0.8cm]{0pt}{1.7cm} Energy vector & $\vec{\nu}_{\text{E}}(f) = \displaystyle \frac{ \sum_q |G_q(f)|^2 \hat{v}_q}{ \sum_q |G_q(f)|^2}$ & Source gains \\\hline
+\rule[-1.5cm]{0pt}{3.1cm} \parbox{5cm}{\centering Precedence-effect-based energy vector} & $\vec{\nu}_{\text{PE}} = \displaystyle \frac{ \displaystyle \sum_{q=1}^Q |w_q(\alpha) G_q / v_q|^2 \, \hat{v}_q}{ \displaystyle \sum_{q=1}^Q |w_q(\alpha) G_q / v_q|^2}$ & Source gains \\\hline
+\rule[-0.8cm]{0pt}{1.7cm} \parbox{5cm}{\centering Binaural localization model} & $\vec{\nu}_{\text{B}} = (\cos \phi_{\text{B}}, \sin \phi_{\text{B}}, 0)$ & Binaural \\\hline
+\rule[-0.8cm]{0pt}{1.7cm} Intensity vector & $\vec{\nu}_{\textrm{I}}(f) = \displaystyle \frac{\sqrt{2}}{Z_0} \text{Re} \left\{ \overline{W}(f) \vec{X}(f) \right\}$ & Ambisonics
+\end{tabular}
+\caption[Summary of main equations for localization models.]{
+Summary of main equations for the localization models reviewed in \secreftwo{sec:04_Auditory_Models:Localization_Models}{sec:04_Auditory_Models:Physical_Metrics}.
+The third column indicates the type of input signals needed for the model.}
+\label{tab:04_Auditory_Models:Localization_Equations}
+\end{table}
+
+%\rule[-0.8cm]{0pt}{1.7cm}

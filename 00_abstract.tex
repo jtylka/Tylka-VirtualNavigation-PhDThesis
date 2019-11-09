@@ -1,0 +1,24 @@
+% problem statement - rephrasing the title
+% general and specific motivations
+% approaches and major findings
+\abstract{%
+State-of-the-art methods for virtual navigation of ambisonics-encoded sound fields (i.e., sound fields represented by spherical harmonics) are evaluated, and the perceptual penalties incurred by navigating beyond near-field sources are identified.
+Virtual navigation enables a listener to explore an acoustic space and, ideally, experience a tonally- and spatially-accurate perception of the sound field.
+For many methods, navigation is theoretically restricted to the so-called region of validity, which extends spherically from the recording ambisonics microphone to its nearest source, although the precise consequences of violating that restriction have not been previously established.
+
+Several auditory metrics are presented for objectively evaluating navigational methods.
+In particular, models for spectral coloration and perceived localization are developed and shown, through subjective listening experiments, to predict those attributes directly from ambisonics impulse responses with comparable, if not superior, accuracy to existing binaural models.
+Numerical simulations of simple incident sound fields are implemented and experimentally validated for characterizing navigational methods in terms of the presented metrics.
+Existing navigational methods are critically reviewed and several linear methods are characterized.
+Results show that violating the region of validity restriction introduces significant errors in the reproduced levels and localization of near-field sources due to the drastic geometric changes required as the listener navigates.
+
+A parametric interpolation method is proposed which ensures, based on known or inferred positions of near-field sources, that the region of validity restriction is not violated.
+This method is shown to significantly improve coloration and localization performance over a benchmark linear interpolation method due to the exclusion of any invalid microphones from the interpolation calculation.
+An existing parametric interpolation method is also characterized, and practical guidelines are identified for choosing between the methods considered here depending on the sparsity of the microphone array, the intimacy of the sources, and the complexity of the sound field.
+Results show that, for applications with intimate sources and sparsely distributed microphones, only the proposed method yields high tonal fidelity, whereas the existing parametric method yields accurate and superior localization.
+For applications with distant sources and sparsely distributed microphones, the proposed method achieves both high tonal fidelity and accurate localization.
+}
+% word count = 347
+% no more than 350 words
+
+%The proposed method is also likely more suitable for acoustically complex sound fields due to its accurate reproduction of diffuseness.

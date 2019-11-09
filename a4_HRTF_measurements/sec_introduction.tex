@@ -1,0 +1,21 @@
+Head-related transfer functions (HRTFs) of an individual describe the idiosyncratic filtering of incident acoustic waves by the individual's morphology and are widely used in synthesizing binaural signals for spatial audio reproduction.
+The most accurate way to acquire HRTFs is via acoustical measurements in an anechoic chamber \citep[chapter 2]{Xie2013}.
+
+% We need individually measured HRTFs for our research
+Many publicly available databases exist that include measured HRTFs for many human subjects and mannequins \citep[for example]{SOFAHRTFDatabasesURL}.
+However, these databases are not perfect; many of the measured head-related impulse responses (HRIRs) from both the RIEC \citep{Watanabe2014,RIECHRTFDatabaseURL} and CIPIC \citep{Algazi2001} databases have undesirable pre-responses prior to the main impulses, which may make the data unreliable for use without sufficient post-processing.
+Furthermore, it is not guaranteed that, for any given individual, a suitable set of HRTFs will be found in any existing database.
+Consequently, in order to provide the highest-spatial-fidelity in listening tests and minimize errors in HRTFs as a source of error in the test results, individual HRTF measurements should be made for every listening test subject.
+
+% Also, putting together a database helps the community
+Since individual measurement of HRTFs is commercially infeasible, alternative techniques for estimating HRTFs have been proposed, many of which are summarized by \citet{Xie2013}.
+Most techniques require morphological data that includes either measurements of specific anthropometric features \citep{Bilinski2014} or complete 3D scans of the individual's morphology \citep{Gumerov2010}.
+Data-driven techniques additionally require corresponding measured HRTFs of a large number of individuals.
+These HRTFs typically serve as benchmarks for validating different techniques either objectively or via subjective listening tests, and also serve as training data for data-driven techniques.
+For example, a recent data-driven technique to compute HRTFs directly from head scan point clouds requires measured HRTFs and 3D head scans of many individuals as training data \citep{SridharChoueiri2017}.
+Consequently, gathering new HRTF and 3D morphological scan data enables others to develop and improve such HRTF estimation techniques.
+
+Recognizing the growing need for measured HRTF and 3D morphological data, we have begun an on-going project to measure HRTFs and 3D scans of humans and mannequins, which we compile into a publicly available database.
+In \secref{sec:A4_HRTF_Measurements:Measurement_Procedure}, we present details of the measurement procedures.
+In \secref{sec:A4_HRTF_Measurements:Data_Processing}, we describe the signal processing performed on the measured data.
+We visualize a sample of the data in \secref{sec:A4_HRTF_Measurements:Data_Visualization} and summarize our work in \secref{sec:A4_HRTF_Measurements:Summary}.

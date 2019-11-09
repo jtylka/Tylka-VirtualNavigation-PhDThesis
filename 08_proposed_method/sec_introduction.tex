@@ -1,0 +1,126 @@
+As shown in the previous chapter, existing methods for sound field navigation using a single ambisonics microphone tend to introduce significant errors in the reproduced level, spectral coloration, and source localization, even over relatively small translation distances (see \secref{sec:07_Characterization_Extrapolation:Results}).
+This is a consequence of the well-established limitation of the ambisonics framework: that a finite-order expansion of a sound field yields only an approximation to that sound field, the accuracy of which decreases with increasing frequency and distance from the expansion center \citep{Poletti2005,WardAbhayapala2001} (see \eqnref{eq:01_Introduction:kr_Inequality})
+As was also shown in that chapter, the performance of these extrapolation methods is often significantly degraded when the listener navigates beyond the distance of that source from the microphone.
+In particular, we showed that this violation of the region of validity restriction (discussed in \secref{sec:02_Acoustical_Theory:Helmholtz_Equation}) causes both of the methods considered in that chapter to incur significant errors in the reproduced levels and localization of the sources.
+
+In an effort to overcome these challenges, several previous studies have developed navigational methods that employ an array of ambisonics microphones distributed throughout the sound field (or, equivalently, encode a synthetic sound field into ambisonics at multiple discrete positions).
+In the following section, we provide a critical review of these existing methods and identify the main challenges they face.
+All of the methods discussed below are listed in \tabref{tab:01_Introduction:Methods}.
+%These methods typically involve either some form of interpolation between the microphones or an analysis of the incident sound field followed by a reconstruction of a simplified model of that sound field.
+%Ideally, such methods should enable virtual navigation of any arbitrary sound field consisting of arbitrary signals without introducing spectral coloration or audible processing artifacts.
+%Additionally, they should achieve accurate sound localization even in the vicinity of near-field sources.
+%In the following section, we review existing methods for sound field navigation that employ multiple spatially-distinct ambisonics microphones, and discuss their deficiencies.
+
+%%%% Previous Work %%%%
+% Review of previous work focusing on the remaining problems (questions or deficiencies) the present paper claims to contribute to solving
+\subsection{Previous work}
+Perhaps the simplest interpolation-based navigational method is to compute a per-channel weighted average of the ambisonics signals from each microphone, where the interpolation weights are related to the distances from the listener to each microphone (see \secref{sec:03_Navigation_Techniques:XF_Technique}).
+This approach has been implemented by \citet{MarietteKatz2009} using virtual first-order ambisonics (FOA) microphones spaced $20$~m apart and arranged in both linear (two microphones) and triangular (three microphones) configurations.
+Similarly, \citet{Southern2009} employed this method in order to interpolate ambisonics room impulse responses (RIRs) to enable real-time navigable auralizations of acoustic spaces.
+% In their study, \citeauthor{Southern2009} interpolate between RIR measurements spaced $5.5$~m apart, but only consider a symmetric source position.
+
+One fundamental limitation of this method is that it necessarily confines the listener to the region interior to the microphone array, since it is purely an interpolation method with no means of extrapolation.
+Additionally, this method can violate the region of validity restriction mentioned above, since even those microphones that are nearer to a source than to the desired listening position are included in the calculation.
+As we will show in the present chapter, such a violation leads to a degradation of the estimated sound field at the listening position.
+Furthermore, objective and perceptual investigations have shown that this method suffers from significant localization errors, in particular when the source distance (from the center of the microphone array) is small compared to the microphone spacing \citep{MarietteKatz2009,Mariette2010} (here, we refer to this condition as having an ``interior source'').
+This effect is consistent with findings from a previous study of ours \citep[Fig.~6]{TylkaChoueiri2016}.
+In that study, we also showed that if a sound source is nearer to one microphone than to another (as is the case for most source directions), this method will necessarily induce comb-filtering \citep[Fig.~4a]{TylkaChoueiri2016}.
+This is to be expected: each microphone captures essentially the same signals, separated by a finite time delay, so the signals will interfere constructively or destructively when summed, depending on frequency, due to the phase shift between them.
+In \secref{sec:08_Proposed_Method:Fundamental_Problems}, we revise and expand these analyses.
+
+\citet{Patricio2019} introduced and experimentally demonstrated a distance-biased linear interpolation method in which the directional components of the microphone nearest to the listener are emphasized over those of the farther microphones.
+The method also employs a low-pass filter on each microphone's signals to mimic the atmospheric absorption of high frequencies.
+Fundamentally, this method is subject to the same issues and limitations as the weighted average method, since it is essentially the same calculation but with a particular (order- and frequency-dependent) prescription for the interpolation weights.
+While it is plausible that the adopted biasing approach may mitigate the localization errors incurred by the weighted average method, this remains to be seen since the two methods have not yet been compared.
+
+Recently, \citet{Emura2017} proposed a method for two ambisonics microphones which combines the measured signals in order to estimate coefficients for a single global plane-wave decomposition of the sound field.
+In this method, a so-called ``dictionary'' matrix is pre-computed for a high-resolution grid of plane-waves incident on the microphones, and the plane-wave signals that best explain the measured pressures on the microphones are determined.
+This method, based on compressed sensing techniques (which have been reviewed by \citet{Epain2009} in the context of spatial sound field analysis and synthesis), entails minimizing the $\ell_1$ norm of an error signal \citep[see Eq.~(20)]{Emura2017} and is consequently nonlinear with respect to the measured signals.
+The evaluation of this method presented by the authors is limited to low-frequency rms error calculations, which show that the performance of the method is improved in the vicinity of the second microphone compared to if only a single microphone is used. % probably just because of the second mic; not necessarily due to the method
+However, due to the plane-wave-based nature of the proposed method, it can be expected that near-field and interior sources will be problematic.
+
+\citet{Bates2018} developed a perceptually-motivated method for sound field navigation using a $50$~cm $\times$ $50$~cm square arrangement of four FOA microphones.%
+\footnote{This work extends the so-called ``perspective control microphone array'' method, which creates the perception of navigation by varying the mixing of the signals from 5 coincident pairs of microphones (cardioid and hypercardioid), spaced $\sim2$~m apart \citep{Lee2011,Lee2012}.}
+In this method, each ambisonics microphone is used to create a virtual directional microphone, the placement and directivity of which are varied as a function of listener position.
+The signals from these virtual directional microphones are then encoded into a single ambisonics stream.
+Based on its formulation, this method appears well-suited for applications with a small, predefined navigable region, but would be difficult to extend to cover a larger region.
+Additionally, in an objective analysis of perceived source distance and direction, this method achieved promising performance when navigating towards the source, but yielded significant directional errors and diminished distance performance when navigating away \citep[section 3]{Bates2018}.
+
+In the context of ambisonics RIR interpolation, the issues of comb-filtering and localization errors may be mitigated by taking a dynamic time warping approach, similar to that proposed by \citet{Masterson2009}.
+% if this were a review paper, explain what DTW is
+Although this approach has not been implemented to interpolate ambisonics RIRs specifically, a previous study by the same authors has suggested incorporating arbitrary microphone directivity \citep{Kearney2009}, which would enable extending this method to ambisonics.%
+\footnote{More recently, \citet{GarciaGomezLopez2018} extended this method to interpolate binaural RIRs.}
+One limitation of this method is that it requires knowledge not only of the microphone positions, but also of the source position, which, for an arbitrary sound field, would not be known \textit{a priori}.
+Consequently, this method might be improved by incorporating some basic source localization algorithm, for example, to estimate source positions directly from the ambisonics RIRs.
+Additionally, by its nature, this method can only be applied to RIRs, and is therefore unsuitable for interpolating sound fields consisting of arbitrary signals.
+
+In a recent study, \citet{FernandezGrande2016} proposed an equivalent source method for representing and reconstructing a measured sound field.
+In this method, the sound field is captured with one or more ambisonics microphones and subsequently fitted, in a least-squares sense, to that created by a predefined grid of virtual monopole sources.
+This yields a virtual sound field consisting of a finite set of known monopole sources, which can then be rendered at an arbitrary position elsewhere in the space.
+However, without \textit{a priori} knowledge of the real sound source positions, the performance of the method may degrade.
+Consequently, this method too might benefit from incorporating a source localization algorithm in order to better accommodate arbitrary source positions.
+
+Other authors have developed parametric methods which rely on a time-frequency (i.e., short-time Fourier transform) analysis of the sound field using two (or more) FOA microphones.
+One such method is known as ``collaborative blind source separation'' \citep[section 3.3]{Zheng2013PhD}, in which discrete sound sources are first identified, localized, and isolated, and are subsequently treated as virtual sources, which may be artificially moved relative to the listener to emulate navigation.
+Similarly, \citet{Thiergart2013} developed a method of sound field navigation in which the sound field is decomposed into diffuse sound components and multiple discrete sources, which are triangulated in the time-frequency domain via acoustic intensity vector calculations (cf.~\citet[Eq.~(11)]{MerimaaPulkki2005} and \secref{sec:04_Auditory_Models:Intensity_Vector} in this thesis) from each microphone.
+The signals from these virtual sources are then ``re-recorded'' by a virtual microphone at an arbitrary position and with arbitrary directivity.%
+\footnote{Although not specifically addressed by the authors, the generalization of the method to a virtual ambisonics microphone appears straightforward.}
+%The method was shown to achieve comparable sound quality to that of the original microphone.
+Taking a similar approach, \citet{Schorkhuber2014a} developed for sound field analysis a wireless system consisting of an array of FOA microphones, which the authors showed to be able to accurately localize multiple sources \citep{Schorkhuber2014a,Schorkhuber2014b}.
+
+While clearly promising, these methods are only ideal for sound fields consisting of a finite number of discrete sources that can be easily separated (i.e., sources that are far enough apart or not emitting sound simultaneously) \citep[section II]{Thiergart2013}.
+An advantage of these methods is that, using the virtual model of the captured sound field, the listener is free to navigate anywhere in 3D space rather than being confined to the region interior to the microphone array.
+However, it is unclear if these methods can accurately capture and reproduce the directivities of the real sources, as this issue has not been addressed in the literature.
+Indeed, \citet{Thiergart2013} do not attempt to estimate the source directivity directly, and exclusively use omnidirectional point sources to model the sound field.%
+\footnote{We speculate, however, that perhaps source directivity information can be implicitly contained in the modeled sound field by the spatial distribution of the virtual point sources.}
+Furthermore, even in ideal situations, such source separation techniques employed in the time-frequency domain often result in a minor degradation of sound quality \citep[section 5.3]{Zheng2013PhD}.
+
+\citet{Samarasinghe2014a} developed a regularized least-squares interpolation approach based on spherical harmonic translation coefficients using an array of ambisonics microphones.
+The performance of this method was characterized in terms of reconstruction error and white noise gain \citep{Samarasinghe2014a}, but no analysis was conducted on spectral coloration or localization accuracy.
+The method was demonstrated experimentally in two dimensions by \citet{Fan2014}, and the computational efficiency of the method was refined by \citet{Chen2015}.
+The authors then extended the method to apply to ambisonics RIR interpolation \citep{Samarasinghe2015}.
+\citet{Ueno2018} developed a similar method that takes a Bayesian inference approach, which was shown to achieve improved performance (in terms of reconstruction errors) at high frequencies.
+
+More recently, \citet{WangChen2018} proposed a modification to the method of \citet{Samarasinghe2014a} in which the spherical harmonic translation coefficients are approximated via a finite-term discrete plane-wave decomposition.
+In that study, the authors showed that their method tends to improve the stability of the matrix inversion compared to using the traditional spherical harmonic translation coefficients \citep[section IV]{WangChen2018}.
+However, all of these methods are prone to violating the region of validity restriction if the sound field contains any interior sources.
+
+In a previous publication, we implemented a similar matrix of regularized least-squares interpolation filters \citep[section 3.2]{TylkaChoueiri2016} (reviewed here in \secref{sec:08_Proposed_Method:Reg-LS_Technique}) and showed that neglecting to account for the region of validity for each microphone can lead to significant localization errors \citep[Fig.~8b]{TylkaChoueiri2016}.
+Additionally, a qualitative analysis of spectral coloration suggested that these methods may induce significant spectral coloration at high frequencies \citep[Fig.~4b]{TylkaChoueiri2016}.
+It was also shown that, at large microphone spacings (compared to source distance), this method suffers from significant localization errors \citep[Fig.~6]{TylkaChoueiri2016}.
+At the time of publication, the objective localization model used to quantify localization errors had not yet been subjectively validated, but we have since refined and validated it (albeit over a limited range of conditions), as shown in \chapref{chap:05_Proposed_Models}. % \citep{TylkaChoueiri2017a}
+
+As mentioned in \secref{sec:07_Characterization_Extrapolation:Previous_Work}, \citet{Wakayama2017} recently proposed an extrapolation method based on spherical-harmonic translation filters, which was shown to enable navigation beyond a near-field source and to estimate its directivity using a multipole expansion, but requires \textit{a priori} knowledge of the source's position.
+It is not clear, however, whether or how this method can be extended to accommodate multiple sources.
+
+In our previous publication (and here in \secref{sec:08_Proposed_Method:Microphone_Validity}), we presented a parametric method of excluding any microphones that are nearer to any sound source than to the desired listening position, which also requires either \textit{a priori} knowledge of or a means of estimating the positions of any near-field sources \citep[section 3.3]{TylkaChoueiri2016}.
+However, this method ensures that all microphones used in the calculation provide valid descriptions of the sound field at the listening position, and the ambisonics signals from those ``valid'' microphones are then combined using a matrix of regularized least-squares interpolation filters in order to obtain an estimate of the sound field at the listening position \citep[section 3.2]{TylkaChoueiri2016}.
+The spectral coloration and localization errors induced by this method, however, have not been fully characterized.
+
+%%%% Objectives and Approach %%%%
+% A statement of the paper's main question(s) and goal(s), followed by a succinct description of the general method and approach to be described in the paper
+\subsection{Objectives and approach}\label{sec:08_Proposed_Method:Objectives}
+In light of the above discussion we identify the following main issues that existing interpolation-based navigational methods can face:
+\begin{enumerate}
+\item the user is restricted to a finite navigable region,
+\item the region of validity restriction is violated,
+\item localization information is degraded,
+\item spectral coloration or other audible processing artifacts are introduced,
+\item geometric information about the sound field (e.g., source locations) must be known or inferred,
+\item arbitrary signals cannot be accommodated,
+\item arbitrary (e.g., dense or reverberant) sound fields cannot be reproduced, and/or
+\item source directivity cannot be captured or reproduced.
+\end{enumerate}
+In this work, we take the weighted average method as a benchmark as it is both simple to implement and broadly applicable to arbitrary sound fields consisting of arbitrary signals and with an arbitrary placement of sources (i.e., this method does not suffer from issues 5, 6, or 7).
+A fundamental aspect of our proposed navigational method is the parametric exclusion of microphones, which ensures that we do not violate the region of validity restriction for any microphone (issue 2) but requires some means of obtaining information about the distances of sources to each microphone (issue 5).
+We aim to demonstrate the benefits of our method over the benchmark in terms of improvements in spectral coloration and localization (issues 3 and 4), as well as other perceptually-relevant performance metrics.
+Potentially, our method might also enable navigation beyond the strict interpolation-only navigable region (issue 1), whereas the benchmark method cannot, but here we only evaluate these methods in this region.
+Both methods may also preserve source directivity information (issue 8), but we do not explore this issue here.
+
+The objectives of the present work are: 1) to demonstrate the fundamental problems inherent to the weighted average method, 2) to revise our previously-proposed parametric navigational method in order to mitigate its induced spectral coloration, 3) to provide a proof-of-concept demonstration of its advantages over the weighted average method, and 4) to characterize and compare the performance of both methods.
+
+To these ends, we first investigate, in \secref{sec:08_Proposed_Method:Fundamental_Problems}, the fundamental problems (spectral coloration due to comb-filtering and localization errors due to the precedence effect) inherent to the weighted average method through numerical analyses of frequency response and perceived localization.
+We then review and revise, in \secref{sec:08_Proposed_Method:Proposed_Techniques}, our previously-proposed parametric navigational method.
+Then, in \secref{sec:08_Proposed_Method:Results}, we present the results of numerical simulations (as described in \chapref{chap:06_Simulation_Framework}), which we conduct in order to characterize and compare the performance of the two methods.
+%(An experimental validation of these numerical simulations is presented in \chapref{chap:10_Experimental_Validation}.)
+Finally, conclusions indicated by these results are summarized in \secref{sec:08_Proposed_Method:Conclusions}.

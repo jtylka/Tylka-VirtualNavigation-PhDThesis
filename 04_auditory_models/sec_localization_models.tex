@@ -1,0 +1,44 @@
+Generally, we use the term \textit{source localization} to refer to the perceived direction of a sound source relative to a listener.
+Here, we review two well-established primitive localization vectors and describe two more sophisticated localization models.
+For a predicted localization direction $\hat{\nu}$ (computed at the position of the listener), the localization error $e_\nu$ is given by
+\begin{equation}\label{eq:04_Auditory_Models:Localization_Error}
+e_\nu = \cos^{-1} \left( \hat{\nu} \cdot \hat{s}_0{}' \right),
+\end{equation}
+where $\hat{s}_0{}'$ is the direction of the source relative to the listener, found by normalizing the vector $\vec{s}_0{}' = \vec{s}_0 - \vec{r}_0$.
+
+%% Gerzon's Localization Vectors
+\subsection{Velocity and energy vectors (\texorpdfstring{$\vec{\nu}_{\text{V}}, \vec{\nu}_{\text{E}}$}{vV, vE})}\label{sec:04_Auditory_Models:Localization_Vectors}
+\input{04_auditory_models/sec_localization_vectors}
+
+%% Stitt's Localization Model
+\subsection{Precedence-effect-based energy vector (\texorpdfstring{$\vec{\nu}_{\text{PE}}$}{vPE})}\label{sec:04_Auditory_Models:PE_Energy_Vector}
+Recently, \citet{Stitt2016} proposed an extension to incorporate the precedence effect into the energy vector of \citet{Gerzon1992}.
+In their paper, \citeauthor{Stitt2016} also showed that their proposed model achieves improved localization prediction accuracy compared to the binaural models of \citet{Dietz2011} and \citet{Lindemann1986a}.
+The model predicts localization by computing a weighted average of position vectors for each of a finite set of point sources.
+The model assumes that each source is generating the same signal, although perhaps at different amplitudes, and perhaps with different distances between each source and the listener.
+Perceptual weights are first computed for each source based its time-of-arrival to and amplitude at the listening position.
+The calculation of these weights is not trivial, but briefly, it involves weighting earlier signals more heavily, but adjusting the weights of later signals based on their amplitudes and directions-of-arrival (see the original paper for details).
+
+The predicted localization is then given as a vector by
+\begin{equation}\label{eq:PE_Energy_Vector}
+\vec{\nu}_{\text{PE}} = \frac{ \displaystyle \sum_{q=1}^Q |w_q(\alpha) G_q / v_q|^2 \, \hat{v}_q}{ \displaystyle \sum_{q=1}^Q |w_q(\alpha) G_q / v_q|^2},
+\end{equation}
+where $w_q$ is the perceptual weight for the $q^\text{th}$ source, $G_q$ is the amplitude of the $q^\text{th}$ source, $v_q$ is the distance of the $q^\text{th}$ source, $\hat{v}_q$ is a unit vector pointing towards the $q^\text{th}$ source, and $\alpha \in [0,1]$ is a free parameter which specifies the relative importance of stationary (i.e., time-averaged) to transient information in the stimulus signal.%
+\footnote{For example, a highly transient signal is expected to require a low value of $\alpha$, while a more stationary signal would require a higher value \citep{Stitt2016,Stitt2017}.}
+
+%% Dietz' Model
+\subsection{Binaural localization model (\texorpdfstring{$\vec{\nu}_{\text{B}}$}{vB})}\label{sec:04_Auditory_Models:Binaural_Localization_Model}
+We also consider the binaural localization model of \citet{Dietz2011}.
+In order to compute the required binaural impulse responses, the ambisonics impulse response is first converted to plane-wave impulse responses using \eqnref{eq:02_Acoustical_Theory:A2mu}.
+The binaural impulse responses are then computed by \eqnref{eq:02_Acoustical_Theory:PW_Quadrature_Binaural}.
+
+An implementation of this model is freely available in the auditory modeling toolbox,\citefooturl{AMTURL} authored by \citet{SondergaardMajdak2013}.
+The core of the model \citep{Dietz2011} emulates inner-ear processes (e.g., auditory band filtering, signal compression, half-wave rectification, etc.) in order to compute binaural parameters such as the interaural time difference (ITD), interaural level difference, and interaural coherence in a range of frequency bands for both the envelope and fine-structure components of the binaural signals (see the original paper for details).
+In this work, we adopted the extension proposed by \citet{Wierstorf2013}, in which an ITD-to-azimuth lookup table is first generated for each subject using that subject's measured HRTFs on the frontal horizontal plane.
+The stimulus signal is then filtered by the binaural impulse responses and the ITD is computed using the original model.
+The model yields ITD in a set of frequency bands, which are then converted to azimuth via the lookup table.
+Outliers beyond $30^\circ$ away from the median azimuth are then removed, and finally, a single predicted azimuth, $\phi_{\text{B}}$, is computed as the weighted average over frequency, with weights given by the rms signal amplitude in each frequency band.
+The predicted localization direction is then given by
+\begin{equation}
+\vec{\nu}_{\text{B}} = (\cos \phi_{\text{B}}, \sin \phi_{\text{B}}, 0).
+\end{equation}

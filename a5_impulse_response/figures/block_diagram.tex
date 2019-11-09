@@ -1,0 +1,14 @@
+\begin{tikzpicture}[scale=1]
+
+\def\sumradius{0.25};
+\def\spacing{1};
+\def\blockwidth{3};
+\def\blockheight{1.5};
+
+\draw[thick,->] (-\spacing,0) node[left]{$x$} -- (0,0);
+\draw (0,-\blockheight/2) rectangle (\blockwidth,\blockheight/2) node[pos=0.5]{$h$};
+\draw[thick,->] (\blockwidth,0) -- (\blockwidth+\spacing,0) node[above, pos=0.5]{$w$};
+\draw[thick,->] (\blockwidth+\spacing+\sumradius,\spacing+\sumradius) node[above]{$n$} -- (\blockwidth+\spacing+\sumradius,\sumradius);
+\draw (\blockwidth+\spacing+\sumradius,0) circle (\sumradius cm) node[]{$+$};
+\draw[thick,->] (\blockwidth+\spacing+2*\sumradius,0) -- (\blockwidth+2*\spacing+2*\sumradius,0) node[right]{$y$};
+\end{tikzpicture}

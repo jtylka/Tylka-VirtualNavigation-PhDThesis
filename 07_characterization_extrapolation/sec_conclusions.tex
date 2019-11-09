@@ -1,0 +1,29 @@
+In this chapter, we presented the results of numerical simulations conducted in order to characterize and compare the performance of the plane-wave and ambisonics translation methods.
+Following the simulation framework laid out in \chapref{chap:06_Simulation_Framework}, we simulated simple incident sound fields consisting of a single microphone and a single point-source, varying source distance and azimuth, as well as microphone distance and listener position.
+First, in \secref{sec:07_Characterization_Extrapolation:Plane-wave_Dependence}, we determined suitable parameters for the plane-wave translation method, comparing the beamforming and pseudoinversion methods for computing the plane-wave decomposition and varying both the ambisonics input order and the number of plane-wave terms.
+We then explored, in \secref{sec:07_Characterization_Extrapolation:Azimuth_Dependence}, basic properties of each method by computing the effective frequency responses induced by the plane-wave and ambisonics translation methods across source azimuths.
+Finally, in \secref{sec:07_Characterization_Extrapolation:Results}, we conducted a more comprehensive analysis of both methods in terms of the metrics enumerated in \secref{sec:06_Simulation_Framework:Metrics} for sound level, spectral coloration, source localization, and diffuseness.
+
+The analyses presented in this chapter yielded the following major findings:
+\begin{itemize}
+\item for the plane-wave translation method, a clear advantage exists to using the beamforming plane-wave decomposition method (see \eqnref{eq:02_Acoustical_Theory:A2mu}) and matching the number of ambisonics signals, $N$, to the number of plane-wave terms, $Q$;%
+\footnote{All subsequent findings relate to this implementation of the plane-wave translation method: beamforming with matched $Q = N$.}
+%\item the pseudoinversion plane-wave decomposition method (see \eqnref{eq:02_Acoustical_Theory:A2mu_Pinv}) exhibited a similar advantage, as well as an advantage to ``oversampling'' directions by taking $Q > N$, although this method also appeared more sensitive to mismatches than the beamforming method;
+\item the frequency responses induced by the plane-wave translation method are largely flat but with sporadic notches while those induced by the ambisonics translation method exhibit a consistent low-pass-like roll-off of high-frequency energy, but both methods appear largely insensitive to source azimuth;
+\item the ambisonics translation method incurs significant errors in both level and coloration at all source distances which, overall, increase steadily with microphone distance;
+\item for exterior sources, the plane-wave translation method achieves a high degree of accuracy in both level and localization;
+\item for interior sources, where the region of validity restriction is violated, both methods incur significant errors in both level and localization; and
+\item more generally, both methods tend to exhibit two distinct regimes of behavior for exterior and interior sources, with a transition region between the two, and the performance for interior sources is often degraded compared to that for exterior sources.
+\end{itemize}
+Additionally, results showed that increasing the ambisonics order tends to uniformly improve the performance of both methods, with the exception of the spectral errors incurred by the plane-wave translation method.
+
+Due to the extremely large level and coloration errors incurred by the ambisonics translation method, the plane-wave translation method is likely the only viable method for most applications with practical translation distances (e.g., $u > 0.5$~m).
+This method is particularly well-suited for exterior sources, but its performance degrades significantly, in terms of localization in particular, once the region of validity restriction is violated.
+The remaining challenge for this method is the introduction of significant spectral errors ($\rho_\eta > 10$~dB) over all microphone and source distances.
+Consequently, future improvements to this method should attempt to correct this coloration, perhaps parametrically based on source direction.
+
+As demonstrated in this chapter, the performance of linear extrapolation-based navigational methods is significantly impaired by the presence of near-field sources.
+Consequently, parametric and interpolation-based approaches have been developed that aim to extend navigation beyond such near-field sources while maintaining acceptable performance.
+In the following chapters, we characterize and compare the performance of several such methods:
+in \chapref{chap:08_Proposed_Method}, we propose a parametric interpolation method and demonstrate its improvement over a benchmark linear interpolation method and,
+in \chapref{chap:09_Thiergart_Comparison}, we perform a similar analysis of an existing parametric interpolation method.

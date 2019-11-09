@@ -1,0 +1,20 @@
+We define the Fourier transform for acoustic signals and its corresponding inverse transform as
+\begin{equation}\label{eq:02_Acoustical_Theory:Fourier_Transform}
+\begin{aligned}
+H(\omega) = \mathcal{F}\left[ h(t) \right] (\omega) &= \frac{1}{2 \pi} \int_{-\infty}^{\infty} h(t) e^{i \omega t}dt,\\
+h(t) = \mathcal{F}^{-1}\left[ H(\omega) \right] (t) &= \int_{-\infty}^{\infty} H(\omega) e^{-i \omega t}d\omega,
+\end{aligned}
+\end{equation}
+where $\omega$ is the angular frequency in rad/s, which is related to the temporal frequency, $f$, given in Hz, by $\omega = 2 \pi f$.
+We also define the convolution operator `$\ast$' by
+\begin{equation}
+(h \ast g)(t) = \int_{-\infty}^{\infty} h(\tau) g(t-\tau) d\tau,
+\end{equation}
+which, by the convolution theorem for the Fourier transform, implies
+\begin{equation}
+\begin{gathered}
+\mathcal{F}\left[ (h \ast g)(t) \right] (\omega) = \mathcal{F}\left[ h(t) \right] (\omega) \cdot \mathcal{F}\left[ g(t) \right] (\omega) = H(\omega) G(\omega),\\
+(h \ast g)(t) = \mathcal{F}^{-1}\left[ \mathcal{F}\left[ h(t) \right] (\omega) \cdot \mathcal{F}\left[ g(t) \right] (\omega) \right] (t) = \mathcal{F}^{-1}\left[ H(\omega) G(\omega) \right] (t),
+\end{gathered}
+\end{equation}
+where $G(\omega) = \mathcal{F}\left[ g(t) \right] (\omega)$.

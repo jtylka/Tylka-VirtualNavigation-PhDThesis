@@ -1,0 +1,62 @@
+\begin{tikzpicture}[scale=10]
+% Parameters
+\def\radius{0.1};
+\def\arrowScale{0.97};
+\def\offset{0.05};
+
+\def\micSpacing{1};
+\def\micIncrement{0.05};
+\def\micL{-0.5*\micSpacing};
+\def\micR{0.5*\micSpacing};
+
+\def\sourceAX{0};
+\def\sourceBX{-0.35};
+\def\sourceCX{-0.7};
+\def\sourceY{0.35};
+
+\pgfmathsetmacro\sourceAAzimuth{-atan(\sourceAX/\sourceY)}
+\pgfmathsetmacro\sourceBAzimuth{-atan(\sourceBX/\sourceY)}
+\pgfmathsetmacro\sourceCAzimuth{-atan(\sourceCX/\sourceY)}
+
+\def\arcRadius{0.25};
+\pgfmathsetmacro\arcAY{cos(-\sourceAAzimuth/2)*\arcRadius}
+\pgfmathsetmacro\arcAX{sin(-\sourceAAzimuth/2)*\arcRadius}
+\pgfmathsetmacro\arcBY{cos(-\sourceBAzimuth/2)*\arcRadius}
+\pgfmathsetmacro\arcBX{sin(-\sourceBAzimuth/2)*\arcRadius}
+\pgfmathsetmacro\arcCY{cos(-\sourceCAzimuth/2)*\arcRadius}
+\pgfmathsetmacro\arcCX{sin(-\sourceCAzimuth/2)*\arcRadius}
+
+% Coordinate system
+%\draw[ultra thick,->] (0,0) -- (0,\radius);
+%\draw[ultra thick,->] (0,0) -- (-\radius,0);
+
+% Arrows
+\node at (\sourceAX,\sourceY){\Large $\bullet$}; % source A
+\node at (\sourceBX,\sourceY){\Large $\bullet$}; % source B
+\node at (\sourceCX,\sourceY){\Large $\bullet$}; % source C
+\draw[->] (0,0) -- (\arrowScale*\sourceAX,\arrowScale*\sourceY) node[above right, pos=0.5]{$\vec{s}_\textrm{A}$}; % source A
+\draw[->] (0,0) -- (\arrowScale*\sourceBX,\arrowScale*\sourceY) node[above, pos=0.5]{$\vec{s}_\textrm{B}$}; % source B
+\draw[->] (0,0) -- (\arrowScale*\sourceCX,\arrowScale*\sourceY) node[above, pos=0.5]{$\vec{s}_\textrm{C}$}; % source C
+
+% Arcs
+%\draw[domain=90:(90+\sourceBAzimuth)] plot ({\arcRadius*cos(\x)}, {\arcRadius*sin(\x)});
+%\node at (1.15*\arcBX,1.15*\arcBY){$\varphi_\textrm{B}$};
+
+% Mic positions
+\foreach \i in {0,...,20}
+{
+\node at (\micL + \i*\micIncrement,0){\Large $\circ$};
+}
+%\node at (0,0){\Large $\circ$};
+%\node at (\micL,0){\Large $\circ$};
+%\node at (\micR,0){\Large $\circ$};
+
+% Length measurements
+\draw[thick,|-|] (\micL,-\offset) -- (\micR,-\offset) node[below, pos=0.5]{$1$~m};
+\draw[thick,|-|] (\micL,\offset) -- (\micL+\micIncrement,\offset) node[above, pos=0.5]{$0.05$~m};
+\draw[thick,|-|] (\micR+\offset,0) -- (\micR+\offset,\sourceY) node[left, pos=0.5]{$0.35$~m};
+\draw[thick,dashed,-] (\micIncrement,\sourceY) -- (\micR,\sourceY);
+\draw[thick,|-|] (\sourceCX,\sourceY+\offset) -- (\sourceBX,\sourceY+\offset) node[above, pos=0.5]{$0.35$~m};
+\draw[thick,|-|] (\sourceBX,\sourceY+\offset) -- (\sourceAX,\sourceY+\offset) node[above, pos=0.5]{$0.35$~m};
+
+\end{tikzpicture}

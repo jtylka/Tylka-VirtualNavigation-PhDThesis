@@ -1,0 +1,20 @@
+In this work, we followed the approach of \citet{Wittek2007} and developed linear regression models to predict subjective ratings of coloration given some combination of the coloration metrics reviewed in \secref{sec:04_Auditory_Models:Coloration_Metrics}.
+As discussed in \chapref{chap:04_Auditory_Models}, we define each of these metrics \textit{relative} to some reference signal.
+Consequently, each metric is computed using both a \textit{test sample} (i.e., the ambisonics impulse response for the listening position after processing through some navigational method) and a \textit{reference sample} (i.e., the ambisonics impulse response captured directly at the listening position).
+
+In this work, we used the combinations of coloration metrics listed in \tabref{tab:Coloration_Models} to create multiple linear regression models, each of which predicts subjective ratings of coloration.
+Regression coefficients were found by fitting the predictions of each model to the data, as will be discussed below in \secref{sec:05_Proposed_Models:Coloration_Results}.
+
+% Table of coloration models and corresponding metrics
+\begin{table}[t]
+\centering
+ \begin{tabular}{|c|c|} \hline
+ \textbf{Model Name} & \textbf{Metrics Used} \\ \hline
+ Proposed & $\rho_\eta, \sigma_\eta, E_\text{pk}, E_\text{n}$ \\
+ \citet{Kates1984} & $\rho_{e_\text{CS}}, \sigma_{e_\text{CS}}$ \\
+ \citet{Pulkki1999} & $\rho_{e_\text{CLL}}, \sigma_{e_\text{CLL}}$ \\
+ \citet{Wittek2007} & $\rho_{e_\text{IS}}, \sigma_{e_\text{IS}}$ \\ \hline
+ \end{tabular}
+ \caption{Metrics used for each coloration model.}
+ \label{tab:Coloration_Models}
+\end{table}

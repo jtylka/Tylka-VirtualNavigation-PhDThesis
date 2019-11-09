@@ -1,0 +1,109 @@
+As defined in \secref{sec:02_Acoustical_Theory:Ambisonics_Translation}, we seek a matrix $\mathbf{T}$ of translation coefficients such that, for a given set of ambisonics signals $\mathbf{b}$, the translated ambisonics signals are given by
+\begin{equation}\tag{\ref{eq:02_Acoustical_Theory:Translated_Expansion_Coefficients_Matrix}}
+\mathbf{a}(k) = \left( \mathbf{T}(k, \vec{r}_0) \right)^\text{T} \cdot \mathbf{b}(k).
+\end{equation}
+In particular, we seek the matrix of coefficients for a translation of distance $d$ in the $+z$ direction, which we denote $\mathbf{T}_z(k, d \hat{z})$.
+Thus, the ambisonics signals for a translated listener are given by
+\begin{equation}\label{eq:A1_Navigation_Filters:z_Translation}
+\mathbf{b}_z(k) = \left( \mathbf{T}_z(k, d \hat{z}) \right)^\text{T} \cdot \mathbf{b}(k).
+\end{equation}
+
+Similar to the rotation matrix defined above in \secref{sec:A1_Navigation_Filters:Rotation_Matrices}, here, we denote the elements of $\mathbf{T}_z$ by $T_{l,l'}^{m,m'}$ and arrange them as follows:
+\begin{equation}
+    \begin{blockarray}{lc|ccc|cc}
+    l' = & 0 & & 1 & & 2 & \cdots \\
+    \begin{block}{c[c|ccc|cc]}
+    l = 0 & T_{0,0}^{0,0} & T_{0,1}^{0,-1} & T_{0,1}^{0,0} & T_{0,1}^{0,1} & T_{0,2}^{0,-2} & \cdots \\ \cline{2-7}
+     & T_{1,0}^{-1,0} & T_{1,1}^{-1,-1} & T_{1,1}^{-1,0} & T_{1,1}^{-1,1} & T_{1,2}^{-1,-2} & \cdots \\
+    l = 1 & T_{1,0}^{0,0} & T_{1,1}^{0,-1} & T_{1,1}^{0,0} & T_{1,1}^{0,1} & T_{1,2}^{0,-2} & \cdots \\
+     & T_{1,0}^{1,0} & T_{1,1}^{1,-1} & T_{1,1}^{1,0} & T_{1,1}^{1,1} & T_{1,2}^{1,-2} & \cdots \\ \cline{2-7}
+    l = 2 & T_{2,0}^{-2,0} & T_{2,1}^{-2,-1} & T_{2,1}^{-2,0} & T_{2,1}^{-2,1} & T_{2,2}^{-2,-2} & \cdots \\
+    \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \ddots \\
+    \end{block}
+    m' = & 0 & -1 & 0 & 1 & -2 & \cdots \\
+    \end{blockarray},
+\end{equation}
+such that the indices $l,m$ correspond to the rows of the matrix while $l',m'$ correspond to the columns.
+Although this indexing convention appears reversed compared to that for the rotation matrix (cf.~\eqnref{eq:A1_Navigation_Filters:Rotation_Matrix}), due to the matrix transpose in \eqnref{eq:A1_Navigation_Filters:z_Translation}, we again have that the indices $l,m$ refer to the input ambisonics signals $\mathbf{b}$, while the indices $l',m'$ correspond to the output ambisonics signals $\mathbf{b}_z$.
+
+The procedure for computing the matrix of coaxial translation coefficients is enumerated below%
+\footnote{Throughout this section, we refer to the equations given by \citet{Zotter2009PhD} for complex-valued spherical harmonics, which are identical to those for the real-valued spherical harmonics.
+The equations corresponding specifically to real-valued spherical harmonics can be found in the unnumbered set of equations following Eq.~(185) on p.~53 of \citet{Zotter2009PhD}.
+Also note that, compared to \citet{Zotter2009PhD}, the order of the indices for our translation coefficients $T_{l,l'}^{m,m'}$ is reversed, such that our indices correspond to (row, column) rather than (column, row).
+Our use of the ``primed'' indices (e.g., $l'$), however, is the same as in \citet{Zotter2009PhD}.}
+and illustrated symbolically in \figref{fig:A1_Navigation_Filters:z_Translation}.
+Note that due to the symmetry granted by translating along the $z$-axis, we have $T_{l,l'}^{m,m'} = 0$ for all $m' \neq m$.
+Consequently, in describing the algorithm for computing this matrix, we consider only those terms where $m' = m$.
+
+\begin{figure}[h]
+\[
+    \begin{blockarray}{lc|ccc|ccccc|ccccccc}
+    l' = & 0 & & 1 & & & & 2 & & & & & & 3 & & & \\
+    \begin{block}{l(c|ccc|ccccc|ccccccc)}
+    l = 0 & \blacksquare &  & \blacksquare &  &  &  & \blacksquare &  &  &  &  &  & \blacksquare &  &  &  \\ \cline{2-17}
+     &  & \boxdot &  &  &  & \boxdot &  &  &  &  &  & \boxdot &  &  &  &  \\
+    l = 1 & \boxminus &  & \boxplus &  &  &  & \boxplus &  &  &  &  &  & \boxplus &  &  &  \\
+     &  &  &  & \boxtimes &  &  &  & \boxtimes &  &  &  &  &  & \boxtimes &  &  \\ \cline{2-17}
+     &  &  &  &  & \boxdot &  &  &  &  &  & \boxdot &  &  &  &  &  \\
+     &  & \boxminus &  &  &  & \boxdot &  &  &  &  &  & \boxdot &  &  &  &  \\
+    l = 2 & \boxminus &  & \boxminus &  &  &  & \boxplus &  &  &  &  &  & \boxplus &  &  &  \\
+     &  &  &  & \boxminus &  &  &  & \boxplus &  &  &  &  &  & \boxplus &  &  \\
+     &  &  &  &  &  &  &  &  & \boxtimes &  &  &  &  &  & \boxtimes &  \\ \cline{2-17}
+     &  &  &  &  &  &  &  &  &  & \boxdot &  &  &  &  &  &  \\
+     &  &  &  &  & \boxminus &  &  &  &  &  & \boxdot &  &  &  &  &  \\
+     &  & \boxminus &  &  &  & \boxminus &  &  &  &  &  & \boxdot &  &  &  &  \\
+    l = 3 & \boxminus &  & \boxminus &  &  &  & \boxminus &  &  &  &  &  & \boxplus &  &  &  \\
+     &  &  &  & \boxminus &  &  &  & \boxminus &  &  &  &  &  & \boxplus &  &  \\
+     &  &  &  &  &  &  &  &  & \boxminus &  &  &  &  &  & \boxplus &  \\
+     &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \boxtimes \\
+    \end{block}
+    m' = & 0 & -1 & 0 & 1 & -2 & -1 & 0 & 1 & 2 & -3 & -2 & -1 & 0 & 1 & 2 & 3 \\
+    \end{blockarray}
+\]
+\caption[Graphical illustration of the coaxial translation coefficients matrix.]{
+Graphical illustration of the translation coefficients matrix for translating along the $z$-axis.}
+\label{fig:A1_Navigation_Filters:z_Translation}
+\end{figure}
+
+\begin{enumerate}
+
+\item We first find the terms denoted $\blacksquare$ by using \citep[Eq.~(166)]{Zotter2009PhD}%
+\footnote{Note that \citet{Zotter2009PhD} erroneously omits the ``prime'' in the order of the spherical Bessel function in Eq.~(166).}
+\begin{equation}\label{eq:A1_Navigation_Filters:z_Translation_Initial}
+T_{0,l'}^{0,0}(k; d \hat{z}) = (-1)^{l'} \sqrt{2l' + 1} j_{l'}(k d)
+\end{equation} % matches code and Zotter
+and looping over $l' \in [0,2L]$.
+
+\item Next, we find the terms denoted $\boxtimes$ by using \citep[Eq.~(163b)]{Zotter2009PhD}
+\begin{equation}\label{eq:A1_Navigation_Filters:z_Translation_Recurrence_b}
+b_l^{-m} T_{l,l'}^{m,m} = -b_{l'+1}^{m-1} T_{l-1,l'+1}^{m-1,m-1} + b_{l'}^{-m} T_{l-1,l'-1}^{m-1,m-1} + b_{l-1}^{m-1} T_{l-2,l'}^{m,m}
+\end{equation}
+and looping over $l \in [1,L]$ and $l' \in [l,2L - l]$ with $l = m$.
+Note, however, that since $l = m$, the above expression reduces to
+\begin{equation}
+b_l^{-m} T_{l,l'}^{m,m} = -b_{l'+1}^{m-1} T_{l-1,l'+1}^{m-1,m-1} + b_{l'}^{-m} T_{l-1,l'-1}^{m-1,m-1} + b_{l-1}^{m-1} \cancel{T_{l-2,l'}^{m,m}}
+\end{equation} % matches code and Zotter
+since no such coefficients $T_{l,l'}^{m,m'}$ exist where $m > l$.
+
+\item Third, we find the terms denoted $\boxplus$ by using \citep[Eq.~(163a)]{Zotter2009PhD}
+\begin{equation}\label{eq:A1_Navigation_Filters:z_Translation_Recurrence_a}
+a_{l-1}^m T_{l,l'}^{m,m} = -a_{l'}^m T_{l-1,l'+1}^{m,m} + a_{l'-1}^m T_{l-1,l'-1}^{m,m} + a_{l-2}^m T_{l-2,l'}^{m,m}
+\end{equation} % matches code and Zotter
+and looping over $m \in [0,L - 1]$, $l \in [m + 1,L]$, and $l' \in [l,2L - l]$.
+Note that the third term on the right hand side will go to zero when $l - 2 < m$ (see \eqnref{eq:A1_Navigation_Filters:Recurrence_Coefficient_a}).
+
+\item We then find the terms denoted $\boxdot$ by using \citep[Eq.~(161)]{Zotter2009PhD}
+\begin{equation}\label{eq:A1_Navigation_Filters:z_Translation_m_Symmetry}
+T_{l,l'}^{-m,-m} = T_{l,l'}^{m,m} = T_{l,l'}^{|m|,|m|}
+\end{equation} % matches code and Zotter
+and looping over $l \in [1,L]$, $l' \in [l,L]$, and $m \in [1,l]$.
+
+\item Fifth, we find the terms denoted $\boxminus$ by using \citep[Eq.~(162)]{Zotter2009PhD}
+\begin{equation}\label{eq:A1_Navigation_Filters:z_Translation_l_Symmetry}
+T_{l,l'}^{m,m} = (-1)^{l + l'} T_{l',l}^{m,m}
+\end{equation} % matches code and Zotter
+and looping over $l' \in [0,L - 1]$, $l \in [l' + 1,L]$, and $m \in [-l',l']$.
+
+\item Finally, due to our choice to include a factor of $(-i)^l$ in our spherical Fourier-Bessel series basis functions (see \eqnref{eq:02_Acoustical_Theory:Infinite_Order_Expansion}), we multiply every nonzero term in the matrix $\mathbf{T}$ by $(-i)^{l-l'}$.
+
+\end{enumerate}

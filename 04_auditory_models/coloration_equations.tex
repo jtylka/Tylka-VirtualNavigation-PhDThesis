@@ -1,0 +1,20 @@
+\begin{table}[tbp]
+\centering
+\begin{tabular}{c|c|c}
+\textbf{Metric} & \textbf{Equation(s)} & \textbf{Input} \\\hline\hline
+\rule[-0.8cm]{0pt}{1.7cm} \parbox{4cm}{\centering Auditory band spectral error} & $\eta(f_c) = 10 \log_{10} \displaystyle \left( \frac{\int |H_\Gamma(f;f_c)| |\tilde{A}_0(f)|^2 df}{\int |H_\Gamma(f;f_c)| |A_0(f)|^2 df} \right)$ & Monaural \\\hline
+\rule[-0.8cm]{0pt}{1.7cm} Peak error & $E_\text{pk} = \displaystyle \frac{\sum_{j = 1}^{N_\text{pk}} D(f_j^\uparrow)}{3 \log_2 (f_\text{U}/f_\text{L})}$ & Monaural \\\hline
+\rule[-0.8cm]{0pt}{1.7cm} Notch error & $E_\text{n} = \displaystyle \frac{\sum_{j = 1}^{N_\text{n}} (-D(f_j^\downarrow))}{3 \log_2 (f_\text{U}/f_\text{L})}$ & Monaural \\\hline
+\rule[-0.5cm]{0pt}{1.1cm} Central spectrum & $e_\text{CS}(f_c) = \widetilde{\text{CS}}(f_c) - \text{CS}(f_c)$ & Monaural \\\hline
+\rule[-0.6cm]{0pt}{1.3cm} \parbox{4cm}{\centering Composite loudness level} & $e_\text{CLL}(f_c) = \widetilde{\text{CLL}}(f_c) - \text{CLL}(f_c)$ & Binaural \\\hline
+\rule[-1.5cm]{0pt}{3.1cm} Internal spectrum & 
+  \begin{tabular}{c}
+  $\text{IS}(f_c) = 10 \log_{10} \displaystyle \left( \frac{P^\text{L}(f_c) + P^\text{R}(f_c)}{2} \right)$ \\[0.5cm]
+  $e_\text{IS}(f_c) = \widetilde{\text{IS}}(f_c) - \text{IS}(f_c)$
+  \end{tabular} & Binaural
+\end{tabular}
+\caption[Summary of main equations for coloration metrics.]{
+Summary of main equations for the coloration metrics reviewed in \secref{sec:04_Auditory_Models:Coloration_Metrics}.
+The third column indicates the type of input signal needed for the metric, where ``monaural'' indicates that the metric requires only the omnidirectional ambisonics signal as the input.}
+\label{tab:04_Auditory_Models:Coloration_Equations}
+\end{table}

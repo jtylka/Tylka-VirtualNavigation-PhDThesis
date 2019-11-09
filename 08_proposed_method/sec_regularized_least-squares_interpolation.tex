@@ -1,0 +1,81 @@
+To compute the interpolation filters, we modify the pseudoinverse-based interpolation method described in \secref{sec:03_Navigation_Techniques:Pinv_Technique} and propose a particular regularization function.
+First, we modify \eqnref{eq:03_Navigation_Techniques:Linear_System_Matrices}, such that the matrices are given by
+\begin{equation}\label{eq:08_Proposed_Method:Linear_System_Matrices}
+\mathbf{M} = 
+    \left[ \begin{array}{c}
+    \sqrt{w_1} \left( \mathbf{T}(-\vec{r}_1) \right)^\text{T} \\
+    \sqrt{w_2} \left( \mathbf{T}(-\vec{r}_2) \right)^\text{T} \\
+    \vdots\\
+    \sqrt{w_P} \left( \mathbf{T}(-\vec{r}_P) \right)^\text{T}
+    \end{array} \right]
+,\quad
+\mathbf{y} = 
+    \left[ \begin{array}{c}
+    \sqrt{w_1} \mathbf{b}_1\\
+    \sqrt{w_2} \mathbf{b}_2\\
+    \vdots\\
+    \sqrt{w_P} \mathbf{b}_P
+    \end{array} \right],
+\end{equation}
+where $w_p$ is the interpolation weight for the $p^\textrm{th}$ microphone and recall that $\vec{r}_p = \vec{r}_0 - \vec{u}_p$ is the position of the listener relative to the $p^\textrm{th}$ microphone.
+
+Next, we compute the singular value decomposition of $\mathbf{M}$, such that $\mathbf{M} = \mathbf{U} \Sigma \mathbf{V}^*$, where $(\cdot)^*$ represents conjugate-transposition.
+This allows us to compute a regularized pseudoinverse of $\mathbf{M}$, given by \citep[section 5.1]{Hansen1998}
+\begin{equation}
+\mathbf{L} = \mathbf{V} \Theta \Sigma^{+} \mathbf{U}^*,
+\end{equation}
+where $(\cdot)^+$ represents pseudoinversion, and $\Theta$ is a square, diagonal matrix whose elements are given by
+\begin{equation}
+\Theta_{nn} = \frac{\sigma_n^2}{\sigma_n^2 + \beta},
+\end{equation}
+where $\sigma_n$ is the $n^\textrm{th}$ singular value of $\mathbf{M}$, with $n \in [1,N_\textrm{max}]$.
+(Recall that $N_\textrm{max} = (L_\textrm{max} + 1)^2$ and $L_\textrm{max}$ is defined in \eqnref{eq:03_Navigation_Techniques:Pinv_Interpolation_Lmax}.)
+In general, the regularization parameter $\beta$ may be a function of frequency.
+Here, we choose the magnitude of a high-shelf filter as the regularization function, given by \citep[section 5.2]{Zolzer2008}
+\begin{equation}
+\beta(k) = \beta_0 \left| \frac{G_{\pi} i \frac{k}{k_0} + 1}{i \frac{k}{k_0} + G_{\pi}} \right|,
+\end{equation}
+where $G_{\pi}$ is the amplitude of the high-shelf filter and $k_0$ is its zero-dB crossing, which, for convenience, we take to be the same as that given below in \eqnref{eq:08_Proposed_Method:Hybrid_XO_Freq}.
+(In our original publication, we had chosen $k_0 = 1 / \Delta$ for simplicity \citep[Eq.~(17)]{TylkaChoueiri2016}, but we did not consider cases where $P \neq 2$.)
+We then let
+\begin{equation}
+\beta_0 = \frac{1}{\sigma_0} \max_n \sigma_n,
+\end{equation}
+with some constant $\sigma_0 \gg 1$.
+Note that the singular values ($\sigma_n$) of $\mathbf{M}$ are calculated for each frequency, so, in general, $\beta_0$ is also frequency-dependent.
+Here, we choose $G_{\pi} = 10^{1.5}$ (i.e., 30~dB) and $\sigma_0 = 1000$.
+
+Finally, we obtain an estimate of $\mathbf{a}$ at each $k$, given by
+\begin{equation}
+\mathbf{\tilde{a}}(k) = \mathbf{L}(k) \cdot \mathbf{y}(k).
+\end{equation}
+Note that, as with the weighted average method, we may choose to drop the higher-order terms in $\mathbf{\tilde{a}}$ such that we keep only up to order $L_\textrm{out}$, where $L_\textrm{out} \leq L_\textrm{max}$.
+
+Also note that we can factor out the interpolation weights into a diagonal matrix, such that
+\begin{equation}
+\mathbf{\tilde{a}}(k) = \left( \mathbf{L}(k) \cdot
+    \left[ \begin{array}{c c c c}
+    \sqrt{w_1}\, \mathbf{I} & \mathbf{0} & \cdots & \mathbf{0}\\
+    \mathbf{0} & \sqrt{w_2}\, \mathbf{I} & \ddots & \vdots\\
+    \vdots & \ddots & \ddots & \mathbf{0}\\
+    \mathbf{0} & \cdots & \mathbf{0} & \sqrt{w_P}\, \mathbf{I}
+    \end{array} \right]
+ \right) \cdot
+     \left[ \begin{array}{c}
+    \mathbf{b}_1(k)\\
+    \mathbf{b}_2(k)\\
+    \vdots\\
+    \mathbf{b}_P(k)
+    \end{array} \right],
+\end{equation}
+where $\mathbf{0}$ is an $N_\textrm{in} \times N_\textrm{in}$ matrix of zeros, and $\mathbf{I}$ is the $N_\textrm{in} \times N_\textrm{in}$ identity matrix.
+For compactness, we let
+\begin{equation}
+\mathbf{L}_w(k) = \mathbf{L}(k) \cdot
+    \left[ \begin{array}{c c c c}
+    \sqrt{w_1}\, \mathbf{I} & \mathbf{0} & \cdots & \mathbf{0}\\
+    \mathbf{0} & \sqrt{w_2}\, \mathbf{I} & \ddots & \vdots\\
+    \vdots & \ddots & \ddots & \mathbf{0}\\
+    \mathbf{0} & \cdots & \mathbf{0} & \sqrt{w_P}\, \mathbf{I}
+    \end{array} \right].
+\end{equation}

@@ -1,0 +1,17 @@
+\begin{sidewaystable}
+\centering
+\begin{tabular}{c|c|c|c}
+\textbf{Method} & \textbf{Input Conversion} & \textbf{Translation Operation} & \textbf{Output Conversion} \\\hline\hline
+\rule[-1.5cm]{0pt}{3.1cm} Virtual ambisonics & $\begin{bmatrix}
+G_{1}(k) \\ G_{2}(k) \\ \vdots \\ G_{Q}(k)
+\end{bmatrix} = \mathbf{Y}^{+} \cdot \mathbf{b}(k)$ & \multicolumn{2}{c}{$\displaystyle A_n(k) = \sum_{q = 1}^Q i^{l+1} k h_l(k \left\| \vec{v}_q - \vec{r}_0 \right\|) Y_n \left( \frac{\vec{v}_q - \vec{r}_0}{\left\| \vec{v}_q - \vec{r}_0 \right\|} \right) G_q(k)$} \\\hline
+\rule[-1.5cm]{0pt}{3.1cm} Plane-wave translation & $\begin{bmatrix}
+\mu(k,\hat{v}_1) \\ \mu(k,\hat{v}_2) \\ \vdots \\ \mu(k,\hat{v}_Q)
+\end{bmatrix} 
+= \mathbf{Y}^{\textrm{T}} \cdot \mathbf{F}^{-1} \cdot \mathbf{b}(k)$ & $\mu'(k,\hat{v}_q;\vec{r}_0) = \mu(k,\hat{v}_q) e^{-i k \hat{v}_q \cdot \vec{r}_0}$ & $\displaystyle A_n(k) = \sum_{q=1}^{Q} w_q \mu'(k,\hat{v}_q) Y_{n}(\hat{v}_q)$ \\\hline
+\rule[-0.5cm]{0pt}{1.1cm} Ambisonics translation & N/A & $\mathbf{a}(k) = \left( \mathbf{T}(k, \vec{r}_0 - \vec{u}) \right)^\text{T} \cdot \mathbf{b}(k)$ & N/A
+\end{tabular}
+\caption[Summary of main equations for extrapolation methods.]{
+Summary of main equations for the extrapolation-based navigational methods reviewed in \secref{sec:03_Navigation_Techniques:Extrapolation_Methods}.}
+\label{tab:03_Navigational_Techniques:Extrapolation_Equations}
+\end{sidewaystable}

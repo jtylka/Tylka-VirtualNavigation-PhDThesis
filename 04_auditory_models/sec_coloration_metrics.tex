@@ -1,0 +1,89 @@
+Generally, we use the term \textit{spectral coloration} to refer to any changes in the spectral content of a signal, for instance due to the application of a filter whose magnitude response is not constant.
+However, as not all colorations are equally audible, metrics which mimic auditory filtering processes offer more perceptually-relevant estimates of colorations.
+Here, we review five metrics that all aim to quantify such colorations.
+For several of these metrics, we further define the \textit{spectral range}, given by
+\begin{equation}\label{eq:Spectral_Range}
+\rho_S = \max_c S(f_c) - \min_c S(f_c),
+\end{equation}
+and the \textit{spectral deviation}, given by
+\begin{equation}\label{eq:Spectral_Deviation}
+\sigma_S = \sqrt{\frac{1}{N_b} \sum_{c = 1}^{N_b} \left( S(f_c) - \overline{S} \right)^2},
+\end{equation}
+where $S$ is some metric (specified in dB, unless stated otherwise) and $\overline{S}$ is its average over all frequency bands.
+For these metrics, we use the frequency range $f \in [f_\text{L}, f_\text{U}]$ with $f_\text{L} = 50$~Hz and $f_\text{U} = 21$~kHz, as recommended by~\citet{Boren2015}.
+
+%% Scharer's ABSE
+\subsection{Auditory band spectral error (\texorpdfstring{$\eta$}{eta})}\label{sec:04_Auditory_Models:Coloration_Metrics:ABSE}
+The \textit{auditory band spectral error} (ABSE), adapted from \citet[Eq.~(9)]{ScharerLindau2009}, is given by
+\begin{equation}\label{eq:ABSE}
+\eta(f_c) = 10 \log_{10} \left( \frac{\int |H_\Gamma(f;f_c)| |\tilde{A}_0(f)|^2 df}{\int |H_\Gamma(f;f_c)| |A_0(f)|^2 df} \right),
+\end{equation}
+where $A_0$ and $\tilde{A}_0$ are the zeroth-order terms of the reference and test (respectively) ambisonics transfer functions and integration is taken over all frequencies.
+For this and other coloration metrics requiring an auditory filter bank, we use ERB-spaced center frequencies \citep{GlasbergMoore1990} spanning the range $f \in [f_\text{L}, f_\text{U}]$ and denoted $f_c$ for $c \in [1, N_b]$.
+In this case, we define the spectral range and deviation of the ABSE: $\rho_\eta, \sigma_\eta$, respectively.
+
+ %% Boren's Epk and En
+\subsection{Peak and notch errors (\texorpdfstring{$E_{\text{pk}}, E_\text{n}$}{Epk, En})}\label{sec:04_Auditory_Models:Coloration_Metrics:Epk}
+The \textit{peak and notch errors} ($E_{\text{pk}}, E_\text{n}$) were defined by \citet{Boren2015}
+and essentially quantify the average peak (or notch) height (depth) in a frequency response over a certain frequency range.
+First, the difference (in dB) is computed between finely- and coarsely-smoothed versions of the the normalized free-field transfer function $\tilde{A}_0(f)/A_0(f)$, i.e.,
+\begin{equation}
+D(f) = 20 \log_{10} \left( \frac{ \mathcal{S}\left( \left| \tilde{A}_0(f)/A_0(f) \right| ; 1/48 \right) }{ \mathcal{S}\left( \left| \tilde{A}_0(f)/A_0(f) \right| ; 1 \right) } \right),
+\end{equation}
+where $\mathcal{S}(X; B)$ denotes fractional-octave smoothing applied to the spectrum $X$ with smoothing bandwidth $B$ octaves.
+Here, we used the fractional-octave smoothing method of \citet{Tylka2017}, reproduced in \apxref{chap:A3_Smoothing_Weights}.
+
+The peak- and notch-finding algorithms described by \citeauthor{Boren2015} are then applied to find the frequencies $f_1^\uparrow, f_2^\uparrow, \dots f_{N_\text{pk}}^\uparrow$ of all $N_\text{pk}$ spectral peaks and $f_1^\downarrow, f_2^\downarrow, \dots f_{N_\text{n}}^\downarrow$  of all $N_\text{n}$ spectral notches in the range $f \in [f_\text{L}, f_\text{U}]$.
+The peak and notch errors are then given by \citep[Eq.~(1)]{Boren2015}
+\begin{equation}
+E_\text{pk} = \frac{\sum_{j = 1}^{N_\text{pk}} D(f_j^\uparrow)}{3 \log_2 (f_\text{U}/f_\text{L})}
+\quad\quad\text{and}\quad\quad
+E_\text{n} = \frac{\sum_{j = 1}^{N_\text{n}} (-D(f_j^\downarrow))}{3 \log_2 (f_\text{U}/f_\text{L})},
+\end{equation}
+respectively.
+Note that, since $D$ is given in dB, the negative sign in the second equation typically ensures that both metrics are positive-valued.
+
+%% Kates' CS
+\subsection{Central spectrum (CS)}
+The \textit{central spectrum} (CS) was defined by \citet{Kates1984} for use as a metric for comparing loudspeaker responses.
+Consequently, it may be employed using only the free-field transfer functions of the test and reference signals.
+Essentially, the metric is computed as the sum of the Fourier coefficients and critical band energies of a time-weighted autocorrelation of the input signal (see the original paper for details).
+We then compute the difference (in dB) between the central spectra for the test and reference signals, given by
+\begin{equation}
+e_\text{CS}(f_c) = \widetilde{\text{CS}}(f_c) - \text{CS}(f_c).
+\end{equation}
+As done for the ABSE, we define the spectral range and deviation of the CS: $\rho_{e_\text{CS}}, \sigma_{e_\text{CS}}$, respectively.
+
+%% Pulkki's CLL
+\subsection{Composite loudness level (CLL)}\label{sec:04_Auditory_Models:Coloration_Metrics:Pulkki_CLL}
+The \textit{composite loudness level} (CLL) spectrum was defined by \citet[section 1.1]{Pulkki1999} to give an estimate of perceived loudness.
+Computing the CLL requires binaural impulse responses, which we compute using \eqnref{eq:02_Acoustical_Theory:PW_Quadrature_Binaural}.
+The CLL spectrum is then computed as the sum of the two ears' loudness level spectra, each of which are given in phons%
+\footnote{The \textit{phon} is a unit of perceived loudness, and is related to dB SPL via the equal-loudness contours originally described by \citet{FletcherMunson1933}.
+Similar to dB, a change in perceived loudness is computed via a difference of values in phons.}
+and found via a gammatone filter bank, half-wave rectification, low-pass filtering, and time-averaging of the signal energy in each band (see the original paper for details).
+We then compute the difference (in phons) between the CLL spectra for the test and reference samples, given by
+\begin{equation}\label{eq:04_Auditory_Models:Pulkki_CLL}
+e_\text{CLL}(f_c) = \widetilde{\text{CLL}}(f_c) - \text{CLL}(f_c).
+\end{equation}
+We then define the spectral range and deviation of the CLL: $\rho_{e_\text{CLL}}, \sigma_{e_\text{CLL}}$, respectively.
+
+%% Wittek's SA
+\subsection{Internal spectrum (IS)}\label{sec:04_Auditory_Models:Coloration_Metrics:Wittek_IS}
+\citet{Wittek2007} adapted the \textit{internal spectrum} (IS) defined by \citet[chapter 5]{Salomons1995PhD} in order to define so-called \textit{spectral alterations}.
+These spectral alterations are computed as the difference (in dB) between the internal spectra for the test and reference signals, given by
+\begin{equation}
+e_\text{IS}(f_c) = \widetilde{\text{IS}}(f_c) - \text{IS}(f_c).
+\end{equation}
+According to \citet[section 3.2.5]{Wittek2007}, the IS for each signal is given as the average of the binaural power spectra, i.e.,
+\begin{equation}
+\text{IS}(f_c) = 10 \log_{10} \left( \frac{P^\text{L}(f_c) + P^\text{R}(f_c)}{2} \right).
+\end{equation}
+Here, $P^{\text{L},\text{R}}$ are the binaural power spectra after critical-band filtering, given by \citep[Eq.~(5.12)]{Salomons1995PhD}
+\begin{equation}
+P^{\text{L},\text{R}}(f_c) = \frac{\displaystyle \int_{-\infty}^\infty |H_\text{P}(f;f_c)| |\psi^{\text{L},\text{R}}(f)|^2 df}{\displaystyle \int_{-\infty}^\infty |H_\text{P}(f;f_c)| df},
+\end{equation}
+where $H_\text{P}(f;f_c)$ are Patterson's auditory filters (which are very similar in magnitude response to gammatone filters, as shown in \figref{fig:04_Auditory_Models:Auditory_Filters}) as specified by \citet[Eq.~(5.9)]{Salomons1995PhD} and $\psi^{\text{L},\text{R}}$ are the binaural transfer functions, given by the Fourier transform of the binaural impulse responses from \eqnref{eq:02_Acoustical_Theory:PW_Quadrature_Binaural}.
+Again, we define the spectral range and deviation of the IS: $\rho_{e_\text{IS}}, \sigma_{e_\text{IS}}$, respectively.
+Note that $\rho_{e_\text{IS}}$ is precisely equivalent to the $A_0$-measure defined by \citet[section 3.2.6]{Wittek2007}, which is based on the $A_0$-criterion defined by \citet[section 5.4]{Salomons1995PhD}.
+Additionally, $\sigma_{e_\text{IS}}$ is essentially equivalent to the ``spectral deviation'' described by \citet[section 3.2.6]{Wittek2007}.

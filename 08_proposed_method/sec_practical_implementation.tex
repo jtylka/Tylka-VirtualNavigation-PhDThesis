@@ -1,0 +1,10 @@
+In practice, as the listener traverses the navigable region, the number of valid microphones may change.
+Consequently, one should crossfade between audio frames to prevent any audible discontinuities caused by a sudden change in the filters.
+Additionally, it is likely preferable to implement a ``crossover'' between the low- and high-frequency ranges of the combined filter matrix, thereby blending the two filter matrices.
+Here, however, we take a simple frequency-domain concatenation approach, as indicated in \eqnref{eq:08_Proposed_Method:HybridFilters}.
+
+%If $\mathbf{M}$ is singular, such that $\mathbf{M}^+$ is undefined, we ``dither'' the weights $w_p$.
+
+Although in this work we only consider interpolation to points within the strictly-interior navigable region (i.e., the area spanned by the microphone array), navigation outside of this region may be achieved in practice through a two-stage navigation approach.
+In such an approach, the recorded signals are first interpolated to the point within the strictly-interior region nearest to the desired listening position.
+Then, those interpolated signals are effectively treated as a new virtual ambisonics microphone and extrapolated to the desired listening position.

@@ -1,0 +1,64 @@
+Recently, \citet{Stitt2016} proposed an extension to incorporate the precedence effect into the energy vector of \citet{Gerzon1992}.
+In their paper, \citeauthor{Stitt2016} also showed that their proposed model achieves improved localization prediction accuracy compared to the binaural models of \citet{Dietz2011} and \citet{Lindemann1986a}.
+Motivated by these results, we proposed in a recent paper \citep{TylkaChoueiri2016} an extension to this localization model; here, we describe and revise our proposed extension.
+
+We begin by converting the ambisonics impulse response into a set of $Q$ impulse responses for a specified grid of plane-wave directions, $\hat{v}_q$, with $q \in [1,Q]$.
+For ambisonics order $L$, there are $N = (L + 1)^2$ ambisonics signals, $a_n(t)$, with $n \in [0, N-1]$, and the corresponding plane-wave signals, $\mu$, are given by \eqnref{eq:02_Acoustical_Theory:A2mu}.%
+\footnote{Alternatively, this plane-wave decomposition could be computed using a pseudoinversion approach, as described in \eqnref{eq:02_Acoustical_Theory:A2mu_Pinv}, or a compressed sensing approach, as described by \citet[Eq.~(10)]{Epain2009}.}
+The grids of directions (also called ``nodes'') used here are given by \citet{FliegeMaier1999}; these grids and their corresponding quadrature weights are freely available online.\citefooturl{FliegeNodesURL}
+As this discrete plane-wave sound field would generally be rendered via quadrature integration (see \eqnref{eq:02_Acoustical_Theory:PW_Quadrature_Rendered_Field}), the impulse response for each plane-wave term is given by $g_q(t) = w_q \mu(t,\hat{v}_q)$, where $w_q$ is the quadrature weight for the direction $\hat{v}_q$.
+
+Next, we identify and isolate temporally-distinct impulse response ``wavelets.''
+To do this, we apply a $4^\textrm{th}$-order Butterworth high-pass filter with a cut-off frequency of 500~Hz to all impulse responses in the set and compute the global maximum (i.e., the largest absolute value over all impulse responses in the set).
+For each impulse response, we take the absolute value and identify any peaks (i.e., local maxima) whose amplitudes are at least $G_\text{min}$~dB relative to the global maximum ($G_\text{min} \leq 0$~dB).
+If no such peaks exist in a given impulse response, then that response in its entirety is treated as a wavelet.
+If at least one such peak exists, then, around each peak, we apply a Tukey window beginning $\tau_\text{w}$~ms before the peak and ending either $\tau_\text{w}$~ms after the peak, or at the position of the following peak, whichever yields a larger window length.
+Both the cosine fade-in and fade-out of the Tukey window are $\tau_\text{w}$~ms in duration.
+In this way, a single impulse response may be split into several wavelets.%
+\footnote{A simpler implementation of this stage of the model might follow a more traditional, uniformly-partitioned STFT approach, but we do not explore this idea here.}
+For each wavelet, we apply a 10\% ($-20$~dB, now relative to the peak of that particular wavelet) threshold to determine the time-delay of the onset.
+
+For the purposes of this model, we consider each wavelet to be a distinct sound source, such that wavelets extracted from the same impulse response originate from the same direction, but arrive at different times, given by their onset times.
+Taking the Fourier transform of each wavelet yields complex-valued, frequency-dependent gains, $G_{q'}$, of the $q'{}^\text{th}$ wavelet, where $q' \in [1,Q']$ and $Q' \geq Q$ is the total number of wavelets.
+We then average these gains in critical bands using a gammatone filter bank (see \figref{fig:04_Auditory_Models:Gammatone_Filters}),
+such that the frequency-averaged gains are given by
+\begin{equation}\label{eq:05_Proposed_Models:Localization_Model:FreqAvg_Gain}
+\overline{G}_{q'}(f_c) = \frac{\displaystyle \int_{-\infty}^\infty |H_\Gamma(f;f_c)| |G_{q'}(f)| df}{\displaystyle \int_{-\infty}^\infty |H_\Gamma(f;f_c)| df},
+\end{equation}
+where the gammatone filters are taken for a set of ERB-spaced center frequencies spanning the range $f \in [20~\text{Hz}, 20~\text{kHz}]$.
+
+For each frequency band, we feed these gains into the model, yielding a frequency-dependent predicted localization vector $\vec{\nu}_\textrm{PE}(f_c)$, given by
+\begin{equation}\label{eq:05_Proposed_Models:PE_Energy_Vector}
+\vec{\nu}_{\textrm{PE}}(f_c) = \frac{ \sum_{q'} |w_{q'}(\alpha) \overline{G}_{q'}(f_c)|^2 \, \hat{v}_{q'}}{ \sum_{q'} |w_{q'}(\alpha) \overline{G}_{q'}(f_c)|^2},
+\end{equation}
+where $\alpha$ is a parameter of the original model of \citet{Stitt2016} (discussed in \secref{sec:04_Auditory_Models:PE_Energy_Vector}) and $w_{q'}(\alpha)$ is a perceptual weight (based on the precedence-effect) for the $q'{}^\text{th}$ wavelet.
+Similarly, we define a perceptually-weighted velocity vector, given by
+\begin{equation}\label{eq:PE_Velocity_Vector}
+\vec{\nu}_{\textrm{PV}}(f_c) = \text{Re} \left[ \frac{ \sum_{q'} w_{q'}(\alpha) \overline{G}_{q'}(f_c) \, \hat{v}_{q'}}{ \sum_{q'} w_{q'}(\alpha) \overline{G}_{q'}(f_c)} \right],
+\end{equation}
+where $\text{Re}(\cdot)$ denotes taking the real part of the argument.
+Note that we include this step of ``taking the real part'' in our definition only to maintain consistency with the original definition of the velocity vector, given by \citet[section 4]{Gerzon1992}, in which complex-valued gains are used (see \eqnref{eq:04_Auditory_Models:Velocity_Vector}).
+However, in our case, all $\overline{G}_{q'}$ are already real-valued (see \eqnref{eq:05_Proposed_Models:Localization_Model:FreqAvg_Gain}), so taking the real part has no effect on the result.
+This deviation from the original definition may be justified since the time-dependence of the sources is now captured in the precedence-effect-based weights, so each source's phase is no longer needed.
+
+We then combine the velocity vector below 700~Hz and the energy vector above into a single, frequency-dependent vector, given by
+\begin{equation}
+\vec{\nu}_{\textrm{PC}}(f_c) =
+\begin{cases}
+\displaystyle \frac{\left\| \vec{\nu}_{\textrm{PE}}(f_\text{XO}) \right\|}{\left\| \vec{\nu}_{\textrm{PV}}(f_\text{XO}) \right\|} \cdot \vec{\nu}_{\textrm{PV}}(f_c), & \text{for}~f_c \leq f_\text{XO}, \\
+\vec{\nu}_{\textrm{PE}}(f_c), & \text{for}~f_c > f_\text{XO},
+\end{cases}
+\end{equation}
+where $\|\cdot\|$ denotes the $\ell^2$ norm (Euclidean distance) of a vector, $f_\text{XO}$ is the ``crossover'' frequency, equal to the center frequency nearest to 700~Hz, and we have introduced a normalization factor to match low- and high-frequency vector magnitudes.
+Finally, we compute a weighted-average vector, which depends on the stimulus signal and is given by
+\begin{equation}
+\vec{\nu}_{\textrm{P}} = \frac{\sum_c \overline{X}(f_c)\, \vec{\nu}_{\textrm{PC}}(f_c)}{\sum_c \overline{X}(f_c)},
+\end{equation}
+where the weights $\overline{X}(f_c)$ are the stimulus signal's energy in each critical band, given by
+\begin{equation}
+\overline{X}(f_c) = \frac{\displaystyle \int_{-\infty}^\infty |H_\Gamma(f;f_c)| |X(f)|^2 df}{\displaystyle \int_{-\infty}^\infty |H_\Gamma(f;f_c)| df},
+\end{equation}
+and $X(f)$ is the Fourier transform of the stimulus signal.
+
+In addition to the three free model parameters ($Q$, $\tau_\text{w}$, and $G_\text{min}$) defined above, the original model of \citet{Stitt2016} retains one free parameter, $\alpha \in [0,1]$, which specifies the relative importance of stationary (i.e., time-averaged) to transient information in the stimulus signal (see \secref{sec:04_Auditory_Models:PE_Energy_Vector}).
+As will be described below in \secref{sec:05_Proposed_Models:Localization_Results}, we determined optimal values for these four parameters based on a best fit of the model's predictions to the data from the listening experiment.

@@ -1,0 +1,20 @@
+Acoustical measurements were taken in a $3.6 \times 2.35 \times 2.55$~m (length $\times$ width $\times$ height) anechoic chamber with 8-inch deep (equal to $1/4$ wavelength at $\sim425$~Hz) anechoic foam wedges.
+We consider three source positions: $\vec{s}_\textrm{A} = (0.35,0,0)$~m, $\vec{s}_\textrm{B} = (0.35,0.35,0)$~m, and $\vec{s}_\textrm{C} = (0.35,0.7,0)$~m.
+For each source,\footnote{Here, we use Genelec 8010A loudspeakers.} we measure, up to order $L_\textrm{in} = 4$, ambisonics impulse responses for all microphone positions $\vec{u} = (0, u_y, 0)$ with $u_y = [-0.5,0.5]$~m in increments of $0.05$~m.
+(The impulse response measurement procedure is described in \apxref{chap:A5_Impulse_Response}.)
+These microphone and source positions are illustrated in \figref{fig:10_Experimental_Validation:Experimental_Setup}.
+The ambisonics impulse responses are then equalized by the frequency response of the same source measured by an omnidirectional reference microphone at the same position, thereby compensating for the directivity of the source.
+
+% Diagram of source/mic positions
+\begin{figure}[t]
+\centering
+  \input{10_experimental_validation/figures/experimental_setup}
+  \caption[Diagram of the experimental setup used for validation.]{
+  Diagram of microphone positions (empty circles) and source positions (filled circles).}
+  \label{fig:10_Experimental_Validation:Experimental_Setup}
+\end{figure}
+
+For each microphone spacing $\Delta \in [0.1,1]$~m (taken in increments of $0.1$~m) and each source position,
+we estimate, using both the weighted average and proposed navigational methods (described in \secreftwo{sec:03_Navigation_Techniques:XF_Technique}{sec:08_Proposed_Method:Proposed_Techniques}, respectively), the ambisonics impulse response at each intermediate microphone position.
+In all cases and at each intermediate position, we compute the following ``measured'' values: level, $\lambda'$; ABSE, $\eta'(f_c)$; localization vector,  $\vec{\nu}'$; and diffuseness, $\Psi'(f)$.
+To better match the measurements, which were taken using the Eigenmike, we modify the near-field compensation filters given by \eqnref{eq:02_Acoustical_Theory:NearField_HPF} to use the following corner frequencies: $f_2 = 400$~Hz, $f_3 = 1$~kHz, and $f_4 = 1.8$~kHz (no filters are applied for orders $l = 0,1$), as specified in the EigenUnits user manual \citep[section 4.3]{EigenUnitsManual2018}.

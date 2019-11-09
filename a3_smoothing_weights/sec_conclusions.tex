@@ -1,0 +1,16 @@
+In this work we explored the ability (or lack thereof) of fractional-octave smoothing methods to preserve the log-frequency symmetry of frequency spectra.
+Specifically, we examined two existing methods of smoothing, the first of which uses a symmetric (on a linear frequency scale) window of the correct bandwidth, but whose cutoff frequencies are not equidistant from the center frequency when viewed on a log-frequency scale, and therefore do not correspond to the \textit{correct} fractional-octave band.
+The second method requires that the raw spectrum first be interpolated to a log-frequency scale, a process that necessarily introduces errors, but simplifies the fractional-octave smoothing procedure to a moving-average operation with a symmetric window that corresponds well with the correct fractional-octave band.
+We proposed a third smoothing method that is able to accurately replicate the smoothed spectrum of the second method but without the need for interpolation.
+This method is fully compatible with other FFT-based smoothing techniques such as complex smoothing (see \citet{HatziantoniouMourjopoulos2000}) and can be employed with any smoothing window (e.g., Hanning window, band-pass filter, etc.), provided the window can be specified as an integrable function of log-frequency.
+
+We performed a numerical analysis of the ``center of mass'' of the smoothed spectra produced by each method given the magnitude response of an analog band-pass filter (which is symmetric on a log-frequency scale) as the raw spectrum.
+This analysis revealed that only the first method is unable to preserve the log-symmetry of the raw spectrum, as it shifts the center of mass upwards in frequency, resulting in a ``blue-shifted'' smoothed spectrum.
+It is worth noting that this error is quite small for small smoothing bandwidths (e.g., the center of mass shifts by $< 1 \%$ of the center frequency for $1/3$-octave smoothing) and therefore may be tolerable in some applications.
+We also smoothed a unit impulse with the first and third methods to explore how the maximum may shift after smoothing.
+Results showed that only the first method shifts the maximum downwards in frequency, although we expect this phenomenon to be less significant for smaller smoothing bandwidths.
+
+Regarding the computational cost of the proposed method, it is relevant to note that, for many smoothing windows, the definite integral of the window (see \eqnref{eq:A3_Smoothing_Weights:WeightsIntegral}) can be evaluated analytically, making the calculation of each weight sequence computationally inexpensive.
+Furthermore, for all smoothing windows, the weighting function can be precomputed and stored in a matrix, recasting the smoothing operation as a matrix multiplication whose computational expense would be invariant with smoothing method, window, and bandwidth.
+
+Future work should include an exploration of the equivalent time-domain implementation of the proposed method, wherein smoothing is expressed as multiplication of the input impulse response with frequency-dependent windows \citep{HatziantoniouMourjopoulos2000} and an investigation into the perceptual differences, if any, between the first and third methods for various smoothing bandwidths and in various applications (e.g., digital room correction, headphone equalization, etc.).

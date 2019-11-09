@@ -1,0 +1,46 @@
+In this section we present the ambisonics microphone array geometries used in the subsequent numerical simulations.
+In both cases described below, the listener traverses a straight line away from the microphone(s), which will allow us to explore any dependence on source azimuth relative to the direction of travel (see \secref{sec:06_Simulation_Framework:Azimuth_Dependence}).
+
+\subsection{Single-microphone array}\label{sec:06_Simulation_Framework:Point_Geometry}
+Consider a single-microphone array geometry, illustrated in \figref{fig:06_Simulation_Framework:Point_Geometry}, in which a single ambisonics microphone ($P = 1$) is separated from the origin by a distance $u$ and placed along the longitudinal $x$-axis, such that its position is given by $\vec{u}_1 = (u,0,0)$.
+(Recall that, according to our coordinate system described in \secref{sec:02_Acoustical_Theory:Coordinate_System}, the $+x$-axis points forward from the listener, the $+y$-axis points to the left, and the azimuth $\phi$ measures the angle away from straight ahead.)
+In this configuration, we define the \textit{navigable region} as the segment of the $x$-axis connecting the origin and microphone position, i.e., all listener positions $\vec{r}_0 = (x_0, 0, 0)$ where $x_0 \in [0,u]$.
+
+% Diagram of source/mic positions
+\begin{figure}[t]
+\centering
+  \input{06_simulation_framework/figures/point_geometry}
+  \caption[Diagram of the array geometry for extrapolation simulations.]{
+  Diagram of a microphone (empty circle) and a single source (filled circle).
+  The shaded gray disk indicates the interior region, where $r < u$.
+  The jagged line segment indicates the navigable region, where $x \in [0,u]$ and $y = z = 0$.}
+  \label{fig:06_Simulation_Framework:Point_Geometry}
+\end{figure}
+
+A single point source is placed on the horizontal plane at $\vec{s}_0 = (s_0 \cos \varphi_0, s_0 \sin \varphi_0, 0)$.
+From the position of the microphone, the apparent source position is given by
+$\vec{s}_1 = \vec{s}_0 - \vec{u} = (s_1 \cos \varphi_1, s_1 \sin \varphi_1, 0)$,
+such that the apparent source azimuth is $\varphi_1$ and the relative source distance from the microphone is $s_1$.
+
+We further define a nondimensional geometrical parameter $\gamma = r / u$.
+Here we refer to the region with $\gamma > 1$ as the \textit{exterior region} and that with $\gamma < 1$ as the \textit{interior region} (see \figref{fig:06_Simulation_Framework:Point_Geometry}).
+
+\subsection{Linear microphone array}\label{sec:06_Simulation_Framework:Linear_Geometry}
+Consider a linear microphone array geometry, illustrated in \figref{fig:06_Simulation_Framework:Linear_Geometry}, in which a pair of ambisonics microphones ($P = 2$) are separated by a distance $\Delta = 2u$, equidistant from the origin and placed along the lateral $y$-axis, such that their positions are given by $\vec{u}_1 = (0,\Delta/2,0)$ and $\vec{u}_2 = (0,-\Delta/2,0)$.
+In this configuration, we define the \textit{navigable region} as the segment of the $y$-axis connecting the two microphone positions, i.e., all listener positions $\vec{r}_0 = (0, y_0, 0)$ where $y_0 \in [-\Delta/2,\Delta/2]$.
+Here also we define the same nondimensional geometrical parameter, now given by $\gamma = r / (\Delta / 2) = r / u$.
+
+% Diagram of source/mic positions
+\begin{figure}[t]
+\centering
+  \input{06_simulation_framework/figures/linear_geometry}
+  \caption[Diagram of the array geometry for interpolation simulations.]{
+  Diagram of a two-microphone array (empty circles) with a single source (filled circle).
+  The shaded gray disk indicates the interior region, where $r < \Delta / 2$.
+  The jagged line segment indicates the navigable region, where $y \in [-\Delta/2,\Delta/2]$ and $x = z = 0$.}
+  \label{fig:06_Simulation_Framework:Linear_Geometry}
+\end{figure}
+
+Similar to the single-microphone case, the apparent source position from the position of the $p^\textrm{th}$ microphone is given by
+$\vec{s}_p = \vec{s}_0 - \vec{u}_p = (s_p \cos \varphi_p, s_p \sin \varphi_p, 0)$,
+such that the apparent source azimuth is $\varphi_p$ and the relative source distance from that microphone is $s_p$.

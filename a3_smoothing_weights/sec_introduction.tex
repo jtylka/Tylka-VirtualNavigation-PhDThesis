@@ -1,0 +1,37 @@
+Frequency spectrum smoothing is a standard operation in many fields of audio and acoustics as it reduces the often overwhelming detail of high-resolution spectra to only the relevant information.
+Perhaps its most common usage is to make frequency response data suitable for plotting.
+However, smoothing is also useful when designing compensation filters for transducer equalization or room response correction, as it both reduces the dynamic range and creates a simplified model of the system to be equalized that, ideally, consists of only the perceptually-relevant information.
+In such applications it is important that the peaks (and notches) of the compensation filter align with the corresponding notches (peaks) in the original response, since failure to cancel the notch (peak) may lead to an even worse overall response as a new peak (notch) will have been introduced.
+Smoothing methods must therefore be employed carefully so that prominent features of the frequency response such as peaks and notches are not unintentionally shifted during the smoothing process.
+
+One application of spectral smoothing is in the design of headphone equalization (EQ) filters, wherein the headphone transfer function (which describes the transmission of sound from the headphones to the listener's ear drums) is first smoothed and then either inverted and used directly as the EQ filter, or used to define a regularization function that improves the conditioning of the inversion operation and mitigates excessive boosting in the EQ filter \citep{ScharerLindau2009}.
+Spectral smoothing is also used in binaural audio to reduce the complexity of the head-related transfer function (HRTF), which describes the transmission of sound from a point in space to a listener's ear drums.
+As a listener's HRTF often contains more detailed spectral information than is perceptually relevant, measured HRTFs can be smoothed to a certain degree without loss of localization accuracy or externalization \citep{XieZhang2010, Hassager2014}.
+This enables a simplified model of a listener's HRTF to be used to generate perceptually-accurate personalized binaural audio \citep{Rasumow2014}.
+
+In these and other applications, it is often desired to obtain an impulse response after smoothing that retains the perceptually-relevant temporal features of the original impulse response.
+To this end, \citet{HatziantoniouMourjopoulos2000} proposed ``complex smoothing,'' which extends the procedure of fractional-octave smoothing to complex-valued transfer functions (as opposed to the squared magnitude response used in traditional power-spectrum smoothing) and enables the calculation of a ``smoothed'' impulse response.
+More recently, \citet{Volk2011} proposed a method that uses complex-valued smoothing windows (corresponding to exponentially-decaying time windows applied to the impulse response) to better approximate the temporal and spectral smoothing inherent to the human auditory system.
+Also, as an alternative to complex smoothing, \citet{Bank2013} presented a method of modeling transfer functions by a finite number of parallel second-order filters (whose poles are typically logarithmically-spaced in frequency), and showed that this method achieves a frequency resolution similar to that of fractional-octave smoothing.
+Due to this current interest in obtaining equivalent time-domain responses after smoothing, any new spectral smoothing method should either retain compatibility with complex smoothing or prescribe an alternative method of obtaining the smoothed impulse response.
+
+% Review of previous work focusing on the remaining problems (questions or deficiencies) the present paper claims to contribute to solving
+\subsection{Previous work and remaining problems}
+Fractional-octave smoothing is a special case of spectral smoothing in which the bandwidth of the smoothing window is a constant percentage of the center frequency.
+Consequently, to smooth frequency spectra obtained via the fast Fourier transform (FFT) of a discrete-time signal, wherein the spectral data points are uniformly spaced in frequency, the fractional-octave smoothing window must vary with frequency.
+\citet{HatziantoniouMourjopoulos2000} presented a method and general framework for smoothing FFT-based frequency spectra to an arbitrary frequency resolution.
+However, this method prescribes smoothing windows that are symmetric on a linear frequency scale (and therefore do not span the correct fractional-octave bands), which consequently introduces an error, as is shown in the present work.
+\citet{Lipshitz1985} prescribe interpolating the FFT spectrum to a logarithmic frequency (log-frequency) scale, so that a fixed-width moving-average filter may be employed.
+As is shown in the present work, this approach is able to preserve the log-symmetry of raw spectra but requires leaving the FFT domain via interpolation, incurring a computational cost and necessarily introducing errors.
+
+% A statement of the paper's main question(s) and goal(s), followed by a succinct description of the general method and approach to be described in the paper
+\subsection{Objectives and approach}
+The goal of this work is to derive a fractional-octave smoothing method that preserves the log-symmetry of the original spectrum.
+Ideally, such a method should also operate directly on FFT-based frequency spectra, without the need to interpolate to a non-uniform frequency scale, and should be compatible with complex smoothing.
+Additionally, we evaluate the ability of existing fractional-octave smoothing methods to preserve log-frequency symmetry seen in the original spectrum.
+To evaluate the methods considered in this work, we apply each method to the magnitude response of an analog band-pass filter, which is symmetric on a log-frequency scale.
+Any loss of symmetry is examined in terms of a ``center of mass'' of the smoothed spectrum.
+
+% A brief section by section description of the structure of the paper
+In \secref{sec:A3_Smoothing_Weights:Smoothing_Methods} we present the framework for fractional-octave smoothing, followed by a brief review of the symmetric-window method in \secref{sec:A3_Smoothing_Weights:Smoothing_Methods:Hatziantoniou_Method} and the log-frequency interpolation method in \secref{sec:A3_Smoothing_Weights:Smoothing_Methods:Lipshitz_Method}.
+We then propose an alternative method in \secref{sec:A3_Smoothing_Weights:Smoothing_Methods:Proposed_Method}, perform a comparative analysis of the three methods in \secref{sec:A3_Smoothing_Weights:Analysis}, and conclude.

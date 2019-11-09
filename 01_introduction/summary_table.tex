@@ -1,0 +1,26 @@
+\begin{sidewaystable}
+\centering
+\begin{tabular}{l|c|c|c|l}
+\textbf{Method} & \textbf{Processing} & $P$ & $L_\textrm{in}$ & \textbf{Additional Inputs} \\\hline\hline
+Virtual ambisonics \citep[section 3.1]{TylkaChoueiri2015} & Linear & 1 & $1+$ & \\\hline
+Plane-wave translation \citep{SchultzSpors2013} & Linear & 1 & $1+$ & \\\hline
+Ambisonics translation \citep{GumerovDuraiswami2005,MenziesAlAkaidi2007a,Zotter2009PhD} & Linear & 1 & $1+$ & \\\hline
+Singular ambisonics translation \citep{Wakayama2017} & Parametric & 1 & $1+$ & Source position \\\hline
+Distance-mapped sound field modeling \citep{Plinge2018} & Parametric & 1 & 1 & Distance map of environment \\\hline
+Spherical equivalent source method \citep{FernandezGrande2016} & Linear & $1+$ & $1+$ &  \\\hline
+Inverse ambisonics translation via plane-waves \citep{WangChen2018} & Linear & $1+$ & $1+$ &  \\\hline
+Sparse plane-wave estimation and translation \citep{Emura2017} & Nonlinear & 2 & $1+$ &  \\\hline
+Weighted-average interpolation \citep{Southern2009,MarietteKatz2009} & Linear & $2+$ & $1+$ &  \\\hline
+Regularized inverse ambisonics interpolation \citep{Samarasinghe2014a,TylkaChoueiri2016,Ueno2018} & Linear & $2+$ & $1+$ &  \\\hline
+Distance-biased linear interpolation \citep{Patricio2019} & Linear & $2+$ & $1+$ &  \\\hline
+Dynamic time warping RIR interpolation \citep{Masterson2009,Kearney2009} & Nonlinear & $2+$ & $1+$ & Source positions \\\hline
+Valid-only interpolation \citep{TylkaChoueiri2016} & Parametric & $2+$ & $1+$ & Source positions \\\hline
+Time-frequency analysis and modeling \citep{Thiergart2013} & Parametric & $2+$ & 1 &  \\\hline
+Collaborative blind-source separation \citep{Zheng2013PhD} & Parametric & $2+$ & 1 &  \\\hline
+Perspective control ambisonics microphone array \citep{Bates2018} & Parametric & 4 & $1+$ & 
+\end{tabular}
+\caption[Summary of published navigational methods.]{
+Summary of published navigational methods.
+Here, $P$ denotes the number of ambisonics microphones used in the method and $L_\text{in}$ denotes the required ambisonics order of the microphone(s).}
+\label{tab:01_Introduction:Methods}
+\end{sidewaystable}

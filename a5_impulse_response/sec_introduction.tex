@@ -1,0 +1,29 @@
+A well-established method for measuring IRs of acoustical systems is to use an exponential sine sweep (ESS) \citep{Farina2007a,MullerMassarani2001R}.
+Advantages of this method include a high signal-to-noise ratio (SNR) and the ability to isolate and align non-linear distortion terms into distinct responses.
+Modified sweeps have been proposed which achieve improved SNRs based on knowledge of the ambient noise \citep{OchiaiKaneda2013}.
+However, such modified sweep techniques require altering the time-frequency relationship of the sweep (for example, by sweeping more slowly through regions of low SNR), thereby preventing the sweep from neatly isolating the distortion terms.
+More recently, \citet{Tylka2014} developed a two-sweep measurement procedure (described in \secref{sec:A5_Impulse_Response:Two-Step-ESS}), which first takes an estimate of the system's pass-band and the ambient noise in order to achieve an increased SNR in the second measurement.
+It is worth noting that the ESS cannot isolate 100\% of each distortion term from the linear response \citep{TorrasRosellJacobsen2011}.
+Consequently, low amplitude signals are recommended to better measure the linear response by itself (nevertheless, when higher amplitudes are required, the ESS still enables much of the distortion to be isolated and later removed).
+% Bottom line: ESS is good because it removes some distortion
+
+When using an ESS, \citeauthor{Farina2007a} recommends extracting the measured IR by convolving the recorded sweep with a time-reversed ``inverse sweep'' \citep{Farina2007a}.
+As we will show in \secref{sec:A5_Impulse_Response:ESS}, this process effectively creates a linear-phase band-pass filter (BPF) with cut-off frequencies approximately equal to the initial and final sweep frequencies.
+An advantage of this approach is that a high overall SNR can be achieved simply by restricting the sweep to the pass-band of the system under test, since any out-of-band noise will be attenuated.
+However, unless the appropriate pass-band of the system is known \textit{a priori}, using a limited-bandwidth sweep may result in a sinc function pre-response \citep{Farina2007a}, as the BPF may inadvertently filter out significant portions of the system's frequency response.
+In order to avoid such pre-responses, it is typically recommended to use a full-band sweep from below the low-frequency limit of the system up to the Nyquist frequency.
+% Bottom line: narrowband ESS can create pre-response
+
+An alternative approach to extract the IR is to perform an exact deconvolution
+(described in~\secref{sec:A5_Impulse_Response:Procedure}) of the measured signal by the input signal.
+In this case, using a limited-bandwidth sweep may result in ill-conditioned frequencies,
+as deconvolution then effectively entails a ``division by zero'' outside of the frequency range of the sweep.
+This ill-conditioning tends to result in an amplification of out-of-band noise, yielding a corrupted and unusable IR.
+Again, applying a BPF to this resulting IR may help to remove the noise, but may also create an undesirable pre-response.
+Consequently, it is again typically recommended to use a full-band sweep, which, in many cases, may be sufficient to obtain a measured IR with an adequate SNR over the entire frequency range, since sufficient energy exists throughout the input spectrum in order to keep the deconvolution from becoming ill-conditioned.
+% Bottom line: narrowband ESS can create deconvolution noise
+
+% A brief section by section description of the structure of the paper
+In \secref{sec:A5_Impulse_Response:Procedure}, we describe the general procedure for measuring the impulse response of an acoustical system.
+In \secref{sec:A5_Impulse_Response:ESS}, we describe various aspects regarding the implementation of the ESS.
+Finally, we summarize these contributions in~\secref{sec:A5_Impulse_Response:Summary}.
